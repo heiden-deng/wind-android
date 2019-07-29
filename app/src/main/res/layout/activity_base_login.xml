@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_base_back">
+
+    <TextView
+        style="@style/BaseLoginCenterTextView"
+        android:text="@string/base_login_center_text" />
+
+    <Button
+        android:id="@+id/base_login_btn_login"
+        style="@style/BaseLoginButton"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="27dp"
+        android:text="@string/login" />
+
+    <Button
+        android:id="@+id/base_login_btn_regist"
+        style="@style/BaseLoginButton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="27dp"
+        android:text="@string/base_login_register_new_id" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="27dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/base_login_read_deal"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/base_login_read_deal_url"
+            android:autoLink="web"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+</RelativeLayout>

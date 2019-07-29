@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/new_friend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/divider_width"
+        android:background="@color/white"
+        android:foreground="?selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:elevation="@dimen/elevation_item">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/icon_new_friend"
+                android:layout_width="@dimen/size_avatar_mid"
+                android:layout_height="@dimen/size_avatar_mid"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/space_mid"
+                android:layout_marginTop="@dimen/space_contact_item_padding"
+                android:layout_marginBottom="@dimen/space_contact_item_padding"
+                android:layout_marginEnd="@dimen/space_mid"
+                android:src="@drawable/ic_new_friend" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/icon_new_friend"
+                android:text="@string/new_friend"
+                android:textColor="@color/textBlack"
+                android:textSize="@dimen/text_normal" />
+
+            <TextView
+                android:id="@+id/new_friend_bubble"
+                style="@style/Widget.TextView.Bubble"
+                android:layout_width="@dimen/tab_bubble_size"
+                android:layout_height="@dimen/tab_bubble_size"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/space_mid"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/group_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/divider_width"
+        android:background="@color/white"
+        android:foreground="?selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:elevation="@dimen/elevation_item">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/icon_group_contacts"
+                android:layout_width="@dimen/size_avatar_mid"
+                android:layout_height="@dimen/size_avatar_mid"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/space_mid"
+                android:layout_marginTop="@dimen/space_contact_item_padding"
+                android:layout_marginBottom="@dimen/space_contact_item_padding"
+                android:layout_marginEnd="@dimen/space_mid"
+                android:src="@drawable/ic_groups" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/icon_group_contacts"
+                android:text="@string/group_contacts"
+                android:textColor="@color/textBlack"
+                android:textSize="@dimen/text_normal" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

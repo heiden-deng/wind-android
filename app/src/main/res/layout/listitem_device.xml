@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/divider_width"
+    android:background="@color/white"
+    android:foreground="?selectableItemBackground"
+    android:elevation="@dimen/elevation_item"
+    android:gravity="center_vertical"
+    android:padding="@dimen/space_mid">
+
+    <TextView
+        android:id="@+id/device_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textBlack"
+        android:textSize="@dimen/text_normal"
+        tools:text="iPhone X" />
+
+    <TextView
+        android:id="@+id/device_last_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/textAlphaGray"
+        android:textSize="@dimen/text_small"
+        tools:text="5 min" />
+
+</RelativeLayout>
+

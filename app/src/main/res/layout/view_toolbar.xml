@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Toolbar.ActionBar"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:id="@+id/nav_back_layout"
+        style="@style/toolBarBackIconLayoutStyle">
+
+        <ImageView
+            android:id="@+id/nav_back"
+            style="@style/toolBarBackIconStyle" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="false"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/action_bar_margin_horizontal"
+        android:layout_marginEnd="@dimen/action_bar_margin_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_title"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="标题"/>
+
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_tiny"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="小标题"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

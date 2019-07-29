@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="PickerTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:colorPrimary">@color/__picker_toolbar_background</item>
+        <item name="android:colorPrimaryDark">@color/__picker_toolbar_background</item>
+        <item name="android:colorAccent">@color/__picker_toolbar_background</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+</resources>

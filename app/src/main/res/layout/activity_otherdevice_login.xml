@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_toolbar" />
+
+    <ImageView
+        android:id="@+id/qr_image"
+        android:layout_width="@dimen/size_qrcode"
+        android:layout_height="@dimen/size_qrcode"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
+        android:src="@color/placeholder" />
+
+    <TextView
+        android:id="@+id/safe_for_qrcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/qr_image"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/space_mid"
+        android:autoLink="web|all"
+        android:linksClickable="true"
+        android:text="@string/why_qrcode_auth_safe_md"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_small" />
+
+</RelativeLayout>

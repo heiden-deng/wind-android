@@ -1,0 +1,238 @@
+<resources>
+    <string name="app_name">阿卡信</string>
+    <string name="user_agreement_md"><a href="https://github.com/akaxincom/faq/blob/master/user_agreement.md">知晓并同意使用协议</a></string>
+    <string name="user_id_md"><a href="https://github.com/akaxincom/faq/blob/master/user_id.md">什么是身份?</a></string>
+    <string name="why_qrcode_auth_safe_md"><a href="https://github.com/akaxincom/faq/blob/master/why_qrcode_auth_safe.md">授权登陆为什么是安全的？</a></string>
+
+    <string name="top_secret">绝密</string>
+    <string name="unavailable_top_secret_msg">您收到一条绝密消息，需要指定设备解密，点击查看</string>
+
+    <!-- empty -->
+    <string name="empty_sites">您尚未登录站点</string>
+    <string name="empty_friend_apply_list">暂无好友请求</string>
+
+    <!-- error info -->
+    <string name="error_conn_nonet">无网络服务，请检查网络。</string>
+    <string name="error_conn_retrying">与站点连接断开，正在尝试重新连接…</string>
+    <string name="error_conn_netretrying">正在尝试重新连接网络…</string>
+    <string name="error_site_disconnect">暂时无法访问该站点，请稍候再试</string>
+
+    <string name="error_conn_disconnected">与站点连接断开，点击重试</string>
+    <string name="error_conn_manual_disconnected">手动断开站点连接，请在个人->站点管理->建立链接</string>
+
+    <string name="error_auth_failed">站点鉴权失败，点击重试</string>
+    <string name="disabled_function">当前站点不支持此功能</string>
+    <string name="data_error">数据异常</string>
+    <string name="error">请求失败，请稍后重试</string>
+    <string name="error_time_out">请求超时</string>
+    <string name="error_msg_not_friend">你与对方非好友关系，消息发送失败</string>
+    <string name="error_msg_not_in_group">你已不是此群成员，消息发送失败</string>
+    <string name="error_group_dissolved">当前群不存在</string>
+
+    <string name="bubble_many">99+</string>
+
+    <!-- login -->
+    <string name="new_device_tip">这是一台全新的设备\n请赋予它账户</string>
+    <string name="login_with_new_id">生成匿名账户</string>
+    <string name="login_with_other_device">其他设备扫一扫授权</string>
+    <string name="login_with_phone_number">使用手机号登陆同步</string>
+    <string name="agreement">知晓并同意使用协议</string>
+    <string name="action_login">登录</string>
+
+    <!-- login error -->
+    <string name="error_empty_phone_input">请输入手机号码</string>
+    <string name="error_empty_validation_code">请输入验证码</string>
+
+    <!-- main tabs -->
+    <string name="tab_app">首页</string>
+    <string name="tab_message">消息</string>
+    <string name="tab_contacts">通讯录</string>
+    <string name="tab_personal">个人</string>
+    <string name="login_new_site">登录新站点</string>
+    <string name="scan">扫一扫</string>
+    <string name="search_friend">添加朋友</string>
+
+    <string name="create_group">创建群聊</string>
+    <string name="share_site">分享站点</string>
+    <string name="more_plugins">更多</string>
+    <string name="friends_applications">好友申请</string>
+    <string name="auth_identity">授权其它设备登陆</string>
+
+    <string name="search_friend_hint"> 站点账户 / 手机号 </string>
+
+    <!-- main tabs hints -->
+    <string name="hint_switch_site_edit">输入站点地址</string>
+    <string name="action_connect">连接</string>
+
+    <!-- plugins -->
+    <string name="plugins">扩展</string>
+
+    <!-- tab.contacts -->
+    <string name="new_friend">新朋友</string>
+    <string name="group_contacts">群聊</string>
+    <string name="user_contacts">联系人</string>
+
+    <!-- tab.personal -->
+    <string name="show_large_avatar">查看头像大图</string>
+    <string name="change_avatar">修改头像</string>
+    <string name="change_username">修改昵称</string>
+    <string name="set_site_login_id">设置站点账户</string>
+    <string name="show_self_qrcode">身份二维码</string>
+    <string name="show_self_keys">查看我的数字证书</string>
+    <string name="bind_phone_num">绑定手机号</string>
+    <string name="manage_sites">站点管理</string>
+    <string name="manage_devices">设备查阅</string>
+    <string name="check_updata">检查更新</string>
+    <string name="delete_identity">本机退出账户</string>
+    <string name="user_id_pubk">数字公钥</string>
+    <string name="user_id_prik">数字私钥（不要泄露）</string>
+
+    <!-- site -->
+    <string name="connected">已连接</string>
+    <string name="disconnected">连接断开</string>
+
+    <!-- profiles -->
+    <string name="send_message">发送消息</string>
+    <string name="notification_switch">消息免打扰</string>
+    <string name="show_qrcode">身份二维码</string>
+    <string name="show_pub_key">查看我的数字证书</string>
+    <string name="edit_remark_name">修改备注</string>
+    <string name="add_friend">添加好友</string>
+    <string name="delete_friend">删除好友</string>
+    <string name="site_login_id">站点账户</string>
+    <string name="site_nick_name">站点昵称</string>
+
+    <!-- profiles/users -->
+
+    <!-- profiles/groups -->
+    <string name="group_profile_default_title">群资料</string>
+    <string name="group_name">群名</string>
+    <string name="change_group_name">修改群名</string>
+    <string name="group_master">群主</string>
+    <string name="group_members">群成员</string>
+    <string name="num_group_members">%1$d人</string>
+    <string name="only_owner_invite">只允许群主邀请群成员</string>
+    <string name="add_member">邀请群成员</string>
+    <string name="remove_group_member">移除群成员</string>
+    <string name="dissolve_group">解散本群</string>
+    <string name="quit_group">退出本群</string>
+    <string name="share_qr_code">分享二维码</string>
+
+    <string name="quit_group_confirmation">你确认要退出该群组吗？</string>
+    <string name="dissolve_group_confirmation">你确认要解散该群组吗？</string>
+
+    <string name="yes">确认</string>
+    <string name="no">取消</string>
+
+    <!-- site info -->
+    <string name="username">昵称</string>
+    <string name="avatar">头像</string>
+    <string name="who_is">站点所属人查询</string>
+    <string name="disconnect">断开连接</string>
+    <string name="connect">建立连接</string>
+    <string name="logout_site">删除站点</string>
+
+    <!-- titles -->
+    <string name="site_info">站点管理</string>
+
+    <!-- apply friend -->
+    <string name="action_add_confirm">同意</string>
+    <string name="accept_friend_application">成功添加%1$s为好友</string>
+    <string name="hint_apply_message">对方需要验证好友申请…</string>
+
+    <!-- chatting -->
+    <string name="reply">回复</string>
+    <string name="me">我</string>
+    <string name="unknown_device">未知设备</string>
+    <string name="sending_in_secret_mode">以绝密方式发往对方设备 %1$s</string>
+    <string name="change_secret_device">更换目标设备</string>
+    <string name="press_to_record">按住说话</string>
+    <string name="recording">录音中…\n松开发送</string>
+    <string name="duration_seconds">%1$d\"</string>
+    <string name="num_unread_messages">%1$d条未读消息</string>
+    <string name="loudspeaker_on">已切换为扬声器模式</string>
+    <string name="loudspeaker_off">已关闭扬声器模式</string>
+    <string name="copy_message">复制</string>
+    <string name="action_send_emoji">发送</string>
+
+    <string name="message_info">本地发送：%1$s\n服务器接收：%2$s</string>
+    <string name="not_viewable_msg_tip">你收到一条绝密消息\n需要去指定的设备\n%1$s\n进行解密</string>
+
+    <!-- chatting bottom tools -->
+    <string name="label_tool_photo">照片</string>
+    <string name="label_tool_camera">相机</string>
+    <string name="label_tool_plugin">扩展</string>
+    <string name="label_tool_files">文件</string>
+
+    <!-- titles -->
+    <string name="title_user_pub_key">%1$d的数字证书</string>
+    <string name="title_user_qrcode">%1$s的二维码</string>
+    <string name="title_group_members">群成员</string>
+    <string name="title_add_group_members">添加成员</string>
+    <string name="title_remove_members">移除成员</string>
+    <string name="title_site_manage">站点管理</string>
+    <string name="title_choose_site">选择站点</string>
+    <string name="title_friend_apply_list">新朋友</string>
+    <string name="title_search_friend">添加好友</string>
+    <string name="title_create_group">创建群聊</string>
+
+    <!-- registering site -->
+    <string name="user_id">用户名（确认后无法修改）</string>
+    <string name="nickname">昵称</string>
+    <string name="phone_number">手机号</string>
+    <string name="invitation_code">邀请码</string>
+
+    <!-- switching site -->
+    <string name="user_not_found_at_current_site">未在当前站点找到此用户，请尝试切换站点。</string>
+    <string name="switch_site">切换站点</string>
+    <string name="loading_switching">正在切换站点…</string>
+    <string name="loading_logging_in_site">正在登录新站点…</string>
+    <string name="login_time_out">登录超时，请重试</string>
+    <string name="no_such_site">该地址尚未开启站点服务</string>
+    <string name="login_site">登录站点</string>
+
+    <!-- managing group members -->
+    <string name="removed_group_members">成功移除%1$d位群成员</string>
+
+    <!-- device management -->
+    <string name="device_info">登录站点：%1$s\n登录地址：%2$s\n登录时间：%3$s</string>
+
+    <!-- bind phone -->
+    <string name="mobile_phone">手机号（暂时只支持+86）</string>
+    <string name="send_validation_code">发送验证码</string>
+    <string name="time_left">剩余%1$d秒</string>
+    <string name="validation_code">验证码</string>
+    <string name="bind_phone">绑定</string>
+
+    <string name="create_group_name">群组名</string>
+    <string name="create_group_members">群成员</string>
+
+    <!-- share -->
+    <string name="share_copied">已复制</string>
+
+    <string name="user_title_name">用户名: </string>
+    <string name="base_login_center_text">你自己的 聊天软件</string>
+    <string name="login">登录</string>
+    <string name="base_login_register_new_id">注册新账号</string>
+    <string name="base_login_read_deal">继续使用即代表阅读并同意</string>
+
+    <string name="base_login_read_deal_url"><a href='https://raw.githubusercontent.com/akaxincom/faq/master/docs/agreement.md'>阿卡信使用协议</a></string>
+    <string name="md_url">https://raw.githubusercontent.com/akaxincom/faq/master/docs/agreement.md</string>
+    <string name="base_login_register_byphone">注册手机号</string>
+    <string name="base_login_register_by_another">其他方式注册</string>
+    <string name="base_login_register_local">生成本地匿名账号</string>
+    <string name="base_login_input_phone">请在此输入你的手机号</string>
+    <string name="base_login_input_code">请在此输入验证码</string>
+    <string name="base_login_qr_register_by_another">其他方式登录</string>
+    <string name="base_login_qr_login_by_phone">手机号登录</string>
+    <string name="try_out_to_demo_site">连接体验服务器</string>
+    <string name="conn">连接</string>
+
+    <string name="without_network_hint">请稍后再试</string>
+
+
+    <string name="viewpager_indicator">%1$d/%2$d</string>
+
+    <string name="input_site_name_tip">站点账号可用于添加好友时搜索用户，字母开头支持数字与字母，最长20个字符</string>
+    <string name="reject_permiss_dialog_notice">拒绝权限会导致程序无法使用，是否现在修改权限</string>
+</resources>

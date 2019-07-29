@@ -1,0 +1,59 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.ceabie.dextools:gradle-dexknife-plugin:1.6.1'
+        classpath "gradle.plugin.com.google.protobuf:protobuf-gradle-plugin:0.8.3"
+        classpath 'com.tencent.bugly:symtabfileuploader:latest.release'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven {
+            url "https://jitpack.io"
+        }
+    }
+
+    ext {
+        targetSdkVersion = 26
+        compileSdkVersion = 26
+        buildToolsVersion = '26.0.2'
+        minSdkVersion = 21
+        supportLibVersion = '26.1.0'
+        lottieVersion = "2.2.0"
+        appcompatVersion = '26.1.0'
+        recyclerViewVersion = "26.1.0"
+        designVersion = "26.1.0"
+
+    }
+
+    def supportLibraryVersion = '26.1.0'
+    ext.deps = [
+            supportAnnotations: "com.android.support:support-annotations:$supportLibraryVersion",
+            javapoet          : 'com.squareup:javapoet:1.8.0',
+            autoservice       : 'com.google.auto.service:auto-service:1.0-rc2',
+            autocommon        : 'com.google.auto:auto-common:0.6'
+    ]
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

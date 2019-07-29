@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/view_toolbar"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="18dp"
+        android:text="公钥"
+        android:textColor="#4a4a4a"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/pubKey"
+        style="@style/editStyle"
+        android:layout_marginTop="16dp"
+        android:hint="请输入公钥" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="18dp"
+        android:text="私钥"
+        android:textColor="#4a4a4a"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/priKey"
+        style="@style/editStyle"
+        android:layout_marginTop="16dp"
+        android:hint="请输入私钥" />
+
+
+    <TextView
+        android:id="@+id/submit"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/bg_btn_site_manage"
+        android:gravity="center"
+        android:text="启动"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+
+
+</LinearLayout>

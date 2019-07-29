@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_layout"
+    style="@style/Style.MessageItem.MessageRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/time_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Style.MessageItem.TimeTip"
+        tools:text="12:00" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:gravity="start">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/avatar"
+                style="@style/Style.MessageItem.Avatar" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <android.support.text.emoji.widget.EmojiTextView
+                    android:id="@+id/username_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="@dimen/space_tiny"
+                    android:layout_marginEnd="@dimen/space_small"
+                    android:layout_marginStart="@dimen/space_small"
+                    android:textColor="@color/grayAlpha"
+                    android:textSize="@dimen/text_small"
+                    tools:text="Alex" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/username_label"
+                    android:orientation="horizontal">
+
+                    <com.akaxin.client.view.DoubleTapFrameLayout
+                        android:id="@+id/message_parent"
+                        style="@style/Style.MessageItem.MessageParent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end">
+
+                    </com.akaxin.client.view.DoubleTapFrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/message_status"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginTop="@dimen/space_small"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/status_failed"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_error_msg_send"
+                            android:visibility="invisible"
+                            tools:visibility="visible" />
+
+                        <ProgressBar
+                            android:id="@+id/status_sending"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:visibility="invisible"
+                            android:indeterminateTint="@color/colorPrimary"
+                            tools:visibility="invisible" />
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

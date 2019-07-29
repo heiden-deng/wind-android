@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.akaxin.client.view.ResizeListenerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <LinearLayout style="@style/Widget.Toolbar.ActionBar"
+        android:id="@+id/app_bar"
+        android:transitionName="app_bar">
+
+        <LinearLayout
+            android:id="@+id/nav_back_layout"
+            style="@style/toolBarBackIconLayoutStyle">
+
+            <ImageView
+                android:id="@+id/nav_back"
+                style="@style/toolBarBackIconStyle" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/title_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:paddingStart="@dimen/space_small"
+            android:paddingEnd="@dimen/space_small"
+            android:gravity="start"
+            android:orientation="vertical"
+            android:background="?selectableItemBackgroundBorderless"
+            android:visibility="visible"
+            android:transitionName="title_layout">
+
+            <TextView
+                android:id="@+id/main_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="小伙子"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_title"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="开源阿卡信 | im.akaxin.com"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_tiny" />
+
+        </LinearLayout>
+
+        <com.kyleduo.switchbutton.SwitchButton
+            android:id="@+id/secret_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/space_mid"
+            app:kswTextOff="普通"
+            app:kswTextOn="绝密"
+            app:kswTintColor="@color/secret_switch_thumb"
+            app:kswTextExtra="@dimen/space_small"
+            app:kswTextAdjust="-2dp"
+            app:kswBackColor="@color/secret_switch_track"
+            app:kswThumbColor="@color/secret_switch_thumb"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_tiny"
+            android:checked="false"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg">
+
+        <com.akaxin.client.chat.view.MsgBottomExpandView
+            android:id="@+id/expand_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentBottom="true"
+            android:visibility="invisible" />
+
+        <include layout="@layout/layout_message_bottom_edit"/>
+
+        <include layout="@layout/layout_message_body" />
+
+    </RelativeLayout>
+
+</com.akaxin.client.view.ResizeListenerLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/menu_create_group"
+        android:title="@string/create_group"
+        android:icon="@drawable/ic_menu_creat_group"
+        app:showAsAction="never"/>
+    <item android:id="@+id/search_friend"
+        android:title="@string/search_friend"
+        android:icon="@drawable/ic_main_menu_add_friend"
+        app:showAsAction="never"/>
+    <item android:id="@+id/menu_scan_qrcode"
+        android:title="@string/scan"
+        android:icon="@drawable/ic_main_menu_qrcode"
+        app:showAsAction="never"/>
+    <item android:id="@+id/menu_share_site"
+        android:title="@string/share_site"
+        android:icon="@drawable/ic_share_24dp"
+        app:showAsAction="never"/>
+    <item android:id="@+id/menu_site_switch"
+        android:title="@string/login_new_site"
+        android:icon="@drawable/ic_main_menu_switch_site"
+        app:showAsAction="never"/>
+</menu>

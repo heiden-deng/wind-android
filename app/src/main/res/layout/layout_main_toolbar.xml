@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar"
+    style="@style/Widget.Toolbar.ActionBar"
+    android:foreground="?selectableItemBackgroundBorderless"
+    android:transitionName="action_bar">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <EditText
+            android:id="@+id/site_input"
+            style="@style/Widget.EditText.ActionBarEditText"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_toStartOf="@+id/action_more"
+            android:focusable="false"
+            android:hint="@string/hint_switch_site_edit"
+            android:imeOptions="actionNext"
+            android:inputType="textUri"
+            android:singleLine="true"
+            android:textSize="@dimen/text_title"
+            android:theme="@style/Widget.EditText.ActionBarEditText"
+            android:transitionName="address"
+            android:visibility="gone"
+            tools:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/title_root"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/titles"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:transitionName="address">
+
+                <LinearLayout
+                    android:id="@+id/toolbar_ll_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/title"
+                        style="@style/Text.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="开源阿卡信" />
+
+                    <TextView
+                        android:id="@+id/subtitle"
+                        style="@style/Text.Title.Subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="im.akaxin.com" />
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/drop_down_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_drop_down_white_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/bubble"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_red_bubble"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/space_tiny"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/bubble_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_bubble_notification_msg" />
+
+                    <ImageView
+                        android:id="@+id/bubble_new_friend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_bubble_notification_friend" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <ImageButton
+            android:id="@+id/action_more"
+            style="@style/Widget.ImageButton.ActionBarButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_add_white_24dp" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.Toolbar>

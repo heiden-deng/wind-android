@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_more_menu_item_dialog"
+    android:minWidth="120dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/scan_qrcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space_small"
+        android:gravity="center"
+        android:text="@string/scan"
+        android:textColor="@color/textBlack"
+        android:textSize="@dimen/text_normal"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider" />
+
+    <TextView
+        android:id="@+id/create_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space_small"
+        android:text="@string/create_group"
+        android:gravity="center"
+        android:textColor="@color/title_color"
+        android:textSize="14sp"/>
+
+</LinearLayout>

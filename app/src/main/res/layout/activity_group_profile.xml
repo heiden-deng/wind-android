@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_profile_toolbar" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/error_group_dissolved"
+            android:textColor="@color/textAlphaGray"
+            android:textSize="@dimen/text_small"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/view_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/menu_group_gap"
+                    android:orientation="vertical">
+
+                    <LinearLayout style="@style/MenuGroup">
+
+                        <LinearLayout
+                            android:id="@+id/item_group_name"
+                            style="@style/MenuItem"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <TextView
+                                style="@style/MenuItemText"
+                                android:text="@string/group_name" />
+
+                            <TextView
+                                android:id="@+id/group_name"
+                                style="@style/MenuItemTextFloatRight"
+                                tools:text="小伙子" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/item_group_owner"
+                            style="@style/MenuItem">
+
+                            <TextView
+                                style="@style/MenuItemText"
+                                android:text="@string/group_master" />
+
+                            <TextView
+                                android:id="@+id/group_owner_name"
+                                style="@style/MenuItemTextFloatRight"
+                                android:text="群主名称"
+                                tools:text="群主名称" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/item_group_members"
+                            style="@style/MenuItem">
+
+                            <TextView
+                                style="@style/MenuItemText"
+                                android:text="@string/group_members" />
+
+                            <TextView
+                                android:id="@+id/num_group_members"
+                                style="@style/MenuItemTextFloatRight"
+                                tools:text="127人" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/item_add_member"
+                            style="@style/MenuItem"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <TextView
+                                style="@style/MenuItemText"
+                                android:text="@string/add_member" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/item_share_qr_code"
+                            style="@style/MenuItem"
+                            android:visibility="visible"
+                            tools:visibility="visible">
+
+                            <TextView
+                                style="@style/MenuItemText"
+                                android:text="@string/share_qr_code" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_manage_group"
+                        style="@style/MenuGroup"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <LinearLayout
+                            android:id="@+id/item_only_owner_invite"
+                            style="@style/MenuItem">
+
+                            <TextView
+                                style="@style/MenuItemText"
+                                android:text="@string/only_owner_invite" />
+
+                            <android.support.v7.widget.SwitchCompat
+                                android:id="@+id/only_owner_invite_switch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:theme="@style/MenuItemSwitch" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/item_remove_member"
+                            style="@style/MenuItem"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                style="@style/MenuItemText"
+                                android:text="@string/remove_group_member" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_notification_switch"
+                        style="@style/MenuGroup"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <LinearLayout
+                            android:id="@+id/item_notification_switch"
+                            style="@style/MenuItem">
+
+                            <TextView
+                                style="@style/MenuItemText"
+                                android:text="@string/notification_switch" />
+
+                            <android.support.v7.widget.SwitchCompat
+                                android:id="@+id/notification_switch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:theme="@style/MenuItemSwitch" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_quit_group"
+                        style="@style/MenuGroup"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <LinearLayout
+                            android:id="@+id/item_quit_group"
+                            style="@style/MenuItem">
+
+                            <TextView
+                                android:id="@+id/quit_group_text"
+                                style="@style/MenuItemText"
+                                android:text="@string/quit_group" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/webview_resent_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/msg_plugin_webview">
+
+    <com.akaxin.client.view.ZalyWebView
+        android:id="@+id/webview_resent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/secured"
+            style="@style/Style.Icon.TopSecret.Sent"
+            android:layout_marginStart="@dimen/space_tiny"
+            android:layout_marginTop="@dimen/space_tiny"
+            android:visibility="gone" />
+    </com.akaxin.client.view.ZalyWebView>
+
+</FrameLayout>

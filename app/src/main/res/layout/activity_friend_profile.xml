@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_profile_toolbar" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/view_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/menu_group_gap">
+                <LinearLayout
+                    style="@style/MenuGroup">
+                    <LinearLayout
+                        android:id="@+id/item_site_login_id"
+                        style="@style/MenuItem"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+                        <TextView
+                            style="@style/MenuItemText"
+                            android:text="@string/site_login_id"/>
+                        <TextView style="@style/MenuItemTextFloatRight"
+                            android:id="@+id/site_login_id"
+                            tools:text="shaoye"/>
+                    </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/item_site_nick_name"
+                            style="@style/MenuItem"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+                            <TextView
+                                style="@style/MenuItemText"
+                                android:text="@string/site_nick_name"/>
+                            <TextView style="@style/MenuItemTextFloatRight"
+                                android:id="@+id/site_nick_name"
+                                tools:text="shaoye"/>
+                        </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/add_friend_layout"
+                    style="@style/MenuGroup">
+                    <LinearLayout
+                        android:id="@+id/item_add_friend"
+                        style="@style/MenuItem"
+                        android:visibility="visible"
+                        tools:visibility="visible">
+                        <TextView
+                            style="@style/MenuItemText"
+                            android:text="@string/add_friend"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/MenuGroup">
+                    <LinearLayout
+                        style="@style/MenuItem"
+                        android:id="@+id/item_show_qrcode">
+                        <TextView
+                            style="@style/MenuItemText"
+                            android:text="@string/show_qrcode" />
+                    </LinearLayout>
+                    <LinearLayout
+                        style="@style/MenuItem"
+                        android:id="@+id/item_show_pub_key" >
+                        <TextView
+                            style="@style/MenuItemText"
+                            android:text="@string/show_pub_key" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/item_notification_switch"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        style="@style/MenuItem">
+                        <TextView
+                            android:text="@string/notification_switch"
+                            style="@style/MenuItemText"/>
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/notification_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:theme="@style/MenuItemSwitch"
+                            android:checked="false"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/MenuItem"
+                        android:id="@+id/edit_remark_name" >
+                        <TextView
+                            style="@style/MenuItemText"
+                            android:text="@string/edit_remark_name" />
+                        <TextView style="@style/MenuItemTextFloatRight"
+                            android:id="@+id/remark_name"
+                            tools:text="shaoye"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/MenuGroup">
+                    <LinearLayout
+                        android:id="@+id/item_delete_friend"
+                        style="@style/MenuItem"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+                        <TextView
+                            style="@style/MenuItemText"
+                            android:text="@string/delete_friend"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/MenuGroup">
+                    <LinearLayout
+                        android:id="@+id/item_send_message"
+                        style="@style/MenuItemSendMsg">
+                        <TextView
+                            style="@style/MenuItemTextSendMsg"
+                            android:text="@string/send_message"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

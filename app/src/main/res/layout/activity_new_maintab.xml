@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <include layout="@layout/layout_main_toolbar" />
+
+    <TextView
+        android:id="@+id/conn_status_bar"
+        style="@style/Widget.TextView.TipBar"
+        android:layout_below="@id/toolbar"
+        android:drawablePadding="@dimen/space_small"
+        android:drawableStart="@drawable/ic_error_status_16dp"
+        android:visibility="gone"
+        tools:text="与当前站点的连接断开，正在重试…"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/bottom_navi"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_bottom_navi"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:elevation="@dimen/elevation_bottom_navi"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/space_tiny">
+
+        <RelativeLayout
+            android:id="@+id/tab_app"
+            style="@style/Style.TabItem">
+
+
+            <ImageView
+                android:id="@+id/tab_app_icon"
+                style="@style/Style.TabItem.Icon"
+                android:src="@drawable/ic_tab_index" />
+
+            <TextView
+                android:id="@+id/label_tab_app"
+                style="@style/Style.TabItem.Label"
+                android:layout_below="@id/tab_app_icon"
+                android:text="@string/tab_app" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/tab_session"
+            style="@style/Style.TabItem">
+
+            <FrameLayout
+                android:id="@+id/tab_session_frame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:clipToPadding="false"
+                android:paddingEnd="@dimen/space_small"
+                android:paddingStart="@dimen/space_small">
+
+                <ImageView
+                    android:id="@+id/tab_session_icon"
+                    style="@style/Style.TabItem.Icon"
+                    android:src="@drawable/ic_tab_msg" />
+
+                <ImageView
+                    android:id="@+id/msg_unread_bubble"
+                    android:layout_width="@dimen/tab_bubble_size"
+                    android:layout_height="@dimen/tab_bubble_size"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/minus_space_tiny"
+                    android:background="@drawable/bg_red_bubble"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/label_tab_session"
+                style="@style/Style.TabItem.Label"
+                android:layout_below="@id/tab_session_frame"
+                android:text="@string/tab_message" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/tab_contact"
+            style="@style/Style.TabItem">
+
+            <FrameLayout
+                android:id="@+id/tab_contact_frame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:clipToPadding="false"
+                android:paddingEnd="@dimen/space_small"
+                android:paddingStart="@dimen/space_small">
+
+                <ImageView
+                    android:id="@+id/tab_contact_icon"
+                    style="@style/Style.TabItem.Icon"
+                    android:src="@drawable/ic_tab_contacts" />
+
+                <ImageView
+                    android:id="@+id/contact_unread_bubble"
+                    android:layout_width="@dimen/tab_bubble_size"
+                    android:layout_height="@dimen/tab_bubble_size"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/minus_space_tiny"
+                    android:background="@drawable/bg_red_bubble"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/label_tab_contacts"
+                style="@style/Style.TabItem.Label"
+                android:layout_below="@id/tab_contact_frame"
+                android:text="@string/tab_contacts" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/tab_personal"
+            style="@style/Style.TabItem">
+
+            <FrameLayout
+                android:id="@+id/tab_personal_frame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:clipToPadding="false"
+                android:paddingEnd="@dimen/space_small"
+                android:paddingStart="@dimen/space_small">
+
+                <ImageView
+                    android:id="@+id/tab_personal_icon"
+                    style="@style/Style.TabItem.Icon"
+                    android:src="@drawable/ic_tab_personal" />
+
+                <ImageView
+                    android:id="@+id/personal_unread_bubble"
+                    android:layout_width="@dimen/tab_bubble_size"
+                    android:layout_height="@dimen/tab_bubble_size"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/minus_space_tiny"
+                    android:background="@drawable/bg_red_bubble"
+                    android:visibility="invisible"
+                    tools:visibility="visible" />
+            </FrameLayout>
+
+
+            <TextView
+                android:id="@+id/label_tab_personal"
+                style="@style/Style.TabItem.Label"
+                android:layout_below="@id/tab_personal_frame"
+                android:text="@string/tab_personal" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <com.akaxin.client.view.ZalyNoScrollViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navi"
+        android:layout_below="@+id/conn_status_bar" />
+
+</RelativeLayout>

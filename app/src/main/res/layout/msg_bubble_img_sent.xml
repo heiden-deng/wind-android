@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:kk="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/message_body"
+    style="@style/Widget.MessageBubble.Sent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
+    <ImageView
+        android:id="@+id/content_img"
+        android:adjustViewBounds="true"
+        style="@style/Style.MessageItem.Image"
+        android:tint="@color/grayAlpha" />
+
+    <com.akaxin.client.view.CustomProgressBar
+        android:id="@+id/imageCenterProgress"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        kk:circleWidth="3dp"
+        kk:firstColor="#d3d3d3"
+        kk:secondColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/secured"
+        style="@style/Style.Icon.TopSecret.Sent"
+        android:layout_width="15dp"
+        android:layout_height="18dp"
+        android:layout_gravity="start|top"
+        android:background="@drawable/bg_secret_image_icon_send"
+        android:padding="@dimen/space_tiny"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+
+</FrameLayout>

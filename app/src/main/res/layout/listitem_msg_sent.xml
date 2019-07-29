@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:kk="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_layout"
+    style="@style/Style.MessageItem.MessageRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/time_tip"
+        style="@style/Style.MessageItem.TimeTip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="12:00" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:gravity="end">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end">
+
+                <android.support.text.emoji.widget.EmojiTextView
+                    android:id="@+id/username_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginBottom="@dimen/space_tiny"
+                    android:layout_marginEnd="@dimen/space_small"
+                    android:layout_marginStart="@dimen/space_small"
+                    android:textColor="@color/grayAlpha"
+                    android:textSize="@dimen/text_small"
+                    tools:text="Alex" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/username_label"
+                    android:orientation="horizontal">
+
+
+
+                    <FrameLayout
+                        android:id="@+id/message_status"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginTop="@dimen/space_small">
+
+                        <com.akaxin.client.view.CustomProgressBar
+                            android:id="@+id/circleProgressBar"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center"
+                            kk:circleWidth="2dp"
+                            kk:firstColor="#d3d3d3"
+                            kk:secondColor="@color/white" />
+
+                        <ImageView
+                            android:id="@+id/status_failed"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_error_msg_send"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                        <ProgressBar
+                            android:id="@+id/status_sending"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:indeterminateTint="@color/colorPrimary"
+                            android:visibility="gone"
+                            tools:visibility="gone" />
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/message_parent"
+                        style="@style/Style.MessageItem.MessageParent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end">
+
+                        <!-- insert message bubble here -->
+
+                    </FrameLayout>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/avatar"
+                style="@style/Style.MessageItem.Avatar" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

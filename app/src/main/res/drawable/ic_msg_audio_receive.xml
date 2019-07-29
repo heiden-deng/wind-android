@@ -1,0 +1,6 @@
+<animation-list android:oneshot="false"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:drawable="@drawable/ic_msg_audio_receive_2" android:duration="200" />
+    <item android:drawable="@drawable/ic_msg_audio_receive_0" android:duration="200" />
+    <item android:drawable="@drawable/ic_msg_audio_receive_1" android:duration="200" />
+</animation-list>

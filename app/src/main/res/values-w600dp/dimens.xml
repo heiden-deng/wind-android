@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="width_msg_audio_max">500dp</dimen>
+    <dimen name="width_msg_content_max">500dp</dimen>
+    <dimen name="size_msg_img">256dp</dimen>
+    <dimen name="msg_plugin_height">74dp</dimen>
+
+</resources>

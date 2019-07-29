@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+
+android {
+
+  compileSdkVersion 26
+  buildToolsVersion rootProject.ext.buildToolsVersion
+
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+  }
+  resourcePrefix "__picker_"
+
+  dexOptions {
+    javaMaxHeapSize "4g"
+  }
+
+  lintOptions {
+    abortOnError false
+  }
+}
+ext {
+  supportLibVersion = "26.0.2"
+}
+
+dependencies {
+
+    implementation "com.android.support:appcompat-v7:$appcompatVersion"
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation "com.android.support:support-annotations:$supportLibVersion"
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+}

@@ -1,0 +1,139 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_group"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@id/bottom_edit_layout"
+    android:background="@color/bg">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/msg_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+
+        <TextView
+            android:id="@+id/unread_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginBottom="@dimen/space_tiny"
+            android:layout_marginEnd="@dimen/space_mid"
+            android:layout_marginStart="@dimen/space_mid"
+            android:layout_marginTop="@dimen/space_tiny"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_small"
+            tools:text="20条未读消息" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:weightSum="100">
+
+        <TextView
+            android:id="@+id/conn_status_bar"
+            style="@style/Widget.TextView.TipBar"
+            android:drawablePadding="@dimen/space_small"
+            android:drawableStart="@drawable/ic_error_status_16dp"
+            android:visibility="gone"
+            tools:text="与当前站点的连接断开，稍候重试"
+            tools:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/secret_tip_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/secretLight"
+            android:elevation="@dimen/elevation_tip_bar"
+            android:gravity="center"
+            android:paddingBottom="@dimen/space_tiny"
+            android:paddingEnd="@dimen/space_small"
+            android:paddingStart="@dimen/space_mid"
+            android:paddingTop="@dimen/space_tiny"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/secret_tip_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/text_small"
+                tools:text="以绝密方式发往对方设备 iPhone X" />
+
+            <TextView
+                android:id="@+id/secret_tip_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:paddingEnd="@dimen/space_small"
+                android:paddingStart="@dimen/space_small"
+                android:text="@string/change_secret_device"
+                android:textSize="@dimen/text_small"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <FrameLayout
+                android:id="@+id/msg_plugin_webview_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/msg_plugin_webview"
+                android:elevation="4dp"
+                android:visibility="gone">
+
+                <WebView
+                    android:id="@+id/msg_plugin_webview"
+                    style="@style/MsgPluginStyle"
+                    android:elevation="4dp"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/close_msg_plugin"
+                    style="@style/CloseMsgPluginStyle"
+                    android:elevation="4dp"
+                    android:src="@drawable/close_msg_plugin"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/audio_recording"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_audio_recording"
+        android:gravity="center"
+        android:text="@string/recording"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_small"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</RelativeLayout>

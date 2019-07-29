@@ -1,0 +1,12 @@
+<TableLayout android:id="@+id/plugin_panel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/space_small"
+    android:paddingEnd="@dimen/space_small"
+    android:paddingTop="@dimen/space_mid"
+    android:paddingBottom="@dimen/space_mid"
+    android:gravity="center"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+</TableLayout>

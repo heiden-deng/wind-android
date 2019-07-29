@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.akaxin.client.view.DoubleTapFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:clipChildren="false"
+    android:id="@+id/message_body"
+    style="@style/Widget.MessageBubble.Sent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/secured"
+            style="@style/Style.Icon.TopSecret.Sent"
+            android:layout_marginTop="@dimen/space_tiny"
+            android:layout_marginStart="@dimen/space_tiny"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <android.support.text.emoji.widget.EmojiTextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Style.MessageItem.Text.Send"
+            tools:text="这是一条消息 bla bla bla bla bla bla bla bla bla bla bla bla bla bla" />
+
+    </LinearLayout>
+
+</com.akaxin.client.view.DoubleTapFrameLayout>

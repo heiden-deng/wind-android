@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white_opacity_90">#faffffff</color>
+    <color name="whitewith10tran">#1affffff</color>
+    <color name="whitewith20tran">#32ffffff</color>
+    <color name="whitewith30tran">#4cffffff</color>
+    <color name="whitewith40tran">#64ffffff</color>
+    <color name="whitewith50tran">#7fffffff</color>
+    <color name="whitewith60tran">#96ffffff</color>
+    <color name="whitewith70tran">#afffffff</color>
+    <color name="whitewith80tran">#c8ffffff</color>
+    <color name="whitewith90tran">#faffffff</color>
+    <color name="red">#ffff0000</color>
+    <color name="dark_red">#ff8c1c1c</color>
+    <color name="blackwith10tran">#1a000000</color>
+    <color name="blackwith20tran">#33000000</color>
+    <color name="blackwith30tran">#4c000000</color>
+    <color name="blackwith40tran">#64000000</color>
+    <color name="blackwith50tran">#7f000000</color>
+    <color name="blackwith60tran">#96000000</color>
+    <color name="blackwith70tran">#af000000</color>
+    <color name="blackwith80tran">#c8000000</color>
+    <color name="blackwith90tran">#fa000000</color>
+    <color name="light_gray">#ffececec</color>
+    <color name="light_yellow">#fffff99e</color>
+    <color name="dark_gray">#ff999999</color>
+    <color name="green">#ff95c81c</color>
+    <color name="orange">#ffefa600</color>
+    <color name="silver">#ffecebe8</color>
+    <color name="gray">#ff7f7f7f</color>
+    <color name="dialog_item_normal">#fafafa</color>
+    <color name="dialog_divider">@color/devideline_listview</color>
+    <color name="dialog_backgroud_full">#88000000</color>
+    <color name="dialog_btn_press">#dcdcdd</color>
+    <color name="dialog_btn_normal">#fffbf6f2</color>
+    <color name="bg_message_audiorecord">#d8000000</color>
+    <color name="textcolor_disable">#4cbbbbbb</color>
+    <color name="bg_chat_hongbao_btn">#d34040</color>
+    <!-- <color name="message_backgroud">#fff3f1ea</color> -->
+    <!-- 2.0和3.0通用颜色定义区 -->
+    <color name="background_normal">#ffffff</color>
+    <color name="background_normal_ad">#fafafa</color>
+    <color name="background_normal_press">#e9e8eb</color>
+    <color name="background_normal_ripple">#d2d1d1</color>
+    <color name="background_normal_selected">#fffff2ab</color>
+    <color name="background_undercard">#fff1f0e4</color>
+    <color name="blue">#00aeff</color>
+    <color name="devideline">#ffd0c9b8</color>
+    <!--<color name="devideline_listview">#ffe5e2d4</color>-->
+    <color name="devideline_listview">@color/color_line_e9e8eb</color>
+
+
+    <color name="bg_topbar_normal">#ff39393b</color>
+
+    <!-- 卡片listView分割线颜色 -->
+    <color name="devideline_cardlist_bottom">#e8e8e8</color>
+
+    <!-- 通用深色分割条 分类条 通用的深色点击按钮 -->
+    <!-- 通用灰色区域颜色 支付提示信息 贴吧内容提示信息 -->
+    <color name="bg_normal_dark">#fff0ece0</color>
+    <!-- 4.9重构的重点颜色 黑色文字级别2 -->
+    <color name="text_desc">#ffbebbb4</color>
+    <color name="text_btn_loadmore">@color/color_text_aaaaaa</color>
+    <!-- 4.9新增的重点颜色 黑色文字级别3 -->
+
+    <color name="text_highlight">#fff4a900</color>
+    <!-- 提醒类型的橙色 -->
+    <color name="text_undercard">#ff8e7e68</color>
+    <color name="text_empty">#ffd2cec1</color>
+    <color name="notice_background">#fffceec3</color>
+    <!-- 通用按住增加的黑色 -->
+    <color name="press_black">#ff222222</color>
+
+    <!-- 浅色字体 -->
+    <color name="font_light">#ffbcb7a7</color>
+    <!-- 2.0新版本通用颜色定义区 结束 -->
+
+    <color name="header_bg_black">#393939</color>
+    <color name="header_divider_color">#997abae3</color>
+    <color name="header_btn_text_color_normal">#99ffffff</color>
+    <color name="header_btn_backgroud_press_color">#7f000000</color>
+    <color name="actionbutton_divider_color">#997abae3</color>
+    <color name="maintab_text_normal">#969696</color>
+    <color name="maintab_text_selected_color">#323333</color>
+    <color name="bottombar_text_normal_color">#ffa5a5a5</color>
+    <color name="dropbar_backgroud_color">#ffececec</color>
+    <color name="bottomtab">#ffd6d6d6</color>
+    <color name="text_color_blue">#ff6699cc</color>
+    <color name="text_selected_color">#ffefa600</color>
+    <color name="text_press_color">#ffefa600</color>
+    <color name="text_color_line_press">#ffEF5847</color>
+    <color name="text_color_line_normal">#ff4977FD</color>
+    <color name="font_vip_name">#ffcf5555</color>
+    <color name="msg_status_sent">#62caf0</color>
+    <color name="msg_status_sending">#1a000000</color>
+    <color name="msg_status_read">#20dba8</color>
+    <color name="msg_editor_backgroud">#ffececec</color>
+    <color name="msg_short_line_normal">#557c8ba0</color>
+    <color name="msg_short_line_selected">#c07c8ba0</color>
+    <color name="gender_male">#aec7f2</color>
+    <color name="gender_famal">#feb3c5</color>
+    <color name="friend_tab_bg">#e8e8e8</color>
+    <color name="profile_photo_bg">#39393b</color>
+    <color name="menu_item_dark">#f2dee1e3</color>
+    <color name="menu_border">#ffdddddd</color>
+    <color name="sharecard_bg">#ffefb8</color>
+    <color name="download_progressbar_bg">#4c000000</color>
+    <color name="black_tips">#1e000000</color>
+    <color name="white75alpha">#bfefefef</color>
+    <color name="blue_tips">#00aeff</color>
+    <color name="vip_sex_info_bg">#b2000000</color>
+    <color name="bg_headerbar_spinner_selected">#5f000000</color>
+    <color name="bg_headerbar_spinner_press">#7f000000</color>
+    <color name="bg_normal_color">#fff6f6f6</color>
+    <color name="bg_groupower">#ffaad07e</color>
+    <color name="welcomephoto_item_tv">#9b9b9b</color>
+    <color name="welcome_blue">#389ce8</color>
+    <color name="bg_floattxt_action">#99000000</color>
+    <color name="bg_bottom_tip">#cc000000</color>
+    <color name="bg_publish_mulipic">#eff2f6</color>
+    <color name="font_publish_btntext">#b5bcc6</color>
+    <color name="font_publish_btntext_disable">#cdd4da</color>
+    <color name="font_chatmenu_desc">#a8a8a8</color>
+
+    <!--视频页面的背景色-->
+    <color name="video_dark_background">#1a1b1d</color>
+
+    <!-- 4.9 新定义色值 -->
+    <color name="chat_btn_submit_normal">#169aff</color>
+    <color name="chat_btn_submit_press">#1097fa</color>
+    <color name="feed_text_note_transparent">#87b5bcc6</color>
+    <color name="bg_warning">#fde1b6</color>
+    <color name="text_warning">#b8956b</color>
+    <color name="devideline_warning">#f3c47b</color>
+    <color name="bg_feedlist">@color/color_backgroud_normal</color>
+    <color name="feeditem_portraitline">#e9eae1</color>
+    <color name="chat_isfocus_bottom_line">#e6e4d2</color>
+    <color name="bg_notice_bubble">#e64f51</color>
+    <color name="bg_tail_pressed">#33000000</color>
+    <!--<color name="text_messageitem_name">#99373737</color>-->
+    <!--<color name="text_actionmessage">#707070</color>-->
+    <!--<color name="text_chatmessage">#484848</color>-->
+    <color name="text_messageitem_name">@color/color_text_969696</color>
+    <color name="text_chatmessage">@color/color_text_3b3b3b</color>
+    <color name="userguid_index1">#38c3e8</color>
+    <color name="userguid_index2">#ffce00</color>
+    <color name="userguid_index3">#ff5050</color>
+
+    <!-- 流量色值 -->
+
+    <!-- 注册 -->
+    <color name="unberlineview_dividingline">#d9d3c5</color>
+    <color name="unberlineview_text">#888271</color>
+    <color name="reg_desc_text">#cac6c0</color>
+
+    <!-- chatmenu -->
+    <color name="chatmeun_item_pressed">#d4dae2</color>
+    <color name="chatmeun_item_normal">@color/white</color>
+    <color name="chatmeun_item_dividing">#eaebec</color>
+
+    <!-- 招呼 -->
+
+    <!-- 卡片式按钮 -->
+    <color name="text_hcalendar_select">@color/blue</color>
+    <color name="bg_weiboprofile_fancount">#faf6f1</color>
+    <color name="bg_weiboprofile_line">#f0eeea</color>
+
+    <!-- 深色搜索栏字体颜色 -->
+    <color name="text_searchbar_dark">#444444</color>
+
+    <!-- 广告投放1 -->
+    <!-- 广告投放2 -->
+    <!-- 广告投放2 -->
+
+    <color name="text_common_hint">#a09f9c</color>
+
+    <color name="profile_hottag_bg_color">#e8e5e0</color>
+    <color name="profile_hottag_text_color">#a3a3a3</color>
+
+    <!--6.0开始 增加新的颜色，这个版本开始控制UI规范-->
+
+    <color name="color_blue_add_follow_normal">#2cbcff</color>
+    <color name="color_blue_add_follow_pressed">#25a0d9</color>
+    <color name="color_blue_add_follow_disable">#f0f0f2</color>
+
+    <!-- 黑色半透明-->
+    <color name="black_overlay">#a0000000</color>
+    <color name="color_publish_feed_popup">#ff3b3b3b</color>
+    <color name="bg_feeddetail_comment">@color/white</color>
+
+    <color name="bg_feed_tab_pressed">#ff2c2c2c</color>
+    <color name="color_feed_more_text">#ffbdbdbd</color>
+    <color name="color_b2b2b2">#b2b2b2</color>
+    <color name="bluealpha80">#cc169aff</color>
+    <color name="whitealpha95">#F2ffffff</color>
+
+
+    <color name="color_ccffffff">#ccffffff</color>
+    <color name="color_26ffffff">#26ffffff</color>
+    <color name="color_00aeff">#00aeff</color>
+    <color name="color_6e6e6e">#6e6e6e</color>
+    <color name="chat_background">#fdfbf9</color>
+
+    <color name="color_red_f7474b">#f7474b</color>
+    <color name="color_backgroud_normal">#f3f2f6</color>
+    <color name="color_backgroud_blue">#00aeff</color>
+
+    <color name="color_f7474b">#f7474b</color>
+    <color name="common_topbar_bg_alpha_black">#CC2a2b2e</color>
+    <color name="color_f4f4f4">#f4f4f4</color>
+
+    <color name="psts_background_tab_pressed">#1AFFFFFF</color>
+
+    <!--6.5.5开始 新年红包-->
+    <color name="hongbao_text_gold">#ffe18f</color>
+    <color name="hongbao_text_gold_alpha60">#99ffe18f</color>
+    <color name="hongbao_text_gold_dark">#b35314</color>
+
+    <color name="point_grey">#c5c5c5</color>
+    <color name="point_blue">#3ec4fc</color>
+    <color name="point_lightblue">#3de9da</color>
+
+    <color name="bg_sticky_normal">#f7f7f7</color>
+
+    <!--默认分割线的颜色-->
+    <color name="divider_line">@color/color_line_e9e8eb</color>
+
+    <color name="found_group_bg_color">#00aeff</color>
+
+    <!--语音气泡播放进度的颜色-->
+    <color name="audio_message_progress_white">#FFF5F5F5</color>
+    <color name="audio_message_progress_blue">#a0d9e5f9</color>
+    <color name="audio_message_progress_yellow">#a0fcefc5</color>
+
+    <!--语音录制按钮的颜色-->
+    <color name="audio_recorder_bg_recording">#fff2f3f5</color>
+
+    <!--消息送达动画的颜色-->
+    <color name="message_status_color_sending">#ffc12d</color>
+    <!--蓝条提示的颜色-->
+
+    <color name="moment_color_blue">#00c0ff</color>
+    <color name="moment_share_text_color">#000000</color>
+
+    <!--Toolbar中，灰色按钮的颜色-->
+    <color name="toolbar_gray_icon_color">#FF969696</color>
+    <color name="color_tab_fragment">#171717</color>
+    <color name="color_f5f5f5">#f5f5f5</color>
+
+    <!--8.0 分享中文案的颜色-->
+    <color name="color_5a5a5a">#5a5a5a</color>
+    <color name="share_divider_color">#e6e6e6</color>
+    <color name="share_bottom_point_selected">#86ffffff</color>
+    <color name="share_bottom_point_unselected">#33ffffff</color>
+
+    <color name="gift_money_send_to_text_color">#3462ff</color>
+    <color name="gift_money_text_color">#828282</color>
+    <color name="gift_label_text_color">#fec999</color>
+    <color name="gift_name_text_color">#3c3c3c</color>
+    <color name="gift_member_name_text_color">#828282</color>
+    <!--Slide Indicator Bar-->
+    <color name="moment_slide_indicator_bar_back_color">#60FFFFFF</color>
+
+    <color name="feed_recommend_title">#3462ff</color>
+    <color name="feed_recommend_follow_btn">#3462ff</color>
+    <color name="video_vistor_item_title">#1e1e1e</color>
+    <color name="friend_feed_empty_line">#f5f5f5</color>
+    <color name="share_item_text_color">#5a5a5a</color>
+    <color name="chat_search_emotion_empty_text">#aaaaaa</color>
+    <color name="video_error_cover_fail_img">#f6f6f6</color>
+
+    <color name="color_b4b4b4">#b4b4b4</color>
+    <color name="color_828282">#828282</color>
+    <color name="color_f5c042">#f5c042</color>
+    <color name="color_e6e6e6">#e6e6e6</color>
+    <color name="color_1affffff">#1affffff</color>
+
+    <color name="grid_view_sp_line">#f0f0f0</color>
+    <color name="grid_view_defaut_bg">#efefef</color>
+
+    <color name="super_gift_title_color">#FFFFBE00</color>
+    <color name="super_gift_desc_color">#FFFFFFFF</color>
+    <color name="super_gift_desc_default_color">#99ffffff</color>
+    <color name="super_gift_title_default_color">#ffffff</color>
+
+
+    <color name="color_eb000000">#eb000000</color>
+    <color name="black_1e1e1e">#1e1e1e</color>
+    <color name="gary_9b9b9b">#9b9b9b</color>
+
+    <!--快聊红包-->
+    <color name="qchat_redpacket_gold">#fce97a</color>
+    <color name="qchat_redpacket_light_gold">#e9a15b</color>
+    <color name="qchat_redpacket_red">#ce352d</color>
+    <color name="gary_c8c8c8">#c8c8c8</color>
+    <color name="gary_aaaaaa">#aaaaaa</color>
+    <color name="bule_3462ff">#3462ff</color>
+    <color name="bule_00c0ff">#00c0ff</color>
+    <color name="b2ffffff">#b2ffffff</color>
+
+    <color name="color_FFFFFF_88">#88FFFFFF</color>
+    <color name="color_000000_88">#88000000</color>
+
+    <color name="color_front_page_toolbar_title_black">#323333</color>
+    <color name="color_front_page_toolbar_title_white">#ffffff</color>
+
+    <color name="color_front_page_toolbar_left">#FF9221FF</color>
+    <color name="color_front_page_toolbar_middle">#FF7E35FC</color>
+    <color name="color_front_page_toolbar_right">#FF3357F6</color>
+
+    <color name="color_front_page_toolbar_left2">#FF9123FF</color>
+    <color name="color_front_page_toolbar_middle2">#FFB921F1</color>
+    <color name="color_front_page_toolbar_right2">#FFE21FE2</color>
+
+    <color name="color_front_page_toolbar_left3">#FFFF0F64</color>
+    <color name="color_front_page_toolbar_middle3">#FFFE3A47</color>
+    <color name="color_front_page_toolbar_right3">#FFFE6928</color>
+
+    <color name="party_hall_bg">#cc000000</color>
+    <color name="color_b134fa">#b134fa</color>
+
+    <color name="bg_ditty_music_list">#181818</color>
+    <color name="color_ditty_music_selected">#1f1f1f</color>
+    <color name="ditty_tab_text_color">#3462ff</color>
+    <color name="ditty_preview_send_bg_color">#00c0ff</color>
+
+    <color name="front_page_werewolves_state1">#00CDB3</color>
+    <color name="front_page_werewolves_state2">#230791</color>
+    <color name="ditty_progress_bg">#66000000</color>
+    <color name="filter_bg">#00575757</color>
+    <color name="filter_bg_divider">#335a5a5a</color>
+
+    <color name="hot_emote_item_selected">#b23462ff</color>
+    <color name="hot_emote_item_default">#66000000</color>
+    <color name="dian_dian_item_bg1">#fbfbfb</color>
+    <color name="dian_dian_item_bg2">#f5f6f7</color>
+
+    <!-- 支付-->
+    <color name="pay_vip_product_tv_color_normal">#323333</color>
+    <color name="pay_vip_promotion_tv_color_normal">#828282</color>
+    <color name="pay_vip_promotion_tv_color_select">#3462ff</color>
+    <color name="pay_vip_banner_default_bg">#f5f5f5</color>
+
+    <color name="picker_button_background_selected">#3F51B5</color>
+    <color name="picker_button_background">@android:color/white</color>
+    <color name="picker_button_background_innactive">#BDBDBD</color>
+    <color name="picker_default_selector_color">#646464</color>
+    <color name="picker_default_text_color">#999</color>
+    <color name="picker_default_selected_text_color">@android:color/black</color>
+    <color name="picker_background">#3F51B5</color>
+
+    <!--分割线颜色-->
+    <color name="color_line_e9e8eb">#e9e8eb</color>
+    <color name="white">#fff</color>
+    <color name="text_content">@color/color_text_aaaaaa</color>
+    <color name="color_text_cccccc">#cccccc</color>
+    <color name="color_text_3b3b3b">#3b3b3b</color>
+    <color name="color_text_6b6b6b">#6b6b6b</color>
+    <color name="color_text_aaaaaa">#aaaaaa</color>
+    <color name="color_text_969696">#969696</color>
+    <color name="color_text_00aeff">#00aeff</color>
+    <color name="color_text_f3f2f6">#f3f2f6</color>
+    <color name="color_text_ffffff">#ffffff</color>
+    <color name="theme_color1">#515151</color>
+    <color name="main_color">#8092aa</color>
+    <color name="black">#000000</color>
+    <color name="title_color">#030303</color>
+    <color name="desc_color">#9b9b9b</color>
+
+    <color name="efeff4">#efeff4</color>
+
+    <color name="tabTxtColor">#515151</color>
+
+    <color name='waring_color'>#d0021b</color>
+    <color name='notice_color'>#dddddd</color>
+
+    <!-- newly defined v0.3.2 -->
+    <color name="bg">#F5F5F5</color>
+
+    <color name="colorPrimary">#2196F3</color>
+    <color name="colorUnactivated">#9e9e9e</color>
+    <color name="colorAccent">#2196F3</color>
+    <color name="colorAccentRed">#F44336</color>
+    <color name="colorAccentOrange">#FF9800</color>
+    <color name="colorAccentGreen">#4CAF50</color>
+
+    <color name="colorPrimaryLight">#6EC6FF</color>
+    <color name="colorPrimaryDark">#263238</color>
+
+    <color name="secretLight">#69F0AE</color>
+    <color name="secretNormal">#00BFA5</color>
+    <color name="secretOffLight">#e0e0e0</color>
+    <color name="secretOffNormal">#9e9e9e</color>
+
+    <color name="placeholder">#eeeeee</color>
+    <color name="divider">#eeeeee</color>
+
+    <color name="textAlphaGray">#59000000</color>
+    <color name="textBlack">#212121</color>
+    <color name="textWhite">#fff</color>
+
+    <color name="fastScrollBackgroundWhite">#00ffffff</color>
+    <color name="whiteAlpha">#80ffffff</color>
+    <color name="grayAlpha">#5a000000</color>
+    <color name="grayShadow">#36bdbdbd</color>
+    <color name="ripplePrimary">#80abdbff</color>
+    <color name="rippleSecret">#80b3ffda</color>
+
+    <color name="msgPluginBackground">#000000</color>
+</resources>

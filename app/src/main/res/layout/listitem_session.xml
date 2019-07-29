@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/divider_width"
+    android:background="@color/white"
+    android:foreground="?selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:elevation="@dimen/elevation_item">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/frame_avatar"
+            android:layout_width="@dimen/size_avatar_big"
+            android:layout_height="@dimen/size_avatar_big"
+            android:layout_marginBottom="@dimen/space_contact_item_padding"
+            android:layout_marginEnd="@dimen/space_contact_item_padding"
+            android:layout_marginStart="@dimen/space_contact_item_padding"
+            android:layout_marginTop="@dimen/space_contact_item_padding"
+            android:layout_centerVertical="true">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/session_item_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/placeholder" />
+
+            <TextView
+                android:id="@+id/unread_num"
+                android:layout_gravity="end|top"
+                android:gravity="center"
+                style="@style/Widget.TextView.Bubble"
+                tools:text=""
+                tools:layout_width="10dp"
+                tools:layout_height="10dp"
+                tools:layout_margin="2dp"/>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/session_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:gravity="end"
+            android:layout_alignParentEnd="true">
+
+            <TextView
+                android:id="@+id/session_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space_small"
+                android:textColor="@color/textAlphaGray"
+                android:textSize="@dimen/text_tiny"
+                tools:text="3 minuts ago" />
+
+            <ImageView
+                android:id="@+id/notification_off_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_notification_off"
+                android:layout_margin="@dimen/space_small"
+                android:visibility="invisible"
+                tools:visibility="visible"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/space_small"
+            android:layout_toEndOf="@id/frame_avatar"
+            android:layout_toStartOf="@id/session_info">
+
+            <LinearLayout
+                android:id="@+id/session_title_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <android.support.text.emoji.widget.EmojiTextView
+                    android:id="@+id/session_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="@color/textBlack"
+                    android:textSize="@dimen/text_normal"
+                    tools:text="GoodBoy" />
+
+                <android.support.v4.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <android.support.text.emoji.widget.EmojiTextView
+                android:id="@+id/session_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/session_title_layout"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#9b9b9b"
+                android:textSize="12sp"
+                tools:text="Blah blah blah blah blah blah blah blah blah" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

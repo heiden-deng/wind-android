@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/divider_width"
+    android:padding="@dimen/space_mid"
+    android:background="@color/white"
+    android:elevation="@dimen/elevation_item"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/header_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginBottom="@dimen/space_small">
+
+        <TextView
+            android:id="@+id/device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            tools:text="设备名称"
+            android:textColor="@color/textBlack"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/device_login_time_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            tools:text="5分钟前"
+            android:textColor="@color/textAlphaGray"
+            android:textSize="@dimen/text_small"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/device_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="登录地址: 127.0.0.1\n登录时间: 2017-08-09 21:30\n最后活跃: 127.0.0.1"
+        android:textColor="@color/textAlphaGray"
+        android:textSize="@dimen/text_small" />
+
+</LinearLayout>

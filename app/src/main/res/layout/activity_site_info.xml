@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/view_toolbar" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/item_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/menu_group_gap"
+                    android:background="@color/white"
+                    android:padding="@dimen/space_mid">
+
+                    <com.akaxin.client.view.RoundImageView
+                        android:id="@+id/site_icon"
+                        android:layout_width="@dimen/size_avatar_big"
+                        android:layout_height="@dimen/size_avatar_big"
+                        android:layout_marginEnd="@dimen/space_mid"
+                        android:src="@color/placeholder"
+                        app:radius="@dimen/corner_radius_site_icon"
+                        app:type="round" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/space_mid"
+                        android:layout_toEndOf="@id/site_icon"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/site_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/textBlack"
+                            android:textSize="@dimen/text_normal"
+                            tools:text="Allin在线德州群" />
+
+                        <TextView
+                            android:id="@+id/site_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/desc_color"
+                            android:textSize="@dimen/text_small"
+                            tools:text="www.fbmajiang.demo" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <LinearLayout style="@style/MenuGroup">
+
+                    <LinearLayout
+                        android:id="@+id/menu_item_site_login_id"
+                        style="@style/MenuItem">
+
+                        <TextView
+                            style="@style/MenuItemText"
+                            android:text="@string/site_login_id" />
+
+                        <TextView
+                            android:id="@+id/site_login_id"
+                            style="@style/MenuItemTextFloatRight"
+                            tools:text="我是无敌小霸王" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/menu_item_change_username"
+                        style="@style/MenuItem">
+
+                        <TextView
+                            style="@style/MenuItemText"
+                            android:text="@string/username" />
+
+                        <TextView
+                            android:id="@+id/user_name"
+                            style="@style/MenuItemTextFloatRight"
+                            tools:text="我是无敌小霸王" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/menu_item_change_avatar"
+                        style="@style/MenuItem">
+
+                        <TextView
+                            style="@style/MenuItemText"
+                            android:text="@string/avatar" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/user_avatar"
+                            android:layout_width="@dimen/size_avatar_small"
+                            android:layout_height="@dimen/size_avatar_small"
+                            android:src="@color/placeholder" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout style="@style/MenuGroup">
+
+                    <LinearLayout
+                        android:id="@+id/item_notification_switch"
+                        style="@style/MenuItem">
+
+                        <TextView
+                            style="@style/MenuItemText"
+                            android:text="@string/notification_switch" />
+
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/notification_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:theme="@style/MenuItemSwitch" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/menu_item_query_owner"
+                        style="@style/MenuItem">
+
+                        <TextView
+                            style="@style/MenuItemText"
+                            android:text="@string/who_is" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menu_item_disconnect"
+                    style="@style/MenuGroup">
+
+                    <LinearLayout style="@style/MenuItem">
+
+                        <TextView
+                            android:id="@+id/menu_item_disconnect_text"
+                            style="@style/MenuItemText"
+                            android:text="@string/disconnect" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menu_item_logout_site"
+                    style="@style/MenuGroup">
+
+                    <LinearLayout style="@style/MenuItem">
+
+                        <TextView
+                            android:id="@+id/menu_item_logout_site_text"
+                            style="@style/MenuItemText"
+                            android:text="@string/logout_site" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>

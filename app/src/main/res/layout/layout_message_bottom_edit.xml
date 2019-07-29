@@ -1,0 +1,77 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_edit_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@id/expand_view"
+    android:background="@color/white"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:elevation="@dimen/elevation_message_bottom_edit"
+    android:gravity="bottom"
+    android:orientation="horizontal"
+    android:padding="@dimen/space_small">
+
+    <ImageView
+        android:id="@+id/audio_button"
+        style="@style/Widget.ImageButton.MessageBottomViewButton"
+        android:src="@drawable/ic_audio_button_drawable" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1">
+
+        <android.support.text.emoji.widget.EmojiEditText
+            android:id="@+id/msg_edit"
+            style="@style/Widget.EditText.MessageBottomEditText"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginEnd="@dimen/space_tiny"
+            android:layout_marginStart="@dimen/space_tiny"
+            android:imeOptions="actionSend"
+            android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+            android:maxLines="3"
+            android:singleLine="false"
+            tools:text="Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah"
+            tools:visibility="gone" />
+
+        <Button
+            android:id="@+id/msg_audio"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:background="?selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:text="@string/press_to_record"
+            android:textColor="@color/textAlphaGray"
+            android:textSize="@dimen/text_small"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/emoji_button"
+        style="@style/Widget.ImageButton.MessageBottomViewButton"
+        android:src="@drawable/ic_emoji_button_drawable" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipChildren="false">
+
+        <ImageView
+            android:id="@+id/more_button"
+            style="@style/Widget.ImageButton.MessageBottomViewButton"
+            android:src="@drawable/ic_more_button_drawable"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/send_button"
+            style="@style/Widget.ImageButton.MessageBottomViewButton"
+            android:src="@drawable/ic_send"
+            android:visibility="invisible" />
+
+    </FrameLayout>
+</LinearLayout>
