@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package site;
+
+import "core/user.proto";
+
+option java_package = "com.windchat.proto.server";
+option java_outer_classname = "ApiUserProfileProto";
+
+// options for php
+option php_namespace = "Akaxin\\Proto\\Site";
+// option php_metadata_namespace = "Akaxin\\Proto\\";
+
+/**
+ * 接口名<action_name>：
+ * 		api.user.profile
+ *
+ * 功能描述：
+ * 		获取用户自身profile
+ *
+ * 支持的错误ID：
+ * 		success							//成功
+ *  		error.alert						//失败
+ */
+service ApiUserProfileService {
+    rpc profile(ApiUserProfileRequest) returns(ApiUserProfileResponse);
+}
+
+message ApiUserProfileRequest {
+	string site_user_id = 1;						//用户ID
+}
+
+message ApiUserProfileResponse {
+ 	core.UserProfile user_profile = 1;		//用户详细信息
+}

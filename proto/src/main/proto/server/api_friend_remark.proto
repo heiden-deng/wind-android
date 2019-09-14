@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package site;
+
+option java_package = "com.windchat.proto.server";
+option java_outer_classname = "ApiFriendRemarkProto";
+
+// options for php
+option php_namespace = "Akaxin\\Proto\\Site";
+// option php_metadata_namespace = "Akaxin\\Proto\\";
+
+/**
+ * 接口名<action_name>：
+ * 		api.friend.remark
+ *
+ * 功能描述：
+ * 		设置用户备注等
+ *
+ * 支持的错误ID：
+ * 		success							//成功
+ *  		error.alert						//失败
+ */
+service ApiFriendRemarkService {
+    rpc remark (ApiFriendRemarkRequest) returns (ApiFriendRemarkResponse);
+}
+
+message ApiFriendRemarkRequest {
+    string site_friend_id = 1; //好友用户ID
+    string alias_name = 2; //设置好友的别名
+}
+
+message ApiFriendRemarkResponse {
+}

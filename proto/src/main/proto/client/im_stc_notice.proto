@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package client;
+
+import "core/core.proto";
+
+option java_package = "com.windchat.proto.client";
+option java_outer_classname = "ImStcNoticeProto";
+
+/**
+ * 接口名<action_name>：
+ * 		im.stc.notice
+ *
+ * 功能描述：	《行为通知》
+ * 		站点发送给客户端的IM通知，行为通知，客户端收到此通知，触发一定行为，比如查看用户是否有新用户/群
+ * 		注意：这里的通知，直接推送给在线的用户，不保证消息的可靠性
+ *
+ * 说明：
+ * 		此系统中通知类型分为两种：
+ * 				1.行为通知:客户端会触发向服务端进行拽取的行为
+ * 				2.消息通知:客户端直接展示在指定的位置，根据消息通知的类别
+ */
+service ImStcNoticeService {
+    rpc notice(ImStcNoticeRequest) returns(core.NoneResponse);
+}
+
+message ImStcNoticeRequest {
+	NoticeType type = 1;
+}
+
+enum NoticeType {
+	OFFLINE = 0; 		//断开TCP链接，下线通知
+	APPLY_FRIEND = 1;	//新好友申请通知
+	NEW_FRIEND = 2; 		//新好友添加通知
+}

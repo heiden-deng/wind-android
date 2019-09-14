@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package platform;
+
+import "core/core.proto";
+import "core/push.proto";
+
+option java_package = "com.windchat.proto.platform";
+option java_outer_classname = "ApiPushNotificationProto";
+
+/**
+ * 接口名<action_name>：
+ * 		api.push.notification
+ *
+ * 功能描述：单条发送
+ * 		site -> platform
+ * 		site站点调用platform发送客户端push功能
+ */
+service ApiPushNotificationService {
+	rpc notification (ApiPushNotificationRequest) returns (core.NoneResponse);
+}
+
+message ApiPushNotificationRequest {
+	core.PushType push_type = 1;
+	core.Notification notification = 2;//通知消息
+}

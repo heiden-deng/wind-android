@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package platform;
+
+import "core/client.proto";
+
+option java_package = "com.windchat.proto.platform";
+option java_outer_classname = "ApiUserPushTokenProto";
+
+/**
+ * 接口名<action_name>：
+ * 		api.user.pushToken
+ *
+ * 功能描述：
+ * 		client -> platform
+ * 		用户提供平台客户端的token，支持用户接受消息通知（push）
+ *
+ * 支持的错误ID：
+ * 		success							//成功
+ *  		error.alert						//失败
+ */
+service ApiUserPushTokenService {
+	rpc pushToken (ApiUserPushTokenRequest) returns (ApiUserPushTokenResponse);
+}
+
+message ApiUserPushTokenRequest {
+	core.ClientType client_type = 1; //客户端类型
+	string rom = 2; //手机Rom
+	string push_token = 3; //pushToken
+}
+
+message ApiUserPushTokenResponse {
+}

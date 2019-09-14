@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package site;
+
+import "core/user.proto";
+
+option java_package = "com.windchat.proto.server";
+option java_outer_classname = "ApiUserSearchProto";
+
+// options for php
+option php_namespace = "Akaxin\\Proto\\Site";
+// option php_metadata_namespace = "Akaxin\\Proto\\";
+
+/**
+ * 接口名<action_name>：
+ *      api.user.search
+ *
+ * 功能描述：
+ *      查询用户,通讯录中的搜索栏
+ *
+ * 支持的错误ID：
+ *      success                         //查询成功
+ *          error.alert                     //查询失败
+ */
+service ApiUserSearchService {
+    rpc search (ApiUserSearchRequest) returns (ApiUserSearchResponse);
+}
+
+message ApiUserSearchRequest {
+    string id = 1; //site_login_id | phone_id | userIdPubk
+}
+
+message ApiUserSearchResponse {
+    core.UserProfile profile = 1; //用户好友的信息
+    core.UserRelation relation = 2; //用户之间的关系
+}
+

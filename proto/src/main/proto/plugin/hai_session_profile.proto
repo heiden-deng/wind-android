@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package plugin;
+
+import "core/user.proto";
+
+option java_package = "com.windchat.proto.plugin";
+option java_outer_classname = "HaiSessionProfileProto";
+
+// options for php
+option php_namespace = "Akaxin\\Proto\\Plugin";
+
+
+service HaiSessionProfileService {
+	rpc profile (HaiSessionProfileRequest) returns (HaiSessionProfileResponse);
+}
+
+/**
+
+通过用户session获取用户资料
+----
+
+
+接口名
+----
+
+/hai/session/profile
+
+错误码
+----
+
+* success
+* error.alert
+
+**/
+message HaiSessionProfileRequest {
+	string base64_safe_url_session_id = 1; //用户的sessionid，base64_safe_url
+}
+
+message HaiSessionProfileResponse {
+	core.UserProfile user_profile = 1; //需要查找的用户
+}

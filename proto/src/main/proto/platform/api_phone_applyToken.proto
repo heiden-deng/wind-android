@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package platform;
+
+option java_package = "com.windchat.proto.platform";
+option java_outer_classname = "ApiPhoneApplyTokenProto";
+
+/**
+ * 接口名<action_name>：
+ * 		api.phone.applyToken
+ *
+ * 功能描述：
+ * 		客户端在平台申请允许操作code，此code站点获取之后，才能从平台获取用户手机号
+ *
+ * 支持的错误ID：
+ * 		success			//成功
+ *  		error.alert		//失败
+ *
+ *		error.not_realname_user // 非实名用户
+ *		error.no_authorization	// 用户未授权此站点获取用户手机号
+ */
+service ApiPhoneApplyTokenService {
+	rpc applyToken (ApiPhoneApplyTokenRequest) returns (ApiPhoneApplyTokenResponse);
+}
+
+message ApiPhoneApplyTokenRequest {
+	string global_user_id = 1; 	// 此值只做判断，不作为依据，应该从Session中获取用户的id。
+	string site_address = 2; // 声明此token是为哪一个站申请的，别的站点无法凭此token获取用户的手机号。只有当站点对应，且用户授权过此站点获取手机号，站点才能获取此用户的手机号
+}
+
+message ApiPhoneApplyTokenResponse {
+	string phone_token = 1; 		//平台允许站点获取手机号code
+	int32  expire_time = 2; 		//code有效时间，单位s
+	
+	string phone_id     = 3;    //用户手机号
+	string country_code = 4; 	//+86
+}

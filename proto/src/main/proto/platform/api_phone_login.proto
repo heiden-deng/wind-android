@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package platform;
+
+option java_package = "com.windchat.proto.platform";
+option java_outer_classname = "ApiPhoneLoginProto";
+
+/**
+ * 接口名<action_name>：
+ * 		api.phone.login
+ *
+ * 功能描述：
+ * 		使用手机号登陆，获取个人身份
+ *
+ * 支持的错误ID：
+ * 		success							//获取站点配置信息陈工
+ *  		error.alert						//获取站点配置信息失败，展示失败原因
+ */
+service ApiPhoneLoginService {
+    rpc login(ApiPhoneLoginRequest) returns(ApiPhoneLoginResponse);
+}
+
+message ApiPhoneLoginRequest {
+	string phone_id = 1; //用户手机号码
+	string phone_verify_code = 2; //短信验证码
+	int32 vc_type = 3; //手机验证码类型,vc_type=1
+	string country_code = 4; //+86
+}
+
+message ApiPhoneLoginResponse {
+	string user_id_prik = 1;		//用户身份私钥
+   	string user_id_pubk = 2;		//用户身份公钥
+}

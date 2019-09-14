@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package site;
+
+option java_package = "com.windchat.proto.server";
+option java_outer_classname = "ApiFriendUpdateMuteProto";
+
+// options for php
+option php_namespace = "Akaxin\\Proto\\Site";
+// option php_metadata_namespace = "Akaxin\\Proto\\";
+
+/**
+ * 接口名<action_name>：
+ * 		api.friend.updateMute
+ *
+ * 功能描述：
+ * 		更新好友消息免打扰状态
+ *
+ * 支持的错误ID：
+ * 		success							//成功
+ *  		error.alert						//失败
+ */
+service ApiFriendUpdateMuteService {
+	rpc updateMute (ApiFriendUpdateMuteRequest) returns (ApiFriendUpdateMuteResponse);
+}
+
+message ApiFriendUpdateMuteRequest {
+	string site_friend_id = 1; //好友用户ID
+	bool mute = 2; //消息免打扰状态
+}
+
+message ApiFriendUpdateMuteResponse {
+}

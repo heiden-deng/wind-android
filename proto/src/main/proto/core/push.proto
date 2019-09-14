@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package core;
+
+option java_package = "com.windchat.proto.core";
+option java_outer_classname = "PushProto";
+
+// options for php
+//option php_namespace = "Akaxin\\Proto\\Core";
+
+//最简单的用户信息，用于给别人呈现
+message Notification {
+    string site_server = 1; //站点服务地址eg->127.0.0.1:2021
+    string push_title = 2; //站点服务名称
+    string push_alert = 3; //展示的内容
+    string push_goto = 4; //Push跳转位置
+    int32 push_badge = 5; //气泡展示个数，默认气泡数1
+    string push_sound = 6; //声音
+    string user_id = 7; //用户id，这个地方需要使用Global User ID
+    string user_token = 8; //接受者用户的token
+    string push_from_id = 9; //push消息发送者或者群ID，这里使用站点siteUserId或者groupId
+    string push_from_name = 10; //发送着用户名称或者群名称
+}
+
+enum PushType {
+    PUSH_NOTICE = 0; //系统通知
+    PUSH_MSG_STATUS = 1;
+    PUSH_MSG_FINISH = 2; //这个不是废弃了么？
+    PUSH_TEXT = 3;
+    PUSH_SECRET_TEXT = 4;
+    PUSH_GROUP_TEXT = 5;
+    PUSH_GROUP_SECRET_TEXT = 6;
+    PUSH_IMAGE = 7;
+    PUSH_SECRET_IMAGE = 8;
+    PUSH_GROUP_IMAGE = 9;
+    PUSH_GROUP_SECRET_IMAGE = 10;
+    PUSH_VOICE = 11;
+    PUSH_SECRET_VOICE = 12;
+    PUSH_GROUP_VOICE = 13;
+    PUSH_GROUP_SECRET_VOICE = 14;
+    PUSH_MAP = 15;
+    PUSH_SECRET_MAP = 16;
+    PUSH_GROUP_MAP = 17;
+    PUSH_GROUP_SECRET_MAP = 18;
+    PUSH_U2_NOTICE = 19; //二人消息中的通知消息
+    PUSH_GROUP_NOTICE = 20; //群消息中的通知消息
+    PUSH_APPLY_FRIEND_NOTICE = 100; //申请添加好友通知
+}
+
+//支持站点批量发送push的功能
+message Notifications {
+    string site_server = 1; //站点服务地址eg->127.0.0.1:2021
+    string push_title = 2; //站点服务名称
+    string push_subtitle = 3; //push的副标题
+    string push_alert = 4; //展示的内容
+    string push_goto = 5; //Push跳转位置
+    int32 push_badge = 6; //气泡展示个数，默认气泡数1
+    string push_sound = 7; //声音
+}
+
+message PushFromUser {
+    string global_user_id = 1; //push发送者的globalUserId
+    string site_user_id = 2; //push消息发送者或者群ID，这里使用站点siteUserId
+    string push_from_name = 3; //发送着用户名称，文案展示的一部分
+}
+
+message PushToUser {
+    string global_user_id = 1; //接受者：globalUserID,
+    string user_token = 2; //接受者：用户的token
+}
