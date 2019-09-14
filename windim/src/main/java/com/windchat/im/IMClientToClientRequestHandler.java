@@ -1,39 +1,33 @@
 package com.windchat.im;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Base64;
 
-import com.akaxin.client.ZalyApplication;
-import com.akaxin.client.bean.AudioInfo;
-import com.akaxin.client.bean.ImageInfo;
-import com.akaxin.client.bean.Message;
-import com.akaxin.client.bean.Site;
-import com.akaxin.client.bean.SiteAddress;
-import com.akaxin.client.constant.PackageSign;
-import com.akaxin.client.db.ZalyDbContentHelper;
-import com.akaxin.client.db.dao.SiteMessageDao;
-import com.akaxin.client.site.presenter.impl.SitePresenter;
-import com.akaxin.client.socket.IMessageHandler;
-import com.akaxin.client.socket.TransportPackage;
-import com.akaxin.client.util.data.StringUtils;
-import com.akaxin.client.util.log.ZalyLogUtils;
-import com.akaxin.proto.client.ImPtcPushProto;
-import com.akaxin.proto.client.ImStcMessageProto;
-import com.akaxin.proto.client.ImStcNoticeProto;
-import com.akaxin.proto.core.CoreProto;
-import com.orhanobut.logger.Logger;
+import com.windchat.im.bean.AudioInfo;
+import com.windchat.im.bean.ImageInfo;
+import com.windchat.im.bean.Message;
+import com.windchat.im.bean.Site;
+import com.windchat.im.socket.IMessageHandler;
+import com.windchat.im.socket.SiteAddress;
+import com.windchat.im.socket.TransportPackage;
+import com.windchat.logger.ZalyLogUtils;
+import com.windchat.proto.client.ImStcMessageProto;
+import com.windchat.proto.client.ImStcNoticeProto;
+import com.windchat.proto.core.CoreProto;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by yichao on 2017/10/18.
  * <p>
  * Zaly消息同步器，使用psh, sync同步机制
- *
- *
+ * <p>
+ * <p>
  * 处理所有服务端主动推送给客户端的消息
  */
 public class IMClientToClientRequestHandler implements IMessageHandler {
@@ -61,8 +55,7 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
 
         ZalyLogUtils.getInstance().debug(
                 IMClientToClientRequestHandler.TAG,
-                "im.recv " + action,
-                this
+                "im.recv " + action
         );
         switch (action) {
             case ZalyIM.Action.PSN:
@@ -96,33 +89,6 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
     }
 
     /**
-     * 处理平台发送push功能
-     * 1,禁止发送全部的push功能
-     * 2,禁止接受某个站点的push功能
-     *
-     * @param data
-     */
-    private void dealPlatformPushAction(byte[] data) {
-        if (this.imClient.imConnection == null || data == null) {
-            return;
-        }
-        try {
-            CoreProto.TransportPackageData packageData = CoreProto.TransportPackageData.parseFrom(data);
-            ImPtcPushProto.ImPtcPushRequest request = ImPtcPushProto.ImPtcPushRequest.parseFrom(packageData.getData());
-
-            Intent intent = new Intent(ZalyIM.PLATFORM_PUSH_ACTION);
-            intent.setPackage(PackageSign.getPackage());
-            intent.putExtra(ZalyIM.KEY_NOTICE_SITE_IDENTITY, this.imClient.imConnection.getConnSiteIdentity());
-            intent.putExtra(ZalyIM.KEY_PLATFORM_PUSH_TITLE, request.getPushTitle());
-            intent.putExtra(ZalyIM.KEY_PLATFORM_PUSH_CONTENT, request.getPushAlert());
-            intent.putExtra(ZalyIM.KEY_PLATFORM_PUSH_JUMP, request.getPushJump());
-            ZalyApplication.getContext().sendBroadcast(intent);
-        } catch (Exception e) {
-            Logger.e(TAG, e);
-        }
-    }
-
-    /**
      * 处理notice IM消息
      *
      * @param data
@@ -133,27 +99,19 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
             CoreProto.TransportPackageData packageData = CoreProto.TransportPackageData.parseFrom(data);
             ImStcNoticeProto.ImStcNoticeRequest request = ImStcNoticeProto.ImStcNoticeRequest.parseFrom(packageData.getData());
 
-            Intent intent = new Intent(ZalyIM.IM_NOTICE_ACTION);
-            intent.setPackage(PackageSign.getPackage());
-            intent.putExtra(ZalyIM.KEY_NOTICE_SITE_IDENTITY, this.imClient.imConnection.getConnSiteIdentity());
-            intent.putExtra(ZalyIM.KEY_NOTICE_TYPE, request.getTypeValue());
-            ZalyApplication.getContext().sendBroadcast(intent);
+//            Intent intent = new Intent(ZalyIM.IM_NOTICE_ACTION);
+//            intent.setPackage(PackageSign.getPackage());
+//            intent.putExtra(ZalyIM.KEY_NOTICE_SITE_IDENTITY, this.imClient.imConnection.getConnSiteIdentity());
+//            intent.putExtra(ZalyIM.KEY_NOTICE_TYPE, request.getTypeValue());
+//            ZalyApplication.getContext().sendBroadcast(intent);
 
         } catch (Exception e) {
-            Logger.e(TAG, e);
+            e.printStackTrace();
         }
     }
 
 
     /**
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
      * 处理从site收到的请求，故需要解析request
      * ZalyIM.KEY_NOTICE_TYPE
      *
@@ -174,12 +132,12 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
             //获取站点信息
             String siteIdentity = this.imClient.imConnection.getConnSiteIdentity();
             String siteAddress = this.imClient.imConnection.getSiteAddress();
-            Site tmpSite = SitePresenter.getInstance().getSiteUser(this.imClient.address.getFullUrl());
+            Site tmpSite = new Site(this.imClient.address.getHost(), this.imClient.address.getPort());
             String curSiteUserId = tmpSite.getSiteUserId();
 
             //消息指针 服务端需要
             for (ImStcMessageProto.MsgWithPointer withPointer : msgWithPointers) {
-                ZalyLogUtils.getInstance().info(TAG,withPointer.toString());
+                ZalyLogUtils.getInstance().info(TAG, withPointer.toString());
                 try {
 
                     // 在最后更新this.pointer
@@ -214,20 +172,20 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
                                     break;
                             }
 
-                            int updateStatusFlag = SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(siteAddress)).updateU2MsgStatusForSend(msgId, serverMsgTime, messageStatus);
-                            // 如果不是单人消息则去群组表中更新数据, 回写时间
-                            if (updateStatusFlag == 0) {
-                                if (SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(siteAddress)).updateGroupMsgStatusForSend(msgId, serverMsgTime, messageStatus) == 0) {
-                                }
-                            }
+//                            int updateStatusFlag = SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(siteAddress)).updateU2MsgStatusForSend(msgId, serverMsgTime, messageStatus);
+//                            // 如果不是单人消息则去群组表中更新数据, 回写时间
+//                            if (updateStatusFlag == 0) {
+////                                if (SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(siteAddress)).updateGroupMsgStatusForSend(msgId, serverMsgTime, messageStatus) == 0) {
+////                                }
+//                            }
 
-                            //通知UI进程
-                            Bundle bundle = new Bundle();
-                            bundle.putString(ZalyDbContentHelper.KEY_MSG_ID, msgId);
-                            bundle.putString(ZalyDbContentHelper.KEY_SITE_IDENTITY, siteIdentity);
-                            bundle.putString(ZalyDbContentHelper.KEY_CUR_SITE_USER_ID, curSiteUserId);
-                            bundle.putInt(ZalyDbContentHelper.KEY_MSG_STATUS, messageStatus);
-                            ZalyDbContentHelper.executeAction(ZalyDbContentHelper.Action.MSG_STATUS, bundle);
+//                            //通知UI进程
+//                            Bundle bundle = new Bundle();
+//                            bundle.putString(ZalyDbContentHelper.KEY_MSG_ID, msgId);
+//                            bundle.putString(ZalyDbContentHelper.KEY_SITE_IDENTITY, siteIdentity);
+//                            bundle.putString(ZalyDbContentHelper.KEY_CUR_SITE_USER_ID, curSiteUserId);
+//                            bundle.putInt(ZalyDbContentHelper.KEY_MSG_STATUS, messageStatus);
+//                            ZalyDbContentHelper.executeAction(ZalyDbContentHelper.Action.MSG_STATUS, bundle);
                             return;
                         case CoreProto.MsgType.TEXT_VALUE:
                             //二人文本
@@ -470,7 +428,7 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
                             groupWebMsg.setContent(groupWeb.getWebCode());
                             groupWebMsg.setMsgTime(groupWeb.getTime());
                             groupWebMsg.setMsgType(CoreProto.MsgType.GROUP_WEB_VALUE);
-                            if(groupWeb.getSiteUserId().equals(curSiteUserId)) {
+                            if (groupWeb.getSiteUserId().equals(curSiteUserId)) {
                                 groupWebMsg.setMsgStatus(Message.STATUS_SEND_SUCCESS);
                             } else {
                                 groupWebMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
@@ -494,7 +452,7 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
                             groupWebMsgNotice.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
                             groupWebMsgNotice.setHrefUrl(groupWebNotice.getHrefUrl());
                             groupWebMsgNotice.setMsgHeight(groupWebNotice.getHeight());
-                            if(groupWebNotice.getSiteUserId().equals(curSiteUserId)) {
+                            if (groupWebNotice.getSiteUserId().equals(curSiteUserId)) {
                                 groupWebMsgNotice.setMsgStatus(Message.STATUS_SEND_SUCCESS);
                             } else {
                                 groupWebMsgNotice.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
@@ -546,8 +504,7 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
                             break;
                     }
                 } catch (Exception e) {
-                    ZalyLogUtils.getInstance().exceptionError( e);
-                    Logger.e(e, "loop to process synced message error,withPointer=" + withPointer);
+                    e.printStackTrace();
                 }
 
                 for (Message message : messages) {
@@ -574,24 +531,24 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
                     else groupMessages.add(message);
                 }
                 if (u2Messages.size() > 0) {
-                    SiteMessageDao.getInstance(siteAddressObj).batchInsertU2Messages(u2Messages);
+//                    SiteMessageDao.getInstance(siteAddressObj).batchInsertU2Messages(u2Messages);
 //                    ZalyLogUtils.getInstance().info(TAG, "inserting U2 messages: " + u2Messages);
                 }
                 if (groupMessages.size() > 0) {
-                    SiteMessageDao.getInstance(siteAddressObj).batchInsertGroupMessages(groupMessages);
+//                    SiteMessageDao.getInstance(siteAddressObj).batchInsertGroupMessages(groupMessages);
 //                    ZalyLogUtils.getInstance().info(TAG, "inserting Group messages: " + groupMessages);
                 }
             }
 
             // 通知UI进程
-            Bundle bundle = new Bundle();
-            bundle.putString(ZalyDbContentHelper.KEY_SITE_IDENTITY, siteIdentity);
-            bundle.putString(ZalyDbContentHelper.KEY_CUR_SITE_USER_ID, curSiteUserId);
-            bundle.putParcelableArrayList(ZalyDbContentHelper.KEY_MSG_RECEIVE_LIST, messages);
-            bundle.putBoolean(ZalyDbContentHelper.KEY_MSG_RECEIVE_FINISH, isReceiveMsgFinish);
-            ZalyDbContentHelper.executeAction(ZalyDbContentHelper.Action.MSG_RECEIVE, bundle);
+//            Bundle bundle = new Bundle();
+//            bundle.putString(ZalyDbContentHelper.KEY_SITE_IDENTITY, siteIdentity);
+//            bundle.putString(ZalyDbContentHelper.KEY_CUR_SITE_USER_ID, curSiteUserId);
+//            bundle.putParcelableArrayList(ZalyDbContentHelper.KEY_MSG_RECEIVE_LIST, messages);
+//            bundle.putBoolean(ZalyDbContentHelper.KEY_MSG_RECEIVE_FINISH, isReceiveMsgFinish);
+//            ZalyDbContentHelper.executeAction(ZalyDbContentHelper.Action.MSG_RECEIVE, bundle);
         } catch (Exception e) {
-            ZalyLogUtils.getInstance().exceptionError( e);
+            e.printStackTrace();
         }
     }
 }

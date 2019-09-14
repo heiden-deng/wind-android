@@ -1,24 +1,10 @@
 package com.windchat.im;
 
-import com.akaxin.client.Configs;
-import com.akaxin.client.util.SPUtils;
-
 /**
  * Created by yichao on 2017/10/18.
  */
 
 public abstract class ZalyIM {
-
-    /**
-     * SharedPreferences 虽然支持多进程模式但是实际上是 not work!!!!!  Fuckinggggggg!!!
-     *
-     * 获取密钥可以调用，但是万万不能put数据
-     * @return
-     */
-    @Deprecated
-    public static SPUtils getCfgSP() {
-        return SPUtils.getInstance(Configs.ZALY_SP);
-    }
 
     /**
      * 消息action

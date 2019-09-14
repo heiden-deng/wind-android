@@ -1,21 +1,21 @@
 package com.windchat.im;
 
-import com.akaxin.client.Configs;
-import com.akaxin.client.bean.Site;
-import com.akaxin.client.bean.Version;
-import com.akaxin.client.site.presenter.impl.SitePresenter;
-import com.akaxin.client.socket.Connection;
-import com.akaxin.client.socket.TransportPackageForRequest;
-import com.akaxin.client.socket.TransportPackageForResponse;
-import com.akaxin.client.util.data.StringUtils;
-import com.akaxin.client.util.log.ZalyLogUtils;
-import com.akaxin.proto.site.ImSiteAuthProto;
-import com.akaxin.proto.site.ImSiteHelloProto;
+
+import com.windchat.im.bean.Site;
+import com.windchat.im.bean.Version;
+import com.windchat.im.socket.Connection;
+import com.windchat.im.socket.TransportPackageForRequest;
+import com.windchat.im.socket.TransportPackageForResponse;
+import com.windchat.logger.ZalyLogUtils;
+import com.windchat.proto.server.ImSiteAuthProto;
+import com.windchat.proto.server.ImSiteHelloProto;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.Callable;
 
-import static com.akaxin.client.socket.Connection.STATUS_AUTH_LOGIN;
-import static com.akaxin.client.socket.Connection.STATUS_AUTH_SUCCESS;
+import static com.windchat.im.socket.Connection.STATUS_AUTH_LOGIN;
+import static com.windchat.im.socket.Connection.STATUS_AUTH_SUCCESS;
 
 /**
  * Created by sssl on 09/06/2018.
@@ -26,9 +26,11 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
     private String logTag = "IMClient.ConnectAndAuth";
 
     private IMClient client;
+    private Site site;
 
     public IMClientConnectAndAuth(IMClient client) {
         this.client = client;
+        site = new Site(client.address.getHost(), client.address.getPort());
     }
 
     // 打日志
@@ -47,7 +49,7 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
      */
     protected boolean hello() throws Exception {
         ImSiteHelloProto.ImSiteHelloRequest request = ImSiteHelloProto.ImSiteHelloRequest.newBuilder()
-                .setClientVersion(Configs.APP_VERSION)
+                .setClientVersion("0.0.1")
                 .build();
 
         TransportPackageForRequest tRequest = new TransportPackageForRequest(ZalyIM.Action.Hello, request);
@@ -66,11 +68,10 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
      *
      * @return
      */
-    protected boolean auth() {
+    protected boolean auth(Site site) {
 
         try {
-
-            Site siteInfo = SitePresenter.getInstance().getSiteUser(this.client.address.getFullUrl());
+            Site siteInfo = site;
             String sessionId = siteInfo.getSiteSessionId();
 
             if (StringUtils.isEmpty(sessionId)) {
@@ -112,17 +113,12 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
         boolean isError = false;
 
         try {
-
-            ZalyLogUtils.getInstance().debug(
-                    logTag,
-                    logMessage("doConnectTask "),
-                    this
-            );
+            ZalyLogUtils.getInstance().debug(logTag, logMessage("doConnectTask "));
 
             this.client.imConnection.connect();
 
             if (hello()) {
-                if (auth()) {
+                if (auth(site)) {
                     this.client.authSuccessed = true;
                     this.client.keepAlivedWorker.start();
                     this.client.sendConnectionStatus(STATUS_AUTH_SUCCESS);
@@ -135,12 +131,7 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
                     ///throw new Exception("auth fail");
                 }
             } else {
-
-                ZalyLogUtils.getInstance().debug(
-                        logTag,
-                        logMessage("hello action fail "),
-                        this
-                );
+                ZalyLogUtils.getInstance().debug(logTag, logMessage("hello action fail "));
             }
 
             isError = true;
@@ -148,11 +139,7 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
         } catch (Exception e) {
             isError = true;
 
-            ZalyLogUtils.getInstance().debug(
-                    logTag,
-                    e,
-                    this
-            );
+            ZalyLogUtils.getInstance().error(logTag, e, "");
 
             // 不处理注册，login接口处理注册
 

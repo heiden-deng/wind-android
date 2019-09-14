@@ -1,15 +1,12 @@
 package com.windchat.im.socket;
 
 
-import com.akaxin.client.util.data.StringUtils;
-import com.akaxin.client.util.log.ZalyLogUtils;
+import com.windchat.im.bean.Site;
 
-/**
- * Created by sssl on 08/06/2018.
- */
+import org.apache.commons.lang3.StringUtils;
 
 public class SiteAddress {
-    public static  String TAG = SiteAddress.class.getSimpleName();
+    public static String TAG = SiteAddress.class.getSimpleName();
 
     private String host;
     private int port;
@@ -26,17 +23,16 @@ public class SiteAddress {
     public SiteAddress(String address) {
         String[] ret = address.split("[:_]");
         int retLength = ret.length;
-        if(retLength > 0 ){
-            this.host = StringUtils.join(ret, ".", "", 0, retLength-1);
-            this.port = Integer.valueOf(ret[retLength-1]);
-            ZalyLogUtils.getInstance().info(TAG, "site address this.host ==" + this.host + " ret length ==" + ret.length);
+        if (retLength > 0) {
+            this.host = StringUtils.join(ret, ".", "", 0, retLength - 1);
+            this.port = Integer.valueOf(ret[retLength - 1]);
         } else {
             this.host = "127.0.0.1 这段代码还没有写完呢";
             this.port = 0;
         }
     }
 
-    public SiteAddress(com.akaxin.client.bean.Site beanSite) {
+    public SiteAddress(Site beanSite) {
         this.config = ConnectionConfig.getConnectionCfg(beanSite);
         this.host = this.config.getHost();
         this.port = this.config.getPort();

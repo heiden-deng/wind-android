@@ -1,6 +1,7 @@
 package com.windchat.im.socket;
 
-import com.akaxin.proto.core.CoreProto;
+
+import com.windchat.proto.core.CoreProto;
 
 import java.nio.ByteBuffer;
 

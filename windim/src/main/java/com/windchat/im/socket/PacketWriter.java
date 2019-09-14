@@ -1,6 +1,7 @@
 package com.windchat.im.socket;
 
-import com.akaxin.client.util.log.ZalyLogUtils;
+
+import com.windchat.logger.ZalyLogUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -44,8 +45,7 @@ public class PacketWriter {
 
         ZalyLogUtils.getInstance().debug(
                 this.logTag,
-                this.logMessage("startup"),
-                this
+                this.logMessage("startup")
         );
 
         isRunning = true;
@@ -62,8 +62,7 @@ public class PacketWriter {
     public synchronized void shutdown() {
         ZalyLogUtils.getInstance().debug(
                 this.logTag,
-                this.logMessage("shutdown"),
-                this
+                this.logMessage("shutdown")
         );
 
         this.imConnection = null;
@@ -72,7 +71,7 @@ public class PacketWriter {
                 this.writingThread.interrupt();
             }
         } catch (Exception e) {
-            ZalyLogUtils.getInstance().warn(this.logTag, this.logMessage("shutdown error"), e, this);
+            ZalyLogUtils.getInstance().error(this.logTag, e, this.logMessage("shutdown error"));
         }
     }
 
@@ -81,8 +80,8 @@ public class PacketWriter {
         try {
             queue.put(pack);
         } catch (InterruptedException e) {
-            ZalyLogUtils.getInstance().exceptionError(e);
-            ZalyLogUtils.getInstance().warn(TAG, "writeTransportPackage error " + e.getMessage(), e,this);
+            e.printStackTrace();
+            ZalyLogUtils.getInstance().error(TAG, e, "writeTransportPackage error " + e.getMessage());
         }
     }
 
@@ -100,7 +99,7 @@ public class PacketWriter {
                 try {
 
                     // 如果现在连接处于失败状态，不要执行
-                    if (null == imConnection || false == imConnection.isConnected() ) {
+                    if (null == imConnection || false == imConnection.isConnected()) {
                         Thread.sleep(100);
                         continue;
                     }
@@ -113,7 +112,7 @@ public class PacketWriter {
 
                     streamWriter.flush();
                 } catch (InterruptedException e) {
-                    ZalyLogUtils.getInstance().debug(TAG, e, this);
+                    ZalyLogUtils.getInstance().error(TAG, e, "");
                     return;
                 } catch (IOException e) {
                     ZalyLogUtils.getInstance().debug(TAG, "WriteThread is error, socket is error, will stop");

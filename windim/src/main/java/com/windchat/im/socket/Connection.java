@@ -1,8 +1,7 @@
 package com.windchat.im.socket;
 
-import com.akaxin.client.im.IMClientToClientRequestHandler;
-import com.akaxin.client.util.log.ZalyLogUtils;
-import com.orhanobut.logger.Logger;
+import com.windchat.im.IMClientToClientRequestHandler;
+import com.windchat.logger.ZalyLogUtils;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -11,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Logger;
 
 
 /**
@@ -87,8 +87,7 @@ public class Connection {
             this.conditionForRequestAndResponse.await(TIMEOUT_WRITE + TIMEOUT_READ, TimeUnit.MILLISECONDS);
 
         } catch (Exception e) {
-            // ignore
-            Logger.e(e);
+            e.printStackTrace();
         } finally {
             this.lockForRequestAndResponse.unlock();
         }
@@ -131,8 +130,7 @@ public class Connection {
             if (this.isDoingRequestAndResponse) {
                 ZalyLogUtils.getInstance().debug(
                         this.logTag,
-                        "requestAndResponse duplicate " + fullAction,
-                        this
+                        "requestAndResponse duplicate " + fullAction
                 );
                 return null;
             }
@@ -175,7 +173,7 @@ public class Connection {
             }
             return response;
         } catch (Exception e) {
-            ZalyLogUtils.getInstance().warn(this.logTag, "requestAndResponse.error " + fullAction + " " + e.getMessage(), e, this);
+            ZalyLogUtils.getInstance().error(this.logTag, e, "requestAndResponse.error " + fullAction + " " + e.getMessage());
         } finally {
             this.isDoingRequestAndResponse = false;
         }
@@ -245,7 +243,7 @@ public class Connection {
         try {
             socket = buildSocket(configuration.getHost(), configuration.getPort());
         } catch (Exception e) {
-            ZalyLogUtils.getInstance().exceptionError(e);
+            e.printStackTrace();
             throw e;
         }
 
@@ -256,7 +254,7 @@ public class Connection {
 
     public void disconnectWithError(Exception e) {
         if (null != connectionHandler) {
-            ZalyLogUtils.getInstance().warn(this.logTag, "reconnect.disconnectWithError " + this.configuration.getHost(), e, this);
+            ZalyLogUtils.getInstance().error(this.logTag, e, "reconnect.disconnectWithError " + this.configuration.getHost());
             connectionHandler.onConnectionDisconnected(e);
         }
         this.disconnect();
@@ -275,8 +273,7 @@ public class Connection {
 
         ZalyLogUtils.getInstance().debug(
                 this.logTag,
-                this.logMessage("disconnect isConnected:" + String.valueOf(isConnected)),
-                this
+                this.logMessage("disconnect isConnected:" + String.valueOf(isConnected))
         );
 
         if (null != connectionHandler) {
@@ -296,7 +293,7 @@ public class Connection {
             try {
                 this.socket.close();
             } catch (IOException e) {
-                Logger.e(e);
+                e.printStackTrace();
             }
             this.socket = null;
         }
@@ -316,15 +313,13 @@ public class Connection {
         try {
             socket.connect(new InetSocketAddress(host, port), TIMEOUT_CONNECT);
             long endTime = System.currentTimeMillis();
-            ZalyLogUtils.getInstance().debug(this.logTag, "connect_success " + this.getSiteAddress() + " " + (endTime - currentTime) + "ms", this);
+            ZalyLogUtils.getInstance().debug(this.logTag, "connect_success " + this.getSiteAddress() + " " + (endTime - currentTime) + "ms");
         } catch (Exception e) {
-            ZalyLogUtils.getInstance().exceptionError(e);
+            e.printStackTrace();
             long endTime = System.currentTimeMillis();
             ZalyLogUtils.getInstance().warn(
                     this.logTag,
-                    "connect_failed " + this.getSiteAddress() + " " + (endTime - currentTime) + "ms",
-                    this
-            );
+                    "connect_failed " + this.getSiteAddress() + " " + (endTime - currentTime) + "ms");
 
             if (null != connectionHandler) {
                 this.connectionHandler.onConnectionDisconnected(e);

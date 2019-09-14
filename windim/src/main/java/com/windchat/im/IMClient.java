@@ -4,21 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.RemoteException;
 
-import com.akaxin.client.ZalyApplication;
-import com.akaxin.client.bean.Message;
-import com.akaxin.client.constant.PackageSign;
-import com.akaxin.client.socket.Connection;
-import com.akaxin.client.socket.ConnectionConfig;
-import com.akaxin.client.socket.IConnectionHandler;
-import com.akaxin.client.socket.SiteAddress;
-import com.akaxin.client.socket.TransportPackageForRequest;
-import com.akaxin.client.util.log.ZalyLogUtils;
-import com.akaxin.proto.core.CoreProto;
-import com.akaxin.proto.site.ImCtsMessageProto;
-import com.akaxin.proto.site.ImSyncFinishProto;
-import com.akaxin.proto.site.ImSyncMessageProto;
-import com.akaxin.proto.site.ImSyncMsgStatusProto;
-import com.orhanobut.logger.Logger;
+import com.windchat.im.bean.Message;
+import com.windchat.im.socket.Connection;
+import com.windchat.im.socket.ConnectionConfig;
+import com.windchat.im.socket.IConnectionHandler;
+import com.windchat.im.socket.SiteAddress;
+import com.windchat.im.socket.TransportPackageForRequest;
+import com.windchat.logger.ZalyLogUtils;
+import com.windchat.proto.core.CoreProto;
+import com.windchat.proto.server.ImCtsMessageProto;
+import com.windchat.proto.server.ImSyncFinishProto;
+import com.windchat.proto.server.ImSyncMessageProto;
+import com.windchat.proto.server.ImSyncMsgStatusProto;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,11 +23,13 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
-import static com.akaxin.client.im.ZalyIM.KEY_CONN_IDENTITY;
-import static com.akaxin.client.im.ZalyIM.KEY_CONN_STATUS;
-import static com.akaxin.client.im.ZalyIM.KEY_CONN_TYPE;
-import static com.akaxin.client.socket.Connection.CONN_IM;
+
+import static com.windchat.im.ZalyIM.KEY_CONN_IDENTITY;
+import static com.windchat.im.ZalyIM.KEY_CONN_STATUS;
+import static com.windchat.im.ZalyIM.KEY_CONN_TYPE;
+import static com.windchat.im.socket.Connection.CONN_IM;
 
 /**
  * IMClient，负责对接业务层对IM的操作逻辑
@@ -115,14 +114,16 @@ public class IMClient implements IConnectionHandler {
      * @param statusType
      */
     public void sendConnectionStatus(int statusType) {
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_CONN_IDENTITY, this.address.toOldSiteIdentity());
-        bundle.putInt(KEY_CONN_STATUS, statusType);
-        bundle.putInt(KEY_CONN_TYPE, CONN_IM);
-        Intent intent = new Intent(ZalyIM.CONNECTION_ACTION);
-        intent.putExtras(bundle);
-        intent.setPackage(PackageSign.getPackage());
-        ZalyApplication.getContext().sendBroadcast(intent);
+//        Bundle bundle = new Bundle();
+//        bundle.putString(KEY_CONN_IDENTITY, this.address.toOldSiteIdentity());
+//        bundle.putInt(KEY_CONN_STATUS, statusType);
+//        bundle.putInt(KEY_CONN_TYPE, CONN_IM);
+//        Intent intent = new Intent(ZalyIM.CONNECTION_ACTION);
+//        intent.putExtras(bundle);
+//        intent.setPackage(PackageSign.getPackage());
+//        ZalyApplication.getContext().sendBroadcast(intent);
+
+        // 注册监听，连接状态
     }
 
     /**
@@ -182,11 +183,8 @@ public class IMClient implements IConnectionHandler {
     public void syncFinish(long pointer, HashMap<String, Long> groupPointers) {
         try {
 
-            Logger.w(TAG, "pointer:" + pointer);
+
             Set<String> keys = groupPointers.keySet();
-            for (String key : keys) {
-                Logger.w(TAG, "key:" + key + ", value:" + groupPointers.get(key));
-            }
 
             //生成请求
             ImSyncFinishProto.ImSyncFinishRequest request = ImSyncFinishProto.ImSyncFinishRequest.newBuilder()
@@ -196,7 +194,7 @@ public class IMClient implements IConnectionHandler {
 
             this.sendIMRequest(ZalyIM.Action.SyncFinish, request);
         } catch (Exception e) {
-            Logger.e(e);
+            e.printStackTrace();
         }
     }
 
@@ -233,7 +231,7 @@ public class IMClient implements IConnectionHandler {
 
         // auth 成功前，服务器不会处理任何请求的。
         if (false == this.authSuccessed) {
-            ZalyLogUtils.getInstance().info(this.logTag,  this.address.getFullUrl() + "/" + action + " Error. Donot send im request before auth.");
+            ZalyLogUtils.getInstance().info(this.logTag, this.address.getFullUrl() + "/" + action + " Error. Donot send im request before auth.");
             return;
         }
 
@@ -250,7 +248,7 @@ public class IMClient implements IConnectionHandler {
             this.imConnection.nonBlockRequest(tRequest);
             ZalyLogUtils.getInstance().info(this.logTag, this.address.getFullUrl() + "/" + action + " DONE ");
         } catch (Exception e) {
-            ZalyLogUtils.getInstance().warn(this.logTag, this.address.getFullUrl() + "/" + action + " exception: " + e.getMessage(), this);
+            ZalyLogUtils.getInstance().warn(this.logTag, this.address.getFullUrl() + "/" + action + " exception: " + e.getMessage());
         }
     }
 
@@ -285,13 +283,13 @@ public class IMClient implements IConnectionHandler {
     }
 
     public void closeSocketWithError(Exception e) {
-        try{
-            ZalyLogUtils.getInstance().warn(this.logTag, "reconnect.closeSocketWithError " + this.address.getFullUrl() + " " + e.getMessage(), this);
-            if(null != this.imConnection) {
+        try {
+            ZalyLogUtils.getInstance().warn(this.logTag, "reconnect.closeSocketWithError " + this.address.getFullUrl() + " " + e.getMessage());
+            if (null != this.imConnection) {
                 this.imConnection.disconnectWithError(e);
             }
-        }catch (Exception ex) {
-            ZalyLogUtils.getInstance().exceptionError(ex);
+        } catch (Exception ex) {
+            ZalyLogUtils.getInstance().error(this.logTag, ex, "");
         }
     }
 
@@ -316,9 +314,7 @@ public class IMClient implements IConnectionHandler {
         if (null != this.imConnection && this.imConnection.isConnected()) {
             ZalyLogUtils.getInstance().debug(
                     this.logTag,
-                    "renewSocketAndHelloAuth ignore socket is connected",
-                    this
-            );
+                    "renewSocketAndHelloAuth ignore socket is connected");
             return;
         }
 
@@ -330,11 +326,7 @@ public class IMClient implements IConnectionHandler {
 
         // 如果正在连接，则啥也不做，直接返回
         if (this.isDoingConnectAndAuth) {
-            ZalyLogUtils.getInstance().debug(
-                    this.logTag,
-                    "reconnect.onConnectionDisconnected isDoingConnectAndAuth == true, ignore",
-                    this
-            );
+            ZalyLogUtils.getInstance().debug(this.logTag, "reconnect.onConnectionDisconnected isDoingConnectAndAuth == true, ignore");
             return;
         }
         this.isDoingConnectAndAuth = true;
@@ -361,8 +353,7 @@ public class IMClient implements IConnectionHandler {
             this.onConnectionDisconnected(e);
             ZalyLogUtils.getInstance().debug(
                     TAG,
-                    "build socket error siteAddress is " + address + "message is " + e.getMessage(),
-                    this
+                    "build socket error siteAddress is " + address + "message is " + e.getMessage()
             );
         }
     }
@@ -397,8 +388,7 @@ public class IMClient implements IConnectionHandler {
                 } catch (Exception ee) {
                     ZalyLogUtils.getInstance().debug(
                             TAG,
-                            "onConnectionDisconnected siteAddress is " + address + "message is " + ee.getMessage(),
-                            this
+                            "onConnectionDisconnected siteAddress is " + address + "message is " + ee.getMessage()
                     );
                 }
             }

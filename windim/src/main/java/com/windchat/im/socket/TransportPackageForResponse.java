@@ -1,10 +1,7 @@
 package com.windchat.im.socket;
 
-import com.akaxin.proto.core.CoreProto;
 
-/**
- * Created by sssl on 08/06/2018.
- */
+import com.windchat.proto.core.CoreProto;
 
 public class TransportPackageForResponse extends TransportPackage {
 

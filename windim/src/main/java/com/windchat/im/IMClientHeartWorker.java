@@ -1,7 +1,7 @@
 package com.windchat.im;
 
-import com.akaxin.client.util.log.ZalyLogUtils;
-import com.orhanobut.logger.Logger;
+
+import com.windchat.logger.ZalyLogUtils;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -16,7 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class IMClientHeartWorker {
     //心跳间隔时间 10s
-    private static final long intervalTime = 30000/2;
+    private static final long intervalTime = 30000 / 2;
     //发送ping，等20s接受pong
     private static final int waitTimeout = 20;
     private volatile boolean hasPong = false;
@@ -54,8 +54,7 @@ public class IMClientHeartWorker {
     public void start() {
         ZalyLogUtils.getInstance().debug(
                 LogTag,
-                this.logMessage("start"),
-                this
+                this.logMessage("start")
         );
 
         if (heartThread != null) {
@@ -68,11 +67,7 @@ public class IMClientHeartWorker {
 
     public void stop() {
 
-        ZalyLogUtils.getInstance().debug(
-                LogTag,
-                this.logMessage("stop"),
-                this
-        );
+        ZalyLogUtils.getInstance().debug(LogTag, this.logMessage("stop"));
 
         try {
             if (heartThread != null) {
@@ -111,15 +106,15 @@ public class IMClientHeartWorker {
                     sleep(intervalTime);
 
                 } catch (InterruptedException e) {
-                    Logger.e(HEART_FAIL, e);
                     if (isRunning) {
                         client.closeSocketWithError(e);
                     }
                     isRunning = false;
+                    e.printStackTrace();
                 } catch (Exception e) {
-                    Logger.e(HEART_FAIL, e);
                     client.closeSocketWithError(e);
                     isRunning = false;
+                    e.printStackTrace();
                 }
             }
         }

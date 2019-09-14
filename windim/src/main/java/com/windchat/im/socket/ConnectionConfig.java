@@ -1,6 +1,7 @@
 package com.windchat.im.socket;
 
-import com.akaxin.client.bean.Site;
+
+import com.windchat.im.bean.Site;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -140,7 +141,7 @@ public class ConnectionConfig implements Cloneable {
         return ConnCfgBuilder.newBuilder()
                 .setHost(site.getSiteHost())
                 .setSessionId(site.getSiteSessionId())
-                .setPort(isNumeric(site.getSitePort()) ? Integer.parseInt(site.getSitePort()) : 2021)
+                .setPort(site.getSitePort())
                 .setSiteUserId(site.getSiteUserId())
                 .setSiteConnStatus(site.getConnStatus())
                 .build();
