@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package platform;
+
+import "core/core.proto";
+option java_package = "com.windchat.proto.client";
+option java_outer_classname = "ImPtcPushProto"; /**
+ * 接口名<action_name>：
+ * 		im.ptc.push
+ *
+ * 功能描述：
+ * 		platform发送客户端push功能
+ *
+ */ service ImPtcPushService {
+	rpc push (ImPtcPushRequest) returns (core.NoneResponse);
+}
+
+message ImPtcPushRequest {
+	string site_server = 1; //站点服务demo.akaxin.com:2021
+	string push_title = 2; //展示的title
+	string push_alert = 3; //展示的文案
+	string push_jump = 4; //Push跳转位置
+	int32 push_badge = 5; //气泡展示个数
+	string push_sound = 6; //气泡声音
+}

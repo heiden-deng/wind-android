@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package core;
+
+option java_package = "com.windchat.proto.core";
+option java_outer_classname = "UserProto";
+
+// options for php
+//option php_namespace = "Akaxin\\Proto\\Core";
+
+//获取用户的详细信息
+message UserProfile {
+    string site_user_id = 1;
+    string user_name = 2;//如果用户有备注，这里使用备注，如果没有使用昵称，修改个人profile昵称，直接把昵称复制这里
+    string user_photo = 3;
+    string self_introduce = 4;
+    UserStatus user_status = 5;
+    int64 register_time = 6;
+    string site_login_id = 7; //用户唯一登陆名，站点唯一（例如使用：“卡号”表示）
+    string nick_name = 8;//用户个人设置的昵称
+    string username_in_latin = 9;//汉字转换拼音
+    string user_id_pubk = 10;//用户公钥 SimpleUserProfile 不需要
+}
+
+//获取用户的简单信息，一般用户展示列表等，例如用户好友列表
+message SimpleUserProfile {
+    string site_user_id = 1;
+    string user_name = 2; //如果用户有备注，这里使用备注，如果没有使用昵称
+    string user_photo = 3;
+    UserStatus user_status = 4;
+    string site_login_id = 5; //用户唯一登陆名，站点唯一
+    string nick_name = 6; //用户个人设置的昵称
+    string username_in_latin = 7; //张三->  zhangsan
+}
+
+enum UserStatus {
+	NORMAL = 0; //正常用户
+	SEALUP = 1; //禁封用户
+}
+
+message ApplyUserProfile {
+	UserProfile applyUser = 1;
+	string applyReason = 2;
+}
+
+// 针对当前用户A来说，用户B和A之间的关系
+enum UserRelation {
+	RELATION_NONE = 0; //用户无关系
+	RELATION_FRIEND = 1; //用户之间为好友关系，AB互相为好友
+	RELATION_CARE = 2; //A 关注 B（A添加B为好友，待B同意）
+	RELATION_FANS = 3; //B 关注 A（B添加A为好友，待A同意）
+}
+
+message UserRelationProfile {
+	SimpleUserProfile profile = 1; //用户的个人资料
+	UserRelation relation = 2; //用户A与B的关系
+}

@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package platform;
+
+option java_package = "com.windchat.proto.platform";
+option java_outer_classname = "ApiTempUploadProto";
+
+/**
+ * 接口名<action_name>：
+ * 		api.temp.upload
+ *
+ * 功能描述：
+ * 		上传内容指临时空间
+ *
+ * 支持的错误ID：
+ * 		success							//上传成功
+ *  		error.alert						//上传失败
+ */
+service ApiTempUploadService {
+    rpc upload(ApiTempUploadRequest) returns(ApiTempUploadResponse);
+}
+
+message ApiTempUploadRequest {
+   	string name = 1;			//上传的位置空间名称
+    bytes content = 2;		//上传内容
+}
+
+message ApiTempUploadResponse {
+    string name = 1;			//临时空间存储内容的位置名称
+}

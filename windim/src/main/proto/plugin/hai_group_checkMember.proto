@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package plugin;
+
+option java_package = "com.windchat.proto.plugin";
+option java_outer_classname = "HaiGroupCheckMemberProto";
+
+// options for php
+option php_namespace = "Akaxin\\Proto\\Plugin";
+
+service HaiGroupCheckMemberService {
+    rpc checkMember (HaiGroupCheckMemberRequest) returns (HaiGroupCheckMemberResponse);
+}
+
+/**
+
+检查用户是否在某群里
+----
+
+
+接口名
+----
+
+/hai/group/checkMember
+
+错误码
+----
+
+- success
+- error.alert
+
+**/
+message HaiGroupCheckMemberRequest {
+	string group_id = 1; //群组ID
+    repeated string site_user_id = 2; // 待检查的成员id
+}
+
+message HaiGroupCheckMemberResponse {
+	repeated string members_site_user_id = 1; // 请求在这个群里的成员( 肯定是request参数的子集 )
+}

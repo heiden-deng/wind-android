@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package client;
+
+import "core/core.proto";
+
+option java_package = "com.windchat.proto.client";
+option java_outer_classname = "ImStcPsnProto";
+
+/**
+ * 接口名<action_name>：
+ * 		im.stc.psn
+ *
+ * 功能描述：
+ * 		通知客户端，站点存在用户消息，需要执行同步消息操作<im.sync.message>
+ *
+ */
+service ImStcPsnService {
+    rpc psn(ImStcPsnRequest) returns(core.NoneResponse);
+}
+
+message ImStcPsnRequest {}

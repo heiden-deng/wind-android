@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package platform;
+
+option java_package = "com.windchat.proto.platform";
+option java_outer_classname = "ApiTempDownloadProto";
+
+/**
+ * 接口名<action_name>：
+ * 		api.temp.download
+ *
+ * 功能描述：
+ * 		下载临时空间内容
+ *
+ * 支持的错误ID：
+ * 		success							//下载成功
+ *  		error.alert						//下载失败
+ */
+service ApiTempDownloadService {
+    rpc download(ApiTempDownloadRequest) returns(ApiTempDownloadResponse);
+}
+
+message ApiTempDownloadRequest {
+    string name = 1;			//临时空间的位置名称<key>
+
+}
+
+message ApiTempDownloadResponse {
+    bytes content = 1;		//下载的具体内容
+}

@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package site;
+
+import "core/file.proto";
+
+option java_package = "com.windchat.proto.server";
+option java_outer_classname = "ApiFileDownloadProto";
+
+// options for php
+option php_namespace = "Akaxin\\Proto\\Site";
+// option php_metadata_namespace = "Akaxin\\Proto\\";
+
+/**
+ * 接口名<action_name>：
+ * 		api.file.download
+ *
+ * 功能描述：
+ * 		下载文件资源
+ *
+ * 支持的错误ID：
+ * 		success							//下载成功
+ *  		error.alert						//下载失败
+ */
+service ApiFileDownloadService {
+    rpc download(ApiFileDownloadRequest) returns(ApiFileDownloadResponse);
+}
+
+message ApiFileDownloadRequest {
+    string file_id = 1;				//下载资源标识ID
+}
+
+message ApiFileDownloadResponse {
+	core.File file = 1;				//通过资源标示ID下载的资源文件
+}

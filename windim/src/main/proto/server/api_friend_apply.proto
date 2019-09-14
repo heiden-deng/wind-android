@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package site;
+
+option java_package = "com.windchat.proto.server";
+option java_outer_classname = "ApiFriendApplyProto";
+
+// options for php
+option php_namespace = "Akaxin\\Proto\\Site";
+// option php_metadata_namespace = "Akaxin\\Proto\\";
+
+/**
+ * 接口名<action_name>：
+ * 		api.friend.apply
+ *
+ * 功能描述：
+ * 		申请添加好友
+ *
+ * 支持的错误ID：
+ * 		success							//申请添加好友成功
+ *  		error.alert						//申请失败，显示失败原因
+ */
+service ApiFriendApplyService {
+    rpc apply(ApiFriendApplyRequest) returns(ApiFriendApplyResponse);
+}
+
+message ApiFriendApplyRequest {
+    string site_friend_id = 1;	//添加的好友ID
+    string apply_reason = 2;		//申请添加的原因说明
+}
+
+message ApiFriendApplyResponse {
+}

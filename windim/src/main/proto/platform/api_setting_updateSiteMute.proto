@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package site;
+
+option java_package = "com.windchat.proto.platform";
+option java_outer_classname = "ApiSettingUpdateSiteMuteProto";
+
+/**
+ * 接口名<action_name>：
+ * 		api.setting.updateSiteMute
+ *
+ * 功能描述：
+ *		更新获取平台上对站点静音的状态
+ *
+ *
+ * 支持的错误ID：
+ * 		success						//成功
+ * 		error.alert					//失败
+ */
+service ApiSettingUpdateSiteMuteService {
+	rpc updateSiteMute (ApiSettingUpdateSiteMuteRequest) returns (ApiSettingUpdateSiteMuteResponse);
+}
+
+message ApiSettingUpdateSiteMuteRequest {
+	string site_host = 1; //站点host
+	int32 site_port = 2; //站点port
+	bool mute = 3; //站点静音状态
+}
+
+message ApiSettingUpdateSiteMuteResponse {
+
+}

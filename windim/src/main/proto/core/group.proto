@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+//群组相关的共用proto
+package core;
+
+import "core/user.proto";
+
+
+//set the package name of the class
+option java_package = "com.windchat.proto.core";
+option java_outer_classname = "GroupProto";
+
+// options for php
+//option php_namespace = "Akaxin\\Proto\\Core";
+
+
+enum GroupMemberRole {
+	NONMEMBER = 0; //非群成员
+	MEMBER = 1; //群成员
+	OWNER = 2; //群所有者
+	ADMIN = 3; //群管理员
+}
+
+
+enum GroupStatus {
+	GROUP_DELETE = 0; //已经解散的群组
+	GROUP_NORMAL = 1; //正常的群组
+}
+
+//简单的group file
+message GroupProfile {
+    string id = 1;
+    string name = 2;
+    string icon = 4;
+    string group_notice = 5;
+}
+
+message SimpleGroupProfile {
+    string group_id =1;
+    string group_name = 2;
+    string group_icon =3;
+}
+
+message GroupMemberProfile {
+    GroupMemberRole role = 1;
+    core.UserProfile profile = 2;
+}

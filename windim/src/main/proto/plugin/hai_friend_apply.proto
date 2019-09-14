@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package plugin;
+
+option java_package = "com.windchat.proto.plugin";
+option java_outer_classname = "HaiFriendApplyProto";
+
+// options for php
+//option php_namespace = "Akaxin\\Proto\\Plugin";
+
+service HaiFriendApplyService {
+    rpc apply(HaiFriendApplyRequest) returns(HaiFriendApplyResponse);
+}
+
+/**
+
+A->B 发送好友请求
+----
+
+接口名
+----
+
+/hai/friend/apply
+
+错误码
+----
+
+- success
+- error.alert
+
+**/
+message HaiFriendApplyRequest {
+    string site_user_id = 1;        // 发起好友请求的用户
+    string friend_site_user_id = 2;	// 目标用户
+    string apply_reason = 3;        // 申请理由
+}
+
+message HaiFriendApplyResponse {
+}

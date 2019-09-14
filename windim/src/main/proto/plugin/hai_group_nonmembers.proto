@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package plugin;
+
+import "core/group.proto";
+
+option java_package = "com.windchat.proto.plugin";
+option java_outer_classname = "HaiGroupNonmembersProto";
+
+// options for php
+option php_namespace = "Akaxin\\Proto\\Plugin";
+
+
+service HaiGroupNonmembersService {
+    rpc nonmembers (HaiGroupNonmembersRequest) returns (HaiGroupNonmembersResponse);
+}
+
+
+/**
+
+分页获非群成员
+----
+
+
+接口名
+----
+
+/hai/group/nonmembers
+
+错误码
+----
+
+- success
+- error.alert
+
+**/
+message HaiGroupNonmembersRequest {
+    string site_user_id = 1; // 以谁的视角获取这份数据
+	string group_id = 2; //群组ID
+	int32 page_number = 3; //分页：第几页
+	int32 page_size = 4; //分页：每页条数，默认100
+}
+
+message HaiGroupNonmembersResponse {
+	repeated core.GroupMemberProfile group_member = 1; //群组成员信息
+    int32 page_total_num = 2; // 分页总数
+}
