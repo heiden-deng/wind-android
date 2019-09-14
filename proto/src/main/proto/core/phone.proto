@@ -6,7 +6,7 @@ option java_package = "com.windchat.proto.core";
 option java_outer_classname = "PhoneProto";
 
 // options for php
-//option php_namespace = "Akaxin\\Proto\\Core";
+//// option php_namespace = "Akaxin\\Proto\\Core";
 
 //
 //手机验证码类型

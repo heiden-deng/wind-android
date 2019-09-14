@@ -8,7 +8,7 @@ option java_package = "com.windchat.proto.server";
 option java_outer_classname = "ApiSiteConfigProto";
 
 // options for php
-option php_namespace = "Akaxin\\Proto\\Site";
+// option php_namespace = "Akaxin\\Proto\\Site";
 // option php_metadata_namespace = "Akaxin\\Proto\\";
 
 /**

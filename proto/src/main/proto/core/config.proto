@@ -6,7 +6,7 @@ option java_package = "com.windchat.proto.core";
 option java_outer_classname = "ConfigProto";
 
 // options for php
-//option php_namespace = "Akaxin\\Proto\\Core";
+//// option php_namespace = "Akaxin\\Proto\\Core";
 
 //实名枚举
 enum RealNameConfig {

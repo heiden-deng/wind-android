@@ -6,7 +6,7 @@ option java_package = "com.windchat.proto.core";
 option java_outer_classname = "FileProto";
 
 // options for php
-//option php_namespace = "Akaxin\\Proto\\Core";
+//// option php_namespace = "Akaxin\\Proto\\Core";
 
 //上传站点服务端的文件
 message File {

@@ -6,7 +6,7 @@ option java_package = "com.windchat.proto.core";
 option java_outer_classname = "UserProto";
 
 // options for php
-//option php_namespace = "Akaxin\\Proto\\Core";
+//// option php_namespace = "Akaxin\\Proto\\Core";
 
 //获取用户的详细信息
 message UserProfile {

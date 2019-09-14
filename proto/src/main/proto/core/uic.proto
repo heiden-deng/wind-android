@@ -6,7 +6,7 @@ option java_package = "com.windchat.proto.core";
 option java_outer_classname = "UicProto";
 
 // options for php
-//option php_namespace = "Akaxin\\Proto\\Core";
+//// option php_namespace = "Akaxin\\Proto\\Core";
 
 enum UicStatus {
 	UNUSED = 0; //未使用的的

@@ -6,7 +6,7 @@ option java_package = "com.windchat.proto.plugin";
 option java_outer_classname = "HaiGroupAddMemberProto";
 
 // options for php
-option php_namespace = "Akaxin\\Proto\\Plugin";
+// option php_namespace = "Akaxin\\Proto\\Plugin";
 
 
 service HaiGroupAddMemberService {

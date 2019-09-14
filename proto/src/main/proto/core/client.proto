@@ -7,7 +7,7 @@ option java_package = "com.windchat.proto.core";
 option java_outer_classname = "ClientProto";
 
 // options for php
-//option php_namespace = "Akaxin\\Proto\\Core";
+//// option php_namespace = "Akaxin\\Proto\\Core";
 
 //客户端类型
 enum ClientType {

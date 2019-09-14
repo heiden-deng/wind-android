@@ -8,7 +8,7 @@ option java_package = "com.windchat.proto.core";
 option java_outer_classname = "PluginProto";
 
 // options for php
-//option php_namespace = "Akaxin\\Proto\\Core";
+//// option php_namespace = "Akaxin\\Proto\\Core";
 
 // site 与plugin之间交互传输的package包
 message ProxyPluginPackage {
