@@ -11,7 +11,7 @@ import com.windchat.proto.core.CoreProto;
  * Created by yichao on 2017/10/10.
  */
 
-public class Message implements Parcelable {
+public class Message {
 
     public static long timeMsgInterval = 1000 * 60 * 3;
 
@@ -237,66 +237,6 @@ public class Message implements Parcelable {
 
     public int getMsgHeight() {
         return this.msgHeight;
-    }
-
-    public static final Creator<Message> CREATOR = new Creator<Message>() {
-        @Override
-        public Message createFromParcel(Parcel in) {
-            return new Message(in);
-        }
-
-        @Override
-        public Message[] newArray(int size) {
-            return new Message[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    protected Message(Parcel in) {
-        msgId = in.readString();
-        siteUserId = in.readString();
-        siteFriendId = in.readString();
-        content = in.readString();
-        msgTime = in.readLong();
-        msgType = in.readInt();
-        msgStatus = in.readInt();
-        isSecret = in.readByte() != 0;
-        msgTsk = in.readString();
-        img = in.readString();
-        groupId = in.readString();
-        toDeviceId = in.readString();
-        chatSessionId = in.readString();
-        secretData = new byte[in.readInt()];
-        in.readByteArray(secretData);
-        msgWidth = in.readInt();
-        msgHeight = in.readInt();
-        hrefUrl = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(msgId);
-        dest.writeString(siteUserId);
-        dest.writeString(siteFriendId);
-        dest.writeString(content);
-        dest.writeLong(msgTime);
-        dest.writeInt(msgType);
-        dest.writeInt(msgStatus);
-        dest.writeByte((byte) (isSecret ? 1 : 0));
-        dest.writeString(msgTsk);
-        dest.writeString(img);
-        dest.writeString(groupId);
-        dest.writeString(toDeviceId);
-        dest.writeString(chatSessionId);
-        dest.writeInt(secretData.length);
-        dest.writeByteArray(secretData);
-        dest.writeInt(msgWidth);
-        dest.writeInt(msgHeight);
-        dest.writeString(hrefUrl);
     }
 
     public static class MessageEntry implements BaseColumns {

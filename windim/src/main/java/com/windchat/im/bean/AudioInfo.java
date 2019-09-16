@@ -2,10 +2,6 @@ package com.windchat.im.bean;
 
 import org.json.JSONObject;
 
-/**
- * Created by yichao on 2017/11/6.
- */
-
 public class AudioInfo {
 
     public static final int NONE_DOWNLOAD = -1;
