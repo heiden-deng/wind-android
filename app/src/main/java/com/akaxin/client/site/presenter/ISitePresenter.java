@@ -2,9 +2,8 @@ package com.akaxin.client.site.presenter;
 
 import com.akaxin.client.bean.ChatSession;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.bean.SiteAddress;
 import com.akaxin.client.bean.User;
-import com.akaxin.proto.core.UserProto;
+import com.windchat.im.socket.SiteAddress;
 
 import java.util.List;
 

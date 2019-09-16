@@ -4,9 +4,8 @@ import android.content.Context;
 
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.db.dao.ZalyBaseDao;
-import com.akaxin.client.util.log.ZalyLogUtils;
-import com.akaxin.client.bean.SiteAddress;
 import com.akaxin.client.util.data.StringUtils;
+import com.windchat.im.socket.SiteAddress;
 
 import java.util.HashMap;
 

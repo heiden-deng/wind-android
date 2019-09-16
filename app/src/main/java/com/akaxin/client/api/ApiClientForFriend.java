@@ -2,7 +2,6 @@ package com.akaxin.client.api;
 
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.socket.TransportPackageForResponse;
 import com.akaxin.proto.site.ApiFriendApplyListProto;
 import com.akaxin.proto.site.ApiFriendApplyProto;
 import com.akaxin.proto.site.ApiFriendApplyResultProto;
@@ -12,6 +11,7 @@ import com.akaxin.proto.site.ApiFriendProfileProto;
 import com.akaxin.proto.site.ApiFriendRemarkProto;
 import com.akaxin.proto.site.ApiFriendSettingProto;
 import com.akaxin.proto.site.ApiFriendUpdateSettingProto;
+import com.windchat.im.socket.TransportPackageForResponse;
 
 /**
  * Created by Mr.kk on 2018/6/14.

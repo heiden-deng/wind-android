@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.akaxin.client.api.ApiClient;
-import com.akaxin.client.socket.TransportPackageForResponse;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.FileProto;
@@ -12,8 +11,9 @@ import com.akaxin.proto.site.ApiFileUploadProto;
 import com.google.protobuf.ByteString;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.socket.ConnectionConfig;
 import com.akaxin.client.util.data.StringUtils;
+import com.windchat.im.socket.ConnectionConfig;
+import com.windchat.im.socket.TransportPackageForResponse;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;

@@ -3,6 +3,7 @@ package com.windchat.im.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.windchat.im.socket.SiteAddress;
 import com.windchat.logger.ZalyLogUtils;
 
 import org.apache.commons.lang3.StringUtils;

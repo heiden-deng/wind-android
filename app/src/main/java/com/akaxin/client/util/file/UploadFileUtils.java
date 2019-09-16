@@ -11,7 +11,6 @@ import com.akaxin.client.bean.AudioInfo;
 import com.akaxin.client.bean.Message;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.im.files.IMFileUtils;
-import com.akaxin.client.socket.ConnectionConfig;
 import com.akaxin.client.util.data.StringUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.client.util.security.AESUtils;
@@ -21,6 +20,7 @@ import com.akaxin.proto.core.FileProto;
 import com.akaxin.proto.site.ApiFileDownloadProto;
 import com.akaxin.proto.site.ApiFileUploadProto;
 import com.orhanobut.logger.Logger;
+import com.windchat.im.socket.ConnectionConfig;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

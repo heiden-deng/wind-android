@@ -7,11 +7,11 @@ import android.database.sqlite.SQLiteStatement;
 import com.akaxin.client.Configs;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.bean.SiteAddress;
 import com.akaxin.client.bean.User;
 import com.akaxin.client.db.sql.DBSQL;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.orhanobut.logger.Logger;
+import com.windchat.im.socket.SiteAddress;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -201,7 +201,7 @@ public class AkxCommonDao {
      *
      * @return
      */
-    public synchronized int updateUserSiteSessionId(String host, String port, Site site) {
+    public synchronized int updateUserSiteSessionId(String host, int port, Site site) {
         long startTime = System.currentTimeMillis();
         String sql = "UPDATE " + AKX_SITE_TABLE +
                 " SET site_session_id = ? , site_user_id = ? " +
@@ -211,7 +211,7 @@ public class AkxCommonDao {
         statement.bindString(1, site.getSiteSessionId());
         statement.bindString(2, site.getSiteUserId());
         statement.bindString(3, host);
-        statement.bindString(4, port);
+        statement.bindLong(4, port);
 
         int num = statement.executeUpdateDelete();
         ZalyLogUtils.getInstance().dbLog(TAG, startTime, sql);
@@ -272,7 +272,7 @@ public class AkxCommonDao {
                 "site_scheme) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         SQLiteStatement statement = database.compileStatement(sql);
         statement.bindString(1, site.getSiteHost());
-        statement.bindString(2, site.getSitePort());
+        statement.bindLong(2, site.getSitePort());
         statement.bindString(3, site.getSiteName());
         statement.bindString(4, site.getSiteIcon());//消息帧，消息列表中某一个cells的标识
         statement.bindString(5, site.getSiteVersion());
@@ -344,7 +344,7 @@ public class AkxCommonDao {
         statement.bindLong(4, site.getRealNameConfig());
         statement.bindLong(5, site.getCodeConfig());
         statement.bindString(6, site.getSiteHost());
-        statement.bindString(7, site.getSitePort());
+        statement.bindLong(7, site.getSitePort());
         statement.executeUpdateDelete();
         ZalyLogUtils.getInstance().dbLog(TAG, startTime, sql);
     }
@@ -384,7 +384,7 @@ public class AkxCommonDao {
             site.setSiteLoginId(cursor.getString(cursor.getColumnIndex("site_login_id")));
             site.setSiteVersion(cursor.getString(cursor.getColumnIndex("site_version")));
             site.setSiteHost(host);
-            site.setSitePort(port);
+            site.setSitePort(Integer.valueOf(port));
         }
         ZalyLogUtils.getInstance().dbLog(TAG, startTime, sql);
         return site;
@@ -400,8 +400,8 @@ public class AkxCommonDao {
         long startTime = System.currentTimeMillis();
         Site site = new Site();
         String sql = "SELECT * FROM " + AKX_SITE_TABLE + " WHERE site_host=? AND site_port=?;";
-        String host = siteAddress.getSiteHost();
-        String port = siteAddress.getSitePort() + "";
+        String host = siteAddress.getHost();
+        String port = siteAddress.getPort() + "";
 
         Cursor cursor = database.rawQuery(sql, new String[]{host, port});
         if (cursor != null && cursor.getCount() > 0) {
@@ -435,7 +435,7 @@ public class AkxCommonDao {
             do {
                 Site site = new Site();
                 site.setSiteHost(cursor.getString(cursor.getColumnIndex("site_host")));
-                site.setSitePort(cursor.getString(cursor.getColumnIndex("site_port")));
+                site.setSitePort(cursor.getInt(cursor.getColumnIndex("site_port")));
                 site.setSiteName(cursor.getString(cursor.getColumnIndex("site_name")));
                 site.setSiteUserId(cursor.getString(cursor.getColumnIndex("site_user_id")));
                 site.setSiteUserName(cursor.getString(cursor.getColumnIndex("site_user_name")));

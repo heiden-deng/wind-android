@@ -1,7 +1,6 @@
 package com.akaxin.client.api;
 
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.bean.SiteAddress;
 
 import com.akaxin.client.bean.event.AppEvent;
 import com.akaxin.client.db.bean.UserGroupBean;
@@ -11,7 +10,7 @@ import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.client.util.task.ZalyTaskExecutor;
 import com.akaxin.proto.site.ApiGroupProfileProto;
 import com.akaxin.proto.site.ApiGroupSettingProto;
-import com.orhanobut.logger.Logger;
+import com.windchat.im.socket.SiteAddress;
 
 import org.greenrobot.eventbus.EventBus;
 

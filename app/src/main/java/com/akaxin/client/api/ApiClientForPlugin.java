@@ -3,11 +3,11 @@ package com.akaxin.client.api;
 import android.util.Log;
 
 import com.akaxin.client.plugin.task.GetMsgPluginListTask;
-import com.akaxin.client.socket.TransportPackageForResponse;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.proto.site.ApiPluginListProto;
 import com.akaxin.proto.site.ApiPluginPageProto;
 import com.akaxin.proto.site.ApiPluginProxyProto;
+import com.windchat.im.socket.TransportPackageForResponse;
 
 /**
  * Created by Mr.kk on 2018/6/14.

@@ -4,11 +4,11 @@ import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.api.ApiClient;
 import com.akaxin.client.api.ApiClientForPlatform;
 import com.akaxin.client.api.ZalyAPIException;
-import com.akaxin.client.socket.ConnectionConfig;
 import com.akaxin.client.util.DataCleanManager;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.client.util.task.ZalyTaskExecutor;
 import com.akaxin.proto.platform.ApiPlatformLogoutProto;
+import com.windchat.im.socket.ConnectionConfig;
 
 /**
  * Created by zhangjun on 09/05/2018.

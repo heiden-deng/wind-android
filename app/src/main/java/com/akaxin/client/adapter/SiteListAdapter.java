@@ -11,11 +11,11 @@ import android.widget.TextView;
 
 import com.akaxin.client.R;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.im.IMClient;
 import com.akaxin.client.maintab.adapter.ZalyListAdapter;
 import com.akaxin.client.util.UIUtils;
 import com.akaxin.client.util.data.StringUtils;
 import com.akaxin.client.util.file.ImageUtils;
+import com.windchat.im.IMClient;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

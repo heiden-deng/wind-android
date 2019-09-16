@@ -14,13 +14,11 @@ import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.constant.ErrorCode;
 import com.akaxin.client.db.dao.AkxCommonDao;
-import com.akaxin.client.im.IMClient;
 import com.akaxin.client.mvp.BasePresenterImpl;
 import com.akaxin.client.mvp.contract.SiteConnListContract;
 import com.akaxin.client.platform.task.PushAuthTask;
 import com.akaxin.client.site.presenter.impl.SitePresenter;
 import com.akaxin.client.site.task.ApiUserProfileTask;
-import com.akaxin.client.socket.ConnectionConfig;
 import com.akaxin.client.util.SiteUtils;
 import com.akaxin.client.util.data.StringUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
@@ -29,6 +27,8 @@ import com.akaxin.proto.platform.ApiPhoneApplyTokenProto;
 import com.akaxin.proto.site.ApiSiteConfigProto;
 import com.akaxin.proto.site.ApiSiteLoginProto;
 import com.orhanobut.logger.Logger;
+import com.windchat.im.IMClient;
+import com.windchat.im.socket.ConnectionConfig;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,7 +54,7 @@ public class SiteConnListPresenter extends BasePresenterImpl<SiteConnListContrac
         uri = Uri.parse(siteAddress);
 
         site.setSiteHost(uri.getHost());
-        site.setSitePort(uri.getPort() == -1 ? String.valueOf(SiteUtils.DEFAULT_PORT) : String.valueOf(uri.getPort()));
+        site.setSitePort(uri.getPort() == -1 ? SiteUtils.DEFAULT_PORT : uri.getPort());
 
         if (SiteUtils.currentContains(site)) {
             switchSite(site, currentSite);

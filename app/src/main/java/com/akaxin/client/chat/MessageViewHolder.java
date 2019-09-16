@@ -26,8 +26,6 @@ import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.constant.SiteConfig;
 import com.akaxin.client.friend.FriendProfileActivity;
 import com.akaxin.client.friend.presenter.impl.UserProfilePresenter;
-import com.akaxin.client.im.IMClient;
-import com.akaxin.client.socket.SiteAddress;
 import com.akaxin.client.util.DateUtil;
 import com.akaxin.client.util.UIUtils;
 import com.akaxin.client.util.data.StringUtils;
@@ -38,6 +36,8 @@ import com.akaxin.client.util.toast.Toaster;
 import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.site.ApiFriendProfileProto;
+import com.windchat.im.IMClient;
+import com.windchat.im.socket.SiteAddress;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

@@ -182,7 +182,7 @@ public class SiteConnListActivity extends BaseMVPActivity<SiteConnListContract.V
 
     @Override
     public void onGetSiteConfigSuccess(Site site) {
-        if (site != null && site.getSitePort() != null && site.getSiteHost() != null && site.getSiteUserId() != null) {
+        if (site != null && site.getSiteHost() != null && site.getSiteUserId() != null) {
             currentSite = site;
         }
         String userToken = UUID.randomUUID().toString();

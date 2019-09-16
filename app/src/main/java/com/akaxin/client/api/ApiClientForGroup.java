@@ -1,6 +1,5 @@
 package com.akaxin.client.api;
 
-import com.akaxin.client.socket.TransportPackageForResponse;
 import com.akaxin.proto.core.GroupProto;
 import com.akaxin.proto.site.ApiGroupAddMemberProto;
 import com.akaxin.proto.site.ApiGroupApplyTokenProto;
@@ -16,6 +15,7 @@ import com.akaxin.proto.site.ApiGroupRemoveMemberProto;
 import com.akaxin.proto.site.ApiGroupSettingProto;
 import com.akaxin.proto.site.ApiGroupUpdateProfileProto;
 import com.akaxin.proto.site.ApiGroupUpdateSettingProto;
+import com.windchat.im.socket.TransportPackageForResponse;
 
 import java.util.List;
 

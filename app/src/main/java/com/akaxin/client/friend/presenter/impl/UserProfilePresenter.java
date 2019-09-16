@@ -3,15 +3,12 @@ package com.akaxin.client.friend.presenter.impl;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.api.SiteUserAPI;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.bean.SiteAddress;
-import com.akaxin.client.db.bean.UserBean;
 import com.akaxin.client.db.bean.UserFriendBean;
 import com.akaxin.client.db.dao.SiteUserProfileDao;
 import com.akaxin.client.friend.presenter.IUserProfilePresenter;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.proto.core.UserProto;
-import com.akaxin.client.bean.User;
-import com.orhanobut.logger.Logger;
+import com.windchat.im.socket.SiteAddress;
 
 import java.util.List;
 

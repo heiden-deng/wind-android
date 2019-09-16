@@ -1,6 +1,7 @@
 package com.akaxin.client.chat;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -32,7 +33,6 @@ import com.akaxin.client.bean.event.MessageEvent;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.db.dao.SiteMessageDao;
 import com.akaxin.client.friend.presenter.impl.UserProfilePresenter;
-import com.akaxin.client.im.ZalyIM;
 import com.akaxin.client.image.ImagePagerActivity;
 import com.akaxin.client.jump.presenter.impl.GoToPagePresenter;
 import com.akaxin.client.util.NetUtils;
@@ -50,6 +50,7 @@ import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.FileProto;
 import com.akaxin.proto.core.UserProto;
 import com.orhanobut.logger.Logger;
+import com.windchat.im.IMConst;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -1044,7 +1045,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             super.showSecretBackground(messageBody, msg);
             if (msg.isSecret() && StringUtils.isNotEmpty(msg.getMsgTsk())) {
                 try {
-                    String priKey = ZalyIM.getCfgSP().getKey(Configs.DEVICE_PRI_KEY);
+                    String priKey = ZalyApplication.getCfgSP().getKey(Configs.DEVICE_PRI_KEY);
                     RSAUtils.getInstance().decryptMsg(msg, priKey);
                     msg.setMsgTsk("");//这里一定要置空
                     //这里一定要置更新数据库一次，解密一次，更新数据库，后期使用的均为解密以后的消息内容

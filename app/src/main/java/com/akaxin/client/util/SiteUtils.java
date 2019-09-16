@@ -10,10 +10,8 @@ import com.akaxin.client.bean.Site;
 import com.akaxin.client.db.ZalyDbHelper;
 import com.akaxin.client.db.dao.AkxCommonDao;
 import com.akaxin.client.group.presenter.impl.GroupPresenter;
-import com.akaxin.client.im.IMClient;
 import com.akaxin.client.site.presenter.impl.SitePresenter;
 import com.akaxin.client.site.task.ApiUserProfileTask;
-import com.akaxin.client.socket.SiteAddress;
 import com.akaxin.client.util.data.StringUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.client.util.task.ZalyTaskExecutor;
@@ -22,6 +20,8 @@ import com.akaxin.proto.core.GroupProto;
 import com.akaxin.proto.site.ApiGroupListProto;
 import com.akaxin.proto.site.ApiSiteConfigProto;
 import com.orhanobut.logger.Logger;
+import com.windchat.im.IMClient;
+import com.windchat.im.socket.SiteAddress;
 
 import java.util.List;
 
@@ -52,9 +52,8 @@ public class SiteUtils {
      * @return
      */
     public static Site getAndCheckLegalSite(Site site) {
-        if (site == null || TextUtils.isEmpty(site.getSiteHost())
-                || TextUtils.isEmpty(site.getSitePort()) || TextUtils.isEmpty(site.getSiteUserId()) || TextUtils.isEmpty(site.getGlobalUserId())) {
-            return SitePresenter.getInstance().getSiteByHostAndPort(site.getSiteHost(), site.getSitePort());
+        if (site == null || TextUtils.isEmpty(site.getSiteHost()) || TextUtils.isEmpty(site.getSiteUserId()) || TextUtils.isEmpty(site.getGlobalUserId())) {
+            return SitePresenter.getInstance().getSiteByHostAndPort(site.getSiteHost(), site.getSitePort() + "");
         }
         return site;
     }

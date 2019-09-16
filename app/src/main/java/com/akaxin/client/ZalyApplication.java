@@ -9,9 +9,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.bean.SiteAddress;
 import com.akaxin.client.constant.SiteConfig;
-import com.akaxin.client.im.IMClient;
 import com.akaxin.client.push.MiPushUtils;
 import com.akaxin.client.push.UmengPushUtils;
 import com.akaxin.client.site.presenter.impl.SitePresenter;
@@ -28,6 +26,8 @@ import com.blankj.utilcode.util.Utils;
 import com.orhanobut.logger.DiskLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.tencent.bugly.Bugly;
+import com.windchat.im.IMClient;
+import com.windchat.im.socket.SiteAddress;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 
 import java.util.ArrayList;

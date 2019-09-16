@@ -3,11 +3,11 @@ package com.akaxin.client.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.akaxin.client.socket.SiteAddress;
 import com.akaxin.client.util.GsonUtils;
 import com.akaxin.client.util.SiteUtils;
 import com.akaxin.client.util.data.StringUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
+import com.windchat.im.socket.SiteAddress;
 
 /**
  * Created by yichao on 2017/10/10.
@@ -15,7 +15,7 @@ import com.akaxin.client.util.log.ZalyLogUtils;
  * 站点
  */
 
-public class Site implements Parcelable {
+public class Site extends com.windchat.im.bean.Site implements Parcelable {
 
     public static final int STATUS_SITE_ONLINE = 1;
     public static final int STATUS_SITE_KEEPING = 2;
@@ -26,7 +26,7 @@ public class Site implements Parcelable {
 //    public static final String SITE_VERSION = "0.2.2";
 
     private String siteHost;
-    private String sitePort;
+    private int sitePort;
     private String siteName;
     private String siteIcon;
     private String globalUserId;
@@ -58,7 +58,7 @@ public class Site implements Parcelable {
 
     protected Site(Parcel in) {
         siteHost = in.readString();
-        sitePort = in.readString();
+        sitePort = in.readInt();
         siteName = in.readString();
         siteIcon = in.readString();
         siteUserId = in.readString();
@@ -79,7 +79,7 @@ public class Site implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(siteHost);
-        dest.writeString(sitePort);
+        dest.writeInt(sitePort);
         dest.writeString(siteName);
         dest.writeString(siteIcon);
         dest.writeString(siteUserId);
@@ -139,11 +139,11 @@ public class Site implements Parcelable {
         this.siteHost = siteHost;
     }
 
-    public String getSitePort() {
+    public int getSitePort() {
         return sitePort;
     }
 
-    public void setSitePort(String sitePort) {
+    public void setSitePort(int sitePort) {
         this.sitePort = sitePort;
     }
 

@@ -3,7 +3,6 @@ package com.akaxin.client.api;
 import com.akaxin.client.Configs;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.constant.ServerConfig;
-import com.akaxin.client.socket.TransportPackageForResponse;
 import com.akaxin.proto.core.PhoneProto;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.platform.ApiUserPhoneProto;
@@ -15,6 +14,7 @@ import com.akaxin.proto.site.ApiUserProfileProto;
 import com.akaxin.proto.site.ApiUserSearchProto;
 import com.akaxin.proto.site.ApiUserUpdateMuteProto;
 import com.akaxin.proto.site.ApiUserUpdateProfileProto;
+import com.windchat.im.socket.TransportPackageForResponse;
 
 /**
  * Created by sssl on 08/06/2018.

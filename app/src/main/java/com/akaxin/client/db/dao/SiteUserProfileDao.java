@@ -4,13 +4,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
-import com.akaxin.client.bean.SiteAddress;
 import com.akaxin.client.bean.User;
 import com.akaxin.client.db.bean.UserFriendBean;
 import com.akaxin.client.db.sql.DBSQL;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.proto.core.UserProto;
 import com.orhanobut.logger.Logger;
+import com.windchat.im.socket.SiteAddress;
 
 import java.util.ArrayList;
 import java.util.HashMap;

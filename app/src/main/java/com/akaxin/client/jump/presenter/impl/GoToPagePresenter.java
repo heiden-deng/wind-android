@@ -173,7 +173,7 @@ public class GoToPagePresenter implements IGotoPagePresenter {
         int port = uri.getPort();
         if (port < 0) port = SiteUtils.DEFAULT_PORT;
         this.currentSite.setSiteHost(host);
-        this.currentSite.setSitePort(port + "");
+        this.currentSite.setSitePort(port);
     }
 
 

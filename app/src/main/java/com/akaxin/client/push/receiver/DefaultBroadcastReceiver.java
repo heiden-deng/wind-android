@@ -5,10 +5,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import com.akaxin.client.ZalyApplication;
-import com.akaxin.client.im.ZalyIM;
 import com.akaxin.client.jump.ZalyGotoPageByPlugin;
 import com.akaxin.client.util.NotificationUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
+import com.windchat.im.IMConst;
 
 import java.util.List;
 
@@ -22,11 +22,11 @@ public class DefaultBroadcastReceiver extends BroadcastReceiver {
             String action = intent.getAction();
             ZalyLogUtils.getInstance().info(TAG, "action:" + action);
             switch (action) {
-                case ZalyIM.PLATFORM_PUSH_ACTION:
+                case IMConst.PLATFORM_PUSH_ACTION:
                     if (isAppInBackground(context)) {
-                        String pushContent = intent.getStringExtra(ZalyIM.KEY_PLATFORM_PUSH_CONTENT);
-                        String pushTitle = intent.getStringExtra(ZalyIM.KEY_PLATFORM_PUSH_TITLE);
-                        String url = intent.getStringExtra(ZalyIM.KEY_PLATFORM_PUSH_JUMP);
+                        String pushContent = intent.getStringExtra(IMConst.KEY_PLATFORM_PUSH_CONTENT);
+                        String pushTitle = intent.getStringExtra(IMConst.KEY_PLATFORM_PUSH_TITLE);
+                        String url = intent.getStringExtra(IMConst.KEY_PLATFORM_PUSH_JUMP);
                         ZalyLogUtils.getInstance().info(TAG, "pushJump: " + url);
                         NotificationUtils.showNotification(
                                 ZalyApplication.getContext(),

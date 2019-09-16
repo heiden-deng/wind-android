@@ -881,11 +881,11 @@ public class StringUtils {
     }
 
     public static String getSiteSubTitle(Site site) {
-        try{
+        try {
             String subTitle = site.getSiteName() + " | " + site.getSiteHost();
-            if (!site.getSitePort().equals("2021")) subTitle += (":" + site.getSitePort());
+            if (site.getSitePort() != 2021) subTitle += (":" + site.getSitePort());
             return subTitle;
-        }catch (Exception e) {
+        } catch (Exception e) {
             ZalyLogUtils.getInstance().exceptionError(e);
             return "";
         }
@@ -913,7 +913,7 @@ public class StringUtils {
         return 0;
     }
 
-    public static Map<String, String> getParamsFromUrl(String url){
+    public static Map<String, String> getParamsFromUrl(String url) {
         Uri uri = Uri.parse(url);
         String uriScheme = uri.getScheme();
         for (String scheme : SiteConfig.SCHEMES) {
@@ -936,14 +936,14 @@ public class StringUtils {
         for (String scheme : SiteConfig.SCHEMES) {
             if (scheme.equals(uriScheme)) {
                 String host = uri.getHost();
-                if(host.equals(Configs.LOCAL_SITE_DEFAULT_MARK)) {
+                if (host.equals(Configs.LOCAL_SITE_DEFAULT_MARK)) {
                     host = site.getSiteHost();
                 }
                 int port = uri.getPort();
-                if(port<1) {
+                if (port < 1) {
                     port = Integer.valueOf(SiteConfig.SITE_PROT);
                 }
-                return host+":"+port;
+                return host + ":" + port;
             }
         }
         return "";
@@ -955,15 +955,15 @@ public class StringUtils {
         for (String scheme : SiteConfig.SCHEMES) {
             if (scheme.equals(uriScheme)) {
                 String host = uri.getHost();
-                if(host.equals(Configs.LOCAL_SITE_DEFAULT_MARK)) {
-                   return true;
+                if (host.equals(Configs.LOCAL_SITE_DEFAULT_MARK)) {
+                    return true;
                 }
             }
         }
         return false;
     }
 
-    public static String changeReferer(String url){
+    public static String changeReferer(String url) {
         url = url.replace(SiteConfig.ZALY_SCHEME, SiteConfig.HTTP_SCHEME);
         url = url.replace(SiteConfig.ZALYS_SCHEME, SiteConfig.HTTPS_SCHEME);
         return url;

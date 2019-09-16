@@ -14,7 +14,6 @@ import com.akaxin.client.bean.event.AppEvent;
 import com.akaxin.client.constant.ErrorCode;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.constant.SiteConfig;
-import com.akaxin.client.im.IMClient;
 import com.akaxin.client.maintab.ZalyMainActivity;
 import com.akaxin.client.platform.task.ApiPhoneApplyTokenTask;
 import com.akaxin.client.platform.task.ApiSettingSiteMuteTask;
@@ -22,7 +21,6 @@ import com.akaxin.client.platform.task.ApiUserPushTokenTask;
 import com.akaxin.client.platform.task.PushAuthTask;
 import com.akaxin.client.register.RegisterActivity;
 import com.akaxin.client.site.presenter.impl.SitePresenter;
-import com.akaxin.client.socket.ConnectionConfig;
 import com.akaxin.client.util.SiteUtils;
 import com.akaxin.client.util.data.StringUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
@@ -32,6 +30,8 @@ import com.akaxin.client.util.toast.Toaster;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.site.ApiSiteConfigProto;
 import com.akaxin.proto.site.ApiSiteLoginProto;
+import com.windchat.im.IMClient;
+import com.windchat.im.socket.ConnectionConfig;
 
 import org.greenrobot.eventbus.EventBus;
 

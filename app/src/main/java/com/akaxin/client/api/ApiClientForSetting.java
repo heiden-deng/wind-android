@@ -1,10 +1,10 @@
 package com.akaxin.client.api;
 
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.socket.TransportPackageForResponse;
 import com.akaxin.proto.platform.ApiSettingDeleteUserTokenProto;
 import com.akaxin.proto.platform.ApiSettingSiteMuteProto;
 import com.akaxin.proto.platform.ApiSettingUpdateSiteMuteProto;
+import com.windchat.im.socket.TransportPackageForResponse;
 
 /**
  * Created by Mr.kk on 2018/6/14.
@@ -35,7 +35,7 @@ public class ApiClientForSetting {
     public ApiSettingSiteMuteProto.ApiSettingSiteMuteResponse getSiteSetting(Site site) throws Exception {
         ApiSettingSiteMuteProto.ApiSettingSiteMuteRequest request = ApiSettingSiteMuteProto.ApiSettingSiteMuteRequest.newBuilder()
                 .setSiteHost(site.getSiteHost())
-                .setSitePort(Integer.parseInt(site.getSitePort()))
+                .setSitePort(site.getSitePort())
                 .build();
         TransportPackageForResponse response = this.client.sendRequest(API_SETTING_SITE_MUTE, request);
         return ApiSettingSiteMuteProto.ApiSettingSiteMuteResponse.parseFrom(response.data.getData());
@@ -53,7 +53,7 @@ public class ApiClientForSetting {
         ApiSettingUpdateSiteMuteProto.ApiSettingUpdateSiteMuteRequest request
                 = ApiSettingUpdateSiteMuteProto.ApiSettingUpdateSiteMuteRequest.newBuilder()
                 .setSiteHost(site.getSiteHost())
-                .setSitePort(Integer.parseInt(site.getSitePort()))
+                .setSitePort(site.getSitePort())
                 .setMute(mute).build();
         TransportPackageForResponse response = this.client.sendRequest(API_SETTING_UPDATE_SITE_MUTE, request);
         return ApiSettingUpdateSiteMuteProto.ApiSettingUpdateSiteMuteResponse.parseFrom(response.data.getData());
@@ -61,6 +61,7 @@ public class ApiClientForSetting {
 
     /**
      * 从平台删除user token
+     *
      * @param site
      * @return
      * @throws Exception

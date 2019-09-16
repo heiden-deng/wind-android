@@ -10,13 +10,11 @@ import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.db.bean.UserFriendBean;
 import com.akaxin.client.friend.presenter.impl.UserProfilePresenter;
-import com.akaxin.client.im.IMClient;
 import com.akaxin.client.im.files.IMFileUtils;
 import com.akaxin.client.site.presenter.ISiteInfoPresenter;
 import com.akaxin.client.site.task.ApiUserProfileTask;
 import com.akaxin.client.site.task.DeleteUserToken;
 import com.akaxin.client.site.view.ISiteInfoView;
-import com.akaxin.client.socket.ConnectionConfig;
 import com.akaxin.client.util.SiteUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.client.util.task.ZalyTaskExecutor;
@@ -28,6 +26,8 @@ import com.akaxin.proto.site.ApiFileUploadProto;
 import com.akaxin.proto.site.ApiUserMuteProto;
 import com.akaxin.proto.site.ApiUserUpdateMuteProto;
 import com.akaxin.proto.site.ApiUserUpdateProfileProto;
+import com.windchat.im.IMClient;
+import com.windchat.im.socket.ConnectionConfig;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -213,7 +213,7 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
             super.onTaskSuccess(apiSettingSiteMuteResponse);
             messageMute = apiSettingSiteMuteResponse.getMute();
             if (messageMute) {
-                SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort(), messageMute);
+                SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort() + "", messageMute);
                 iView.onGetPlatformSiteSettingSuccess(messageMute);
             } else {
                 // go on querying site
@@ -255,7 +255,7 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
             super.onTaskSuccess(apiUserMuteResponse);
             messageMute = apiUserMuteResponse.getMute();
             // update db
-            SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort(), messageMute);
+            SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort() + "", messageMute);
 
             iView.onGetPlatformSiteSettingSuccess(messageMute);
         }
@@ -297,10 +297,10 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
         @Override
         protected void onTaskSuccess(ApiUserUpdateMuteProto.ApiUserUpdateMuteResponse apiUserUpdateMuteResponse) {
             super.onTaskSuccess(apiUserUpdateMuteResponse);
-            SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort(), mute);
+            SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort() + "", mute);
             messageMute = mute;
             muteUpdateSuccessful = true;
-            SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort(), messageMute);
+            SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort() + "", messageMute);
 
             iView.onUpdateSiteSettingSuccess();
         }
@@ -359,8 +359,7 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
             super.onTaskSuccess(apiSettingUpdateSiteMuteResponse);
             muteUpdateSuccessful = true;
             messageMute = mute;
-            SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort(), messageMute);
-
+            SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort() + "", messageMute);
             iView.onUpdateSiteSettingSuccess();
         }
 
@@ -461,7 +460,7 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
         @Override
         protected Boolean executeTask(Void... voids) throws Exception {
             ////手动断开连接
-            SitePresenter.getInstance().updateSiteConnStatus(Site.MANUAL_CONTROL_DISCONNECT_STATUS, site.getSiteHost(), site.getSitePort());
+            SitePresenter.getInstance().updateSiteConnStatus(Site.MANUAL_CONTROL_DISCONNECT_STATUS, site.getSiteHost(), site.getSitePort() + "");
             IMClient.getInstance(site.toSiteAddress()).disconnect();
             site.setConnStatus(Site.MANUAL_CONTROL_DISCONNECT_STATUS);
 
@@ -500,7 +499,7 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
 
         @Override
         protected Boolean executeTask(Void... voids) throws Exception {
-            SitePresenter.getInstance().updateSiteConnStatus(Site.AUTO_DISCONNECT_STATUS, site.getSiteHost(), site.getSitePort());
+            SitePresenter.getInstance().updateSiteConnStatus(Site.AUTO_DISCONNECT_STATUS, site.getSiteHost(), site.getSitePort() + "");
             site.setConnStatus(Site.AUTO_DISCONNECT_STATUS);
             IMClient.makeSureClientAlived(site.toSiteAddress());
             iView.onConnectStart();
@@ -541,12 +540,12 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
 
             ZalyTaskExecutor.executeUserTask(TAG, new DeleteUserToken(site));
             ////手动断开连接
-            SitePresenter.getInstance().updateSiteConnStatus(Site.MANUAL_CONTROL_DISCONNECT_STATUS, site.getSiteHost(), site.getSitePort());
+            SitePresenter.getInstance().updateSiteConnStatus(Site.MANUAL_CONTROL_DISCONNECT_STATUS, site.getSiteHost(), site.getSitePort() + "");
             IMClient.getInstance(site.toSiteAddress()).disconnect();
             Thread.sleep(1000); // 有意sleep，等待IM断开
             IMClient.removeClient(site.toSiteAddress());
             SitePresenter.getInstance().deleteSiteDB(ZalyApplication.getSiteAddressObj(site.getSiteAddress()));
-            SitePresenter.getInstance().delSiteInfo(site.getSiteHost(), site.getSitePort());
+            SitePresenter.getInstance().delSiteInfo(site.getSiteHost(), site.getSitePort() + "");
             ZalyApplication.getCfgSP().put(site.getSiteIdentity() + KEY_NEW_APPLY_FRIEND, false);
 
             if (SiteUtils.removeCurrent(site)) {

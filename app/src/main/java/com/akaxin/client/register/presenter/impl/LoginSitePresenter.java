@@ -14,7 +14,6 @@ import com.akaxin.client.bean.User;
 import com.akaxin.client.bean.event.AppEvent;
 import com.akaxin.client.constant.ErrorCode;
 import com.akaxin.client.constant.IntentKey;
-import com.akaxin.client.im.IMClient;
 import com.akaxin.client.maintab.ZalyMainActivity;
 import com.akaxin.client.platform.task.ApiPhoneApplyTokenTask;
 import com.akaxin.client.platform.task.ApiSettingSiteMuteTask;
@@ -27,7 +26,6 @@ import com.akaxin.client.site.presenter.impl.SitePresenter;
 import com.akaxin.client.site.task.AddSiteTask;
 import com.akaxin.client.site.task.ApiUserProfileTask;
 import com.akaxin.client.site.task.GetSitesTask;
-import com.akaxin.client.socket.ConnectionConfig;
 import com.akaxin.client.util.DeviceUtils;
 import com.akaxin.client.util.SiteUtils;
 import com.akaxin.client.util.data.StringUtils;
@@ -40,6 +38,8 @@ import com.akaxin.proto.site.ApiSiteConfigProto;
 import com.akaxin.proto.site.ApiSiteLoginProto;
 import com.akaxin.proto.site.ApiSiteRegisterProto;
 import com.orhanobut.logger.Logger;
+import com.windchat.im.IMClient;
+import com.windchat.im.socket.ConnectionConfig;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -76,10 +76,10 @@ public class LoginSitePresenter implements ILoginSitePresenter {
         if (siteAddress.contains(":")) {
             String[] siteInfo = siteAddress.split(":");
             site.setSiteHost(siteInfo[0]);
-            site.setSitePort(siteInfo[1]);
+            site.setSitePort(Integer.valueOf(siteInfo[1]));
         } else {
             site.setSiteHost(siteAddress);
-            site.setSitePort(String.valueOf(SiteUtils.DEFAULT_PORT));
+            site.setSitePort(SiteUtils.DEFAULT_PORT);
         }
 
 

@@ -1,8 +1,6 @@
 package com.akaxin.client.group.presenter;
 
-import com.akaxin.client.bean.Group;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.bean.SiteAddress;
 import com.akaxin.client.db.bean.UserGroupBean;
 import com.akaxin.proto.core.GroupProto;
 import com.akaxin.proto.core.UserProto;

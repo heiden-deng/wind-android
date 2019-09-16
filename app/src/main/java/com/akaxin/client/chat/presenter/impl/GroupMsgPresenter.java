@@ -6,15 +6,14 @@ import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.bean.AudioInfo;
 import com.akaxin.client.bean.ChatSession;
 import com.akaxin.client.bean.ImageInfo;
+//import com.akaxin.client.bean.Message;
 import com.akaxin.client.bean.Message;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.bean.SiteAddress;
 import com.akaxin.client.chat.MessageAdapter;
 import com.akaxin.client.chat.presenter.IGroupMsgPresenter;
 import com.akaxin.client.chat.view.IGroupMsgView;
 import com.akaxin.client.db.ZalyDbContentHelper;
 import com.akaxin.client.db.dao.SiteMessageDao;
-import com.akaxin.client.im.IMClient;
 import com.akaxin.client.plugin.task.GetMsgPluginListTask;
 import com.akaxin.client.site.presenter.impl.SitePresenter;
 import com.akaxin.client.util.MsgUtils;
@@ -28,6 +27,8 @@ import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.FileProto;
 import com.akaxin.proto.core.GroupProto;
 import com.orhanobut.logger.Logger;
+import com.windchat.im.IMClient;
+import com.windchat.im.socket.SiteAddress;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -64,8 +65,8 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
     public void loadInitData(String groupId, Site currentSite) {
         this.groupId = groupId;
         this.chatSessionId = groupId;
-        this.currentSite   = currentSite;
-        msgAdapter = new MessageAdapter(iView.getContext(), chatSessionId,  MessageAdapter.IS_GROUP_MESSAGE, currentSite);
+        this.currentSite = currentSite;
+        msgAdapter = new MessageAdapter(iView.getContext(), chatSessionId, MessageAdapter.IS_GROUP_MESSAGE, currentSite);
         iView.setMsgRvAdapter(msgAdapter);
         ZalyTaskExecutor.executeUserTask(TAG, new LoadInitMsgFromDB());
         ZalyTaskExecutor.executeUserTask(TAG, new GetMsgPluginListTask(iView, GetMsgPluginListTask.GROUP_MSG_PLUGIN, chatSessionId, currentSite));
@@ -116,18 +117,19 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
         message.setSecret(isSecretMode);
         message.setMsgType(CoreProto.MsgType.GROUP_TEXT_VALUE);
         boolean isNet = NetUtils.getNetInfo();
-        if(!isNet) {
+        if (!isNet) {
             message.setMsgStatus(Message.STATUS_SEND_FAILED);
         } else {
             message.setMsgStatus(Message.STATUS_SENDING);
-        }        message.setChatSessionId(chatSessionId);
+        }
+        message.setChatSessionId(chatSessionId);
         ZalyTaskExecutor.executeUserTask(TAG, new SendMessageTask(SendMessageTask.INSERT_MODE, message));
         iView.onStartSendingMessage(message);
     }
 
     @Override
     public void resendTextMessage(Message message) {
-        ZalyTaskExecutor.executeUserTask(TAG, new SendMessageTask(SendMessageTask.UPDATE_MODE,  message));
+        ZalyTaskExecutor.executeUserTask(TAG, new SendMessageTask(SendMessageTask.UPDATE_MODE, message));
         iView.refreshMsgStatus(message);
     }
 
@@ -141,7 +143,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
         message.setMsgType(CoreProto.MsgType.GROUP_VOICE_VALUE);
         message.setSecret(isSecretMode);
         boolean isNet = NetUtils.getNetInfo();
-        if(!isNet) {
+        if (!isNet) {
             message.setMsgStatus(Message.STATUS_SEND_FAILED);
         } else {
             message.setMsgStatus(Message.STATUS_SENDING);
@@ -169,8 +171,9 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
             public void onUploadFail(Exception e) {
                 ZalyLogUtils.getInstance().errorToInfo(TAG, e.getMessage());
             }
+
             @Override
-            public void onProcessRate(int processNum){
+            public void onProcessRate(int processNum) {
                 sendDBContent(message, processNum);
             }
         }, FileProto.FileType.MESSAGE_VOICE, message, currentSite);
@@ -180,10 +183,10 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
 
     @Override
     public void resendAudioMessage(Message msg) {
-        final  Message message = msg;
-        final  AudioInfo audioInfo = AudioInfo.parseJSON(msg.getContent());
+        final Message message = msg;
+        final AudioInfo audioInfo = AudioInfo.parseJSON(msg.getContent());
 
-        String audioFilePath =  audioInfo.getAudioFilePath();
+        String audioFilePath = audioInfo.getAudioFilePath();
 
         UploadFileUtils.uploadMsgFile(audioFilePath, new UploadFileUtils.UploadFileListener() {
             @Override
@@ -199,7 +202,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
             }
 
             @Override
-            public void onProcessRate(int processNum){
+            public void onProcessRate(int processNum) {
                 ZalyLogUtils.getInstance().info(TAG, " process num is " + processNum);
                 sendDBContent(message, processNum);
             }
@@ -235,7 +238,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
         message.setSecret(isSecretMode);
         message.setMsgType(CoreProto.MsgType.GROUP_IMAGE_VALUE);//群图片消息
         boolean isNet = NetUtils.getNetInfo();
-        if(!isNet) {
+        if (!isNet) {
             message.setMsgStatus(Message.STATUS_SEND_FAILED);
         } else {
             message.setMsgStatus(Message.STATUS_SENDING);
@@ -254,8 +257,9 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
                 ZalyTaskExecutor.executeUserTask(TAG, new UpdateImgMsgDBTask(UpdateImgMsgDBTask.UPDATE_MODE, message));
                 sendMsgByIMManger(message);
             }
+
             @Override
-            public void onProcessRate(int processNum){
+            public void onProcessRate(int processNum) {
                 ZalyLogUtils.getInstance().info(TAG, " process num is " + processNum);
                 sendDBContent(message, processNum);
             }
@@ -268,7 +272,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
         iView.onStartSendingMessage(message);
     }
 
-    public void sendDBContent( Message message, int processNum) {
+    public void sendDBContent(Message message, int processNum) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(ZalyDbContentHelper.IMG_PROCESS_MSG_INFO, message);
         bundle.putInt(ZalyDbContentHelper.IMG_PROCESS_NUM, processNum);
@@ -277,6 +281,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
 
     /**
      * 删除群组的某条消息
+     *
      * @param msgId
      */
     @Override
@@ -298,9 +303,10 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
                 break;
         }
     }
+
     @Override
     public void resendImgMessage(Message msg) {
-        final Message message = msg ;
+        final Message message = msg;
         final ImageInfo imageInfo = ImageInfo.parseJSON(msg.getContent());
 
         String imgPath = imageInfo.getFilePath();
@@ -320,7 +326,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
             }
 
             @Override
-            public void onProcessRate(int processNum){
+            public void onProcessRate(int processNum) {
                 ZalyLogUtils.getInstance().info(TAG, " process num is " + processNum);
                 sendDBContent(message, processNum);
             }
@@ -379,19 +385,19 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
         private int mode = INSERT_MODE;
 
         public SendMessageTask(int mode, Message message) {
-            this.mode    = mode;
+            this.mode = mode;
             this.message = message;
         }
 
         @Override
         protected Message executeTask(Void... voids) throws Exception {
             Long _id = null;
-            if(mode == INSERT_MODE) {
+            if (mode == INSERT_MODE) {
                 //先入库
                 SiteAddress siteAddress = new SiteAddress(currentSite.getSiteAddress());
                 _id = SiteMessageDao.getInstance(siteAddress).insertGroupMsg(message);
             }
-            if(mode == UPDATE_MODE) {
+            if (mode == UPDATE_MODE) {
                 _id = message.get_id();
             }
 
@@ -429,7 +435,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
         private int mode = INSERT_MODE;
 
         public SendAudioMessageTask(int mode, Message message) {
-            this.mode    = mode;
+            this.mode = mode;
             this.message = message;
         }
 
@@ -437,11 +443,11 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
         protected Message executeTask(Void... voids) throws Exception {
             Long _id = null;
             SiteAddress siteAddress = new SiteAddress(currentSite.getSiteAddress());
-            if(mode == INSERT_MODE) {
+            if (mode == INSERT_MODE) {
                 //先入库
                 _id = SiteMessageDao.getInstance(siteAddress).insertGroupMsg(message);
             }
-            if(mode == UPDATE_MODE) {
+            if (mode == UPDATE_MODE) {
                 _id = message.get_id();
                 SiteMessageDao.getInstance(siteAddress).updateGroupMsgContent(message.get_id(), message.getContent());
                 sendMsgByIMManger(message);
@@ -470,15 +476,16 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
 
     /**
      * 使用imManger发送消息
+     *
      * @param message
      */
-    protected  void sendMsgByIMManger(Message message){
+    protected void sendMsgByIMManger(Message message) {
         boolean isNet = NetUtils.getNetInfo();
-        if(isNet) {
-            try{
+        if (isNet) {
+            try {
                 String curSiteIdentity = currentSite.getSiteIdentity();
-                IMClient.getInstance(new com.akaxin.client.socket.SiteAddress(curSiteIdentity)).sendMessage(message);
-            }catch (Exception e) {
+                IMClient.getInstance(new SiteAddress(curSiteIdentity)).sendMessage(message);
+            } catch (Exception e) {
                 ZalyLogUtils.getInstance().errorToInfo(TAG, e.getMessage());
             }
         }
@@ -542,27 +549,28 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
     }
 
     @Override
-    public void syncMessageStatus(List<Message> messages){
-        try{
+    public void syncMessageStatus(List<Message> messages) {
+        try {
             List<String> msgIds = new ArrayList<>();
-            for (int i=0; i<messages.size(); i++ ){
+            for (int i = 0; i < messages.size(); i++) {
                 Message msg = messages.get(i);
 
                 /////自己发送的
                 boolean isOutTime = (System.currentTimeMillis() - msg.getSendMsgTime()) > Message.SYNC_MSG_STATUS_EXPIRE_TIME;
-                if(msg.getMsgType() == 1 && msg.getSiteUserId().equals(currentSite.getSiteUserId()) && (!isOutTime)) {
+                if (msg.getMsgType() == 1 && msg.getSiteUserId().equals(currentSite.getSiteUserId()) && (!isOutTime)) {
                     msgIds.add(i, msg.getMsgId());
                 }
             }
-            if (msgIds.size() >0) {
+            if (msgIds.size() > 0) {
                 String curSiteIdentity = currentSite.getSiteIdentity();
-                IMClient.getInstance(new com.akaxin.client.socket.SiteAddress(curSiteIdentity)).syncMessageStatus(msgIds, CoreProto.MsgType.GROUP_TEXT_VALUE);
+                IMClient.getInstance(new SiteAddress(curSiteIdentity)).syncMessageStatus(msgIds, CoreProto.MsgType.GROUP_TEXT_VALUE);
                 return;
             }
         } catch (Exception e) {
             ZalyLogUtils.getInstance().exceptionError(e);
         }
     }
+
     class LoadHistoryMsgFromDB extends ZalyTaskExecutor.Task<Void, Void, List<Message>> {
 
         private long _id;

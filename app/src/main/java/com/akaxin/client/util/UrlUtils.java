@@ -89,7 +89,7 @@ public abstract class UrlUtils {
         int port = uri.getPort();
         if (port < 0) port = SiteUtils.DEFAULT_PORT;
         currentSite = new Site();
-        currentSite.setSitePort(port + "");
+        currentSite.setSitePort(port);
         currentSite.setSiteHost(host);
         return String.format(Locale.getDefault(), "%s:%d", host, port);
     }

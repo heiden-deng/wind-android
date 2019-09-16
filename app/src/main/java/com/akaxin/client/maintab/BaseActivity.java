@@ -21,10 +21,6 @@ import com.akaxin.client.R;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.constant.PackageSign;
-import com.akaxin.client.im.IMClient;
-import com.akaxin.client.im.ZalyIM;
-import com.akaxin.client.socket.Connection;
-import com.akaxin.client.socket.SiteAddress;
 import com.akaxin.client.util.ClientTypeHepler;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.google.zxing.BarcodeFormat;
@@ -32,14 +28,15 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.umeng.message.PushAgent;
+import com.windchat.im.IMClient;
+import com.windchat.im.IMConst;
+import com.windchat.im.socket.Connection;
+import com.windchat.im.socket.SiteAddress;
 
 import java.util.Stack;
 
-import static com.akaxin.client.im.ZalyIM.KEY_CONN_IDENTITY;
-import static com.akaxin.client.im.ZalyIM.KEY_CONN_STATUS;
-import static com.akaxin.client.im.ZalyIM.KEY_CONN_TYPE;
-import static com.akaxin.client.socket.Connection.CONN_IM;
 import static com.akaxin.proto.core.ClientProto.ClientType.ANDROID_XIAOMI;
+import static com.windchat.im.socket.Connection.CONN_IM;
 
 /**
  * Created by yichao on 2017/11/11.
@@ -115,7 +112,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void registerBroadcast() {
-        IntentFilter intentFilter = new IntentFilter(ZalyIM.CONNECTION_ACTION);
+        IntentFilter intentFilter = new IntentFilter(IMConst.CONNECTION_ACTION);
         registerReceiver(connectStatusReceiver, intentFilter);
     }
 
@@ -191,9 +188,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
-                String connIdentity = bundle.getString(ZalyIM.KEY_CONN_IDENTITY);
-                int connType = bundle.getInt(ZalyIM.KEY_CONN_TYPE);
-                int statusType = bundle.getInt(ZalyIM.KEY_CONN_STATUS);
+                String connIdentity = bundle.getString(IMConst.KEY_CONN_IDENTITY);
+                int connType = bundle.getInt(IMConst.KEY_CONN_TYPE);
+                int statusType = bundle.getInt(IMConst.KEY_CONN_STATUS);
                 onConnectionChange(connIdentity, connType, statusType);
             }
         }
@@ -331,20 +328,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         ZalyLogUtils.getInstance().info(TAG, "getConnStatus == " + site.getConnStatus());
         if (site.getConnStatus() == Site.MANUAL_CONTROL_DISCONNECT_STATUS) {
             Bundle bundle = new Bundle();
-            bundle.putString(KEY_CONN_IDENTITY, site.getSiteIdentity());
-            bundle.putInt(KEY_CONN_STATUS, Connection.STATUS_CONN_DISCONN);
-            bundle.putInt(KEY_CONN_TYPE, CONN_IM);
-            Intent intent = new Intent(ZalyIM.CONNECTION_ACTION);
+            bundle.putString(IMConst.KEY_CONN_IDENTITY, site.getSiteIdentity());
+            bundle.putInt(IMConst.KEY_CONN_STATUS, Connection.STATUS_CONN_DISCONN);
+            bundle.putInt(IMConst.KEY_CONN_TYPE, CONN_IM);
+            Intent intent = new Intent(IMConst.CONNECTION_ACTION);
             intent.putExtras(bundle);
             intent.setPackage(PackageSign.getPackage());
             getContext().sendBroadcast(intent);
         }
         if (isConnected) {
             Bundle bundle = new Bundle();
-            bundle.putString(KEY_CONN_IDENTITY, site.getSiteIdentity());
-            bundle.putInt(KEY_CONN_STATUS, Connection.STATUS_AUTH_SUCCESS);
-            bundle.putInt(KEY_CONN_TYPE, CONN_IM);
-            Intent intent = new Intent(ZalyIM.CONNECTION_ACTION);
+            bundle.putString(IMConst.KEY_CONN_IDENTITY, site.getSiteIdentity());
+            bundle.putInt(IMConst.KEY_CONN_STATUS, Connection.STATUS_AUTH_SUCCESS);
+            bundle.putInt(IMConst.KEY_CONN_TYPE, CONN_IM);
+            Intent intent = new Intent(IMConst.CONNECTION_ACTION);
             intent.putExtras(bundle);
             intent.setPackage(PackageSign.getPackage());
             getContext().sendBroadcast(intent);

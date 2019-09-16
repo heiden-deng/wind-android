@@ -11,7 +11,7 @@ import com.akaxin.proto.core.CoreProto;
  * Created by yichao on 2017/10/10.
  */
 
-public class Message implements Parcelable {
+public class Message extends com.windchat.im.bean.Message implements Parcelable {
 
     public static long timeMsgInterval = 1000 * 60 * 3;
 

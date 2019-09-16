@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.akaxin.client.im.ZalyIM;
 import com.akaxin.client.util.log.ZalyLogUtils;
+import com.windchat.im.IMConst;
 
 import java.lang.reflect.ParameterizedType;
 
@@ -184,9 +184,9 @@ public abstract class MVPBaseFragment<V extends BaseView, T extends BasePresente
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
-            String connIdentity = bundle.getString(ZalyIM.KEY_CONN_IDENTITY);
-            int connType = bundle.getInt(ZalyIM.KEY_CONN_TYPE);
-            int statusType = bundle.getInt(ZalyIM.KEY_CONN_STATUS);
+            String connIdentity = bundle.getString(IMConst.KEY_CONN_IDENTITY);
+            int connType = bundle.getInt(IMConst.KEY_CONN_TYPE);
+            int statusType = bundle.getInt(IMConst.KEY_CONN_STATUS);
             onConnectionChange(connIdentity, connType, statusType);
         }
     };

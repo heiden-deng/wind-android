@@ -3,14 +3,13 @@ package com.akaxin.client.group.presenter.impl;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.api.SiteGroupAPI;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.bean.SiteAddress;
 import com.akaxin.client.db.bean.UserGroupBean;
 import com.akaxin.client.db.dao.SiteGroupProfileDao;
 import com.akaxin.client.group.presenter.IGroupPresenter;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.proto.core.GroupProto;
 import com.akaxin.proto.core.UserProto;
-import com.orhanobut.logger.Logger;
+import com.windchat.im.socket.SiteAddress;
 
 import java.util.List;
 

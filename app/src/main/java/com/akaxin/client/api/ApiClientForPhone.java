@@ -1,11 +1,11 @@
 package com.akaxin.client.api;
 
 import com.akaxin.client.Configs;
-import com.akaxin.client.socket.TransportPackageForResponse;
 import com.akaxin.proto.core.PhoneProto;
 import com.akaxin.proto.platform.ApiPhoneApplyTokenProto;
 import com.akaxin.proto.platform.ApiPhoneLoginProto;
 import com.akaxin.proto.platform.ApiPhoneVerifyCodeProto;
+import com.windchat.im.socket.TransportPackageForResponse;
 
 /**
  * Created by Mr.kk on 2018/6/14.

@@ -6,12 +6,12 @@ import android.database.sqlite.SQLiteStatement;
 
 import com.akaxin.client.bean.ChatSession;
 import com.akaxin.client.bean.Message;
-import com.akaxin.client.bean.SiteAddress;
 import com.akaxin.client.db.sql.DBSQL;
 import com.akaxin.client.util.data.StringUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.proto.core.CoreProto;
 import com.orhanobut.logger.Logger;
+import com.windchat.im.socket.SiteAddress;
 
 import java.util.ArrayList;
 import java.util.HashMap;

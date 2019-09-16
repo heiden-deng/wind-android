@@ -56,8 +56,6 @@ import com.akaxin.client.fragments.SessionFragment;
 import com.akaxin.client.friend.ContactsFragment;
 import com.akaxin.client.friend.FriendSearchActivity;
 import com.akaxin.client.group.GroupCreateActivity;
-import com.akaxin.client.im.IMClient;
-import com.akaxin.client.im.ZalyIM;
 import com.akaxin.client.maintab.adapter.MainTabPagerAdapter;
 import com.akaxin.client.platform.task.ApiUserPushTokenTask;
 import com.akaxin.client.platform.task.GetUserPhoneTask;
@@ -67,8 +65,6 @@ import com.akaxin.client.site.presenter.impl.PlatformPresenter;
 import com.akaxin.client.site.task.GetSitesInfoTask;
 import com.akaxin.client.site.task.GetSitesTask;
 import com.akaxin.client.site.task.LoginSiteTask;
-import com.akaxin.client.socket.Connection;
-import com.akaxin.client.socket.SiteAddress;
 import com.akaxin.client.util.NetUtils;
 import com.akaxin.client.util.data.StringUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
@@ -81,6 +77,10 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.UpgradeInfo;
+import com.windchat.im.IMClient;
+import com.windchat.im.IMConst;
+import com.windchat.im.socket.Connection;
+import com.windchat.im.socket.SiteAddress;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -162,9 +162,9 @@ public class ZalyMainActivity extends BaseActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        IntentFilter intentFilter = new IntentFilter(ZalyIM.UPDATE_SITES_ACTION);
-        intentFilter.addAction(ZalyIM.IM_NOTICE_ACTION);
-        intentFilter.addAction(ZalyIM.PLATFORM_PUSH_ACTION);
+        IntentFilter intentFilter = new IntentFilter(IMConst.UPDATE_SITES_ACTION);
+        intentFilter.addAction(IMConst.IM_NOTICE_ACTION);
+        intentFilter.addAction(IMConst.PLATFORM_PUSH_ACTION);
         registerReceiver(mainTabReceiver, intentFilter);
         registerNetInfo();
         doMainLogic();
@@ -673,11 +673,11 @@ public class ZalyMainActivity extends BaseActivity
             if (intent != null && intent.getAction() != null) {
                 String action = intent.getAction();
                 switch (action) {
-                    case ZalyIM.UPDATE_SITES_ACTION:
+                    case IMConst.UPDATE_SITES_ACTION:
                         ZalyTaskExecutor.executeUserTask(TAG, new UpdateSitesTask());
                         break;
-                    case ZalyIM.IM_NOTICE_ACTION:
-                        int noticeType = intent.getIntExtra(ZalyIM.KEY_NOTICE_TYPE, -1);
+                    case IMConst.IM_NOTICE_ACTION:
+                        int noticeType = intent.getIntExtra(IMConst.KEY_NOTICE_TYPE, -1);
                         switch (noticeType) {
                             // 新的好友
                             case ImStcNoticeProto.NoticeType.NEW_FRIEND_VALUE:
@@ -689,7 +689,7 @@ public class ZalyMainActivity extends BaseActivity
                             // 好友申请
                             case ImStcNoticeProto.NoticeType.APPLY_FRIEND_VALUE:
                                 // 根据站点身份存储是否有的好友申请
-                                String siteIdentity = intent.getStringExtra(ZalyIM.KEY_NOTICE_SITE_IDENTITY);
+                                String siteIdentity = intent.getStringExtra(IMConst.KEY_NOTICE_SITE_IDENTITY);
                                 if (StringUtils.isEmpty(siteIdentity)) {
                                     return;
                                 }
@@ -704,10 +704,10 @@ public class ZalyMainActivity extends BaseActivity
                                 break;
                         }
                         break;
-                    case ZalyIM.CONNECTION_ACTION:
+                    case IMConst.CONNECTION_ACTION:
                         Bundle bundle = intent.getExtras();
                         if (bundle == null) break;
-                        int statusType = bundle.getInt(ZalyIM.KEY_CONN_STATUS);
+                        int statusType = bundle.getInt(IMConst.KEY_CONN_STATUS);
                         switch (statusType) {
                             // 避免SessionFragment注册该事件晚于STATUS_AUTH_SUCCESS
                             case Connection.STATUS_AUTH_SUCCESS:

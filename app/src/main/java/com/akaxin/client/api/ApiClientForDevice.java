@@ -1,10 +1,10 @@
 package com.akaxin.client.api;
 
 import com.akaxin.client.ZalyApplication;
-import com.akaxin.client.socket.TransportPackageForResponse;
 import com.akaxin.proto.site.ApiDeviceBoundListProto;
 import com.akaxin.proto.site.ApiDeviceListProto;
 import com.akaxin.proto.site.ApiDeviceProfileProto;
+import com.windchat.im.socket.TransportPackageForResponse;
 
 /**
  * Created by Mr.kk on 2018/6/14.

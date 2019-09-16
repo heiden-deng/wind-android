@@ -1,8 +1,8 @@
 package com.akaxin.client.api;
 
-import com.akaxin.client.socket.TransportPackageForResponse;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.orhanobut.logger.Logger;
+import com.windchat.im.socket.TransportPackageForResponse;
 
 /**
  * Created by yichao on 2017/10/27.

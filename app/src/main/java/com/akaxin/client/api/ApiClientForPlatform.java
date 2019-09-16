@@ -4,7 +4,6 @@ import com.akaxin.client.Configs;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.constant.ServerConfig;
-import com.akaxin.client.socket.TransportPackageForResponse;
 import com.akaxin.client.util.ClientTypeHepler;
 import com.akaxin.client.util.DeviceUtils;
 import com.akaxin.proto.core.PhoneProto;
@@ -14,6 +13,7 @@ import com.akaxin.proto.platform.ApiPlatformTopSecretProto;
 import com.akaxin.proto.platform.ApiPushAuthProto;
 import com.akaxin.proto.platform.ApiUserRealNameProto;
 import com.akaxin.proto.site.ApiPlatformRegisterByPhoneProto;
+import com.windchat.im.socket.TransportPackageForResponse;
 
 /**
  * Created by Mr.kk on 2018/6/13.
@@ -47,7 +47,7 @@ public class ApiClientForPlatform {
     public static Site getPlatformSite() {
         Site platformSite = new Site();
         platformSite.setSiteHost(ServerConfig.PLATFORM_ADDRESS);
-        platformSite.setSitePort(ServerConfig.PLATFORM_PROT + "");
+        platformSite.setSitePort(ServerConfig.PLATFORM_PROT);
         return platformSite;
     }
 
@@ -123,7 +123,7 @@ public class ApiClientForPlatform {
     public ApiPlatformTopSecretProto.ApiPlatformTopSecretResponse getTopSecret(Site site) throws Exception {
         ApiPlatformTopSecretProto.ApiPlatformTopSecretRequest request = ApiPlatformTopSecretProto.ApiPlatformTopSecretRequest.newBuilder()
                 .setSiteHost(site.getSiteHost())
-                .setSitePort(site.getSitePort())
+                .setSitePort(site.getSitePort() + "")
                 .build();
         TransportPackageForResponse response = this.client.sendRequest(API_PLATFORM_TOP_SECRET, request);
         return ApiPlatformTopSecretProto.ApiPlatformTopSecretResponse.parseFrom(response.data.getData());
@@ -133,7 +133,7 @@ public class ApiClientForPlatform {
     public ApiPushAuthProto.ApiPushAuthResponse pushAuth(Site site, String userToken) throws Exception {
         ApiPushAuthProto.ApiPushAuthRequest request = ApiPushAuthProto.ApiPushAuthRequest.newBuilder()
                 .setSiteAddress(site.getSiteHost())
-                .setSitePort(site.getSitePort())
+                .setSitePort(site.getSitePort() + "")
                 .setUserToken(userToken)
                 .build();
         TransportPackageForResponse response = this.client.sendRequest(API_PUSH_AUTH, request);

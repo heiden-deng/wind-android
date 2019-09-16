@@ -12,13 +12,11 @@ import com.akaxin.client.bean.ChatSession;
 import com.akaxin.client.bean.ImageInfo;
 import com.akaxin.client.bean.Message;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.bean.SiteAddress;
 import com.akaxin.client.chat.MessageAdapter;
 import com.akaxin.client.chat.presenter.IMessagePresenter;
 import com.akaxin.client.chat.view.IMessageView;
 import com.akaxin.client.db.ZalyDbContentHelper;
 import com.akaxin.client.db.dao.SiteMessageDao;
-import com.akaxin.client.im.IMClient;
 import com.akaxin.client.plugin.task.GetMsgPluginListTask;
 import com.akaxin.client.site.presenter.impl.SitePresenter;
 import com.akaxin.client.util.MsgUtils;
@@ -37,6 +35,8 @@ import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.platform.ApiPlatformTopSecretProto;
 import com.akaxin.proto.site.ApiDeviceProfileProto;
 import com.akaxin.proto.site.ApiSecretChatApplyU2Proto;
+import com.windchat.im.IMClient;
+import com.windchat.im.socket.SiteAddress;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -832,7 +832,7 @@ public class MessagePresenter implements IMessagePresenter {
         if (isNet) {
             try {
                 String curSiteIdentity = currentSite.getSiteIdentity();
-                IMClient.getInstance(new com.akaxin.client.socket.SiteAddress(curSiteIdentity)).sendMessage(message);
+                IMClient.getInstance(new SiteAddress(curSiteIdentity)).sendMessage(message);
             } catch (Exception e) {
                 ZalyLogUtils.getInstance().errorToInfo(TAG, e.getMessage());
             }
@@ -1077,7 +1077,7 @@ public class MessagePresenter implements IMessagePresenter {
             if (msgIds.size() > 0) {
                 ZalyLogUtils.getInstance().info(TAG, "shaoye --  sync msg status == " + msgIds.toString());
                 String curSiteIdentity = currentSite.getSiteIdentity();
-                IMClient.getInstance(new com.akaxin.client.socket.SiteAddress(curSiteIdentity)).syncMessageStatus(msgIds, CoreProto.MsgType.TEXT_VALUE);
+                IMClient.getInstance(new SiteAddress(curSiteIdentity)).syncMessageStatus(msgIds, CoreProto.MsgType.TEXT_VALUE);
                 return;
             }
             ZalyLogUtils.getInstance().info(TAG, "shaoye -- no sync msg status");

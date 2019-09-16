@@ -4,12 +4,12 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.bean.SiteAddress;
 import com.akaxin.client.constant.SiteConfig;
 import com.akaxin.client.db.helper.AkxCommonDBHelper;
 import com.akaxin.client.db.helper.AkxDBManager;
 import com.akaxin.client.db.helper.AkxSiteDBHelper;
 import com.akaxin.client.util.log.ZalyLogUtils;
+import com.windchat.im.socket.SiteAddress;
 
 
 import java.util.HashMap;

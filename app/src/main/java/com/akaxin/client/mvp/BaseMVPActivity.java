@@ -16,12 +16,12 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.akaxin.client.R;
 import com.akaxin.client.ZalyApplication;
-import com.akaxin.client.im.ZalyIM;
 import com.akaxin.client.maintab.ActivityCollector;
 import com.akaxin.client.maintab.WelcomeActivity;
 import com.akaxin.client.util.ClientTypeHepler;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.umeng.message.PushAgent;
+import com.windchat.im.IMConst;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Stack;
@@ -72,7 +72,7 @@ public abstract class BaseMVPActivity<V extends BaseView, T extends BasePresente
     }
 
     public void registerBroadcast() {
-        IntentFilter intentFilter = new IntentFilter(ZalyIM.CONNECTION_ACTION);
+        IntentFilter intentFilter = new IntentFilter(IMConst.CONNECTION_ACTION);
         registerReceiver(connectStatusReceiver, intentFilter);
     }
 
@@ -84,9 +84,9 @@ public abstract class BaseMVPActivity<V extends BaseView, T extends BasePresente
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
-                String connIdentity = bundle.getString(ZalyIM.KEY_CONN_IDENTITY);
-                int connType = bundle.getInt(ZalyIM.KEY_CONN_TYPE);
-                int statusType = bundle.getInt(ZalyIM.KEY_CONN_STATUS);
+                String connIdentity = bundle.getString(IMConst.KEY_CONN_IDENTITY);
+                int connType = bundle.getInt(IMConst.KEY_CONN_TYPE);
+                int statusType = bundle.getInt(IMConst.KEY_CONN_STATUS);
                 onConnectionChange(connIdentity, connType, statusType);
             }
         }

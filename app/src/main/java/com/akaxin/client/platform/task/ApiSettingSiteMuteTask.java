@@ -5,11 +5,11 @@ import com.akaxin.client.api.ApiClientForPlatform;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.site.presenter.impl.SitePresenter;
-import com.akaxin.client.socket.ConnectionConfig;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.client.util.task.ZalyTaskExecutor;
 import com.akaxin.proto.platform.ApiSettingSiteMuteProto;
 import com.akaxin.proto.site.ApiUserMuteProto;
+import com.windchat.im.socket.ConnectionConfig;
 
 /**
  * Created by zhangjun on 04/06/2018.
@@ -39,7 +39,7 @@ public class ApiSettingSiteMuteTask extends ZalyTaskExecutor.Task<Void, Void, Ap
     protected void onTaskSuccess(ApiSettingSiteMuteProto.ApiSettingSiteMuteResponse apiSettingSiteMuteResponse) {
         super.onTaskSuccess(apiSettingSiteMuteResponse);
         boolean messageMute = apiSettingSiteMuteResponse.getMute();
-        SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort(), messageMute);
+        SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort() + "", messageMute);
         if (!messageMute) {
             ZalyTaskExecutor.executeUserTask(TAG, new GetSiteMuteTask());
         }
@@ -68,7 +68,7 @@ public class ApiSettingSiteMuteTask extends ZalyTaskExecutor.Task<Void, Void, Ap
         protected void onTaskSuccess(ApiUserMuteProto.ApiUserMuteResponse apiUserMuteResponse) {
             super.onTaskSuccess(apiUserMuteResponse);
             boolean messageMute = apiUserMuteResponse.getMute();
-            SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort(), messageMute);
+            SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort() + "", messageMute);
         }
 
         @Override

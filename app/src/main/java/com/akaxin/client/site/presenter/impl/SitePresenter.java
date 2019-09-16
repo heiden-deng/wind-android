@@ -3,7 +3,6 @@ package com.akaxin.client.site.presenter.impl;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.bean.ChatSession;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.bean.SiteAddress;
 import com.akaxin.client.bean.User;
 import com.akaxin.client.db.dao.AkxCommonDao;
 import com.akaxin.client.db.dao.SiteChatSessionDao;
@@ -17,6 +16,7 @@ import com.akaxin.client.site.task.ApiUserProfileTask;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.client.util.task.ZalyTaskExecutor;
 import com.orhanobut.logger.Logger;
+import com.windchat.im.socket.SiteAddress;
 
 import java.util.Date;
 import java.util.List;
@@ -173,7 +173,7 @@ public class SitePresenter implements ISitePresenter {
 
     @Override
     public void updateSiteUserInfo(Site site) {
-        AkxCommonDao.getInstance().updateSiteUserInfo(site.getSiteHost(), site.getSitePort(), site.getSiteUserName(), site.getSiteUserImage(), site.getSiteLoginId());
+        AkxCommonDao.getInstance().updateSiteUserInfo(site.getSiteHost(), site.getSitePort() + "", site.getSiteUserName(), site.getSiteUserImage(), site.getSiteLoginId());
     }
 
     @Override

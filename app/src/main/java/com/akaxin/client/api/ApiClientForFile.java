@@ -1,12 +1,12 @@
 package com.akaxin.client.api;
 
-import com.akaxin.client.socket.TransportPackageForResponse;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.proto.core.FileProto;
 import com.akaxin.proto.site.ApiFileDownloadProto;
 import com.akaxin.proto.site.ApiFileUploadProto;
 import com.google.protobuf.ByteString;
 import com.orhanobut.logger.Logger;
+import com.windchat.im.socket.TransportPackageForResponse;
 
 /**
  * Created by sssl on 08/06/2018.

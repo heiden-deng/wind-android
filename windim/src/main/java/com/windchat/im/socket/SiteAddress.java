@@ -38,6 +38,11 @@ public class SiteAddress {
         this.port = this.config.getPort();
     }
 
+    public SiteAddress(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
+
     public String getHost() {
         return this.host;
     }
@@ -50,22 +55,10 @@ public class SiteAddress {
         return this.host + ":" + this.port;
     }
 
-    public String toOldSiteIdentity() {
-        return this.getHost().replace('.', '_') + "_" + this.getPort();
-    }
-
-
     @Override
     public String toString() {
         return this.getFullUrl();
     }
-
-//    public com.akaxin.client.bean.SiteAddress toOldSiteAddress() {
-//        com.akaxin.client.bean.SiteAddress a = new com.akaxin.client.bean.SiteAddress();
-//        a.setSiteHost(this.host);
-//        a.setSitePort(this.port);
-//        return a;
-//    }
 
     // 兼容老代码
     public ConnectionConfig toConnectionConfig() {
@@ -78,5 +71,17 @@ public class SiteAddress {
             tmpConfig.setPort(this.port);
             return tmpConfig;
         }
+    }
+
+    public String getSiteDBAddress() {
+        if (this.host != null) {
+            String dbHost = this.host.replace(".", "-");
+            return dbHost + "-" + this.port;
+        }
+        return null;
+    }
+
+    public String getSiteAddress() {
+        return "host:" + this.host + " port:" + this.port;
     }
 }

@@ -1,9 +1,9 @@
 package com.akaxin.client.api;
 
-import com.akaxin.client.socket.TransportPackageForResponse;
-import com.akaxin.proto.platform.ApiTempDownloadProto;
 import com.akaxin.proto.platform.ApiTempUploadProto;
 import com.google.protobuf.ByteString;
+import com.windchat.im.socket.TransportPackageForResponse;
+import com.windchat.proto.platform.ApiTempDownloadProto;
 
 /**
  * Created by Mr.kk on 2018/6/14.
@@ -26,12 +26,13 @@ public class ApiClientForTemp {
 
     /**
      * 在服务器上申请临时存储空间
+     *
      * @param spaceKey
      * @param SHA1UserPubKey
      * @return
      * @throws Exception
      */
-    public ApiTempUploadProto.ApiTempUploadResponse applyTempSpace(String spaceKey,String SHA1UserPubKey) throws Exception {
+    public ApiTempUploadProto.ApiTempUploadResponse applyTempSpace(String spaceKey, String SHA1UserPubKey) throws Exception {
         ApiTempUploadProto.ApiTempUploadRequest request = ApiTempUploadProto.ApiTempUploadRequest.newBuilder()
                 .setName(spaceKey)
                 .setContent(ByteString.copyFromUtf8(SHA1UserPubKey))
@@ -43,6 +44,7 @@ public class ApiClientForTemp {
 
     /**
      * 从临时申请存储空间下载内容
+     *
      * @param spaceKey
      * @return
      * @throws Exception

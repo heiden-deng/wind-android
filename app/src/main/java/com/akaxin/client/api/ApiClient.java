@@ -5,18 +5,19 @@ import com.akaxin.client.bean.Site;
 import com.akaxin.client.constant.ServerConfig;
 import com.akaxin.client.site.presenter.impl.PlatformPresenter;
 import com.akaxin.client.site.presenter.impl.SitePresenter;
-import com.akaxin.client.socket.Connection;
-import com.akaxin.client.socket.ConnectionConfig;
-import com.akaxin.client.socket.SiteAddress;
-import com.akaxin.client.socket.TransportPackageForRequest;
-import com.akaxin.client.socket.TransportPackageForResponse;
+
 import com.akaxin.client.util.ClientTypeHepler;
 import com.akaxin.client.util.NetUtils;
 import com.akaxin.client.util.data.StringUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
-import com.akaxin.proto.core.CoreProto;
 import com.google.protobuf.AbstractMessageLite;
 import com.google.protobuf.ByteString;
+import com.windchat.im.socket.Connection;
+import com.windchat.im.socket.ConnectionConfig;
+import com.windchat.im.socket.SiteAddress;
+import com.windchat.im.socket.TransportPackageForRequest;
+import com.windchat.im.socket.TransportPackageForResponse;
+import com.windchat.proto.core.CoreProto;
 
 import java.util.HashMap;
 import java.util.Map;

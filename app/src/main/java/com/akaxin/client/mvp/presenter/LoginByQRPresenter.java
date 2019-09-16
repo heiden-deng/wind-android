@@ -19,7 +19,7 @@ import com.akaxin.client.util.security.AESUtils;
 import com.akaxin.client.util.security.RSAUtils;
 import com.akaxin.client.util.task.ZalyTaskExecutor;
 import com.akaxin.client.util.toast.Toaster;
-import com.akaxin.proto.platform.ApiTempDownloadProto;
+import com.windchat.proto.platform.ApiTempDownloadProto;
 
 import org.json.JSONObject;
 

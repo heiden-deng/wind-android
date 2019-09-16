@@ -3,12 +3,12 @@ package com.akaxin.client.api;
 import com.akaxin.client.Configs;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.socket.TransportPackageForResponse;
 import com.akaxin.client.util.DeviceUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.proto.site.ApiSiteConfigProto;
 import com.akaxin.proto.site.ApiSiteLoginProto;
 import com.akaxin.proto.site.ApiSiteRegisterProto;
+import com.windchat.im.socket.TransportPackageForResponse;
 
 /**
  * Created by sssl on 12/06/2018.
