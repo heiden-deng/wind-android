@@ -1,7 +1,5 @@
 package com.windchat.im;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.os.RemoteException;
 
 import com.windchat.im.bean.Message;
@@ -23,13 +21,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
-
-
-import static com.windchat.im.ZalyIM.KEY_CONN_IDENTITY;
-import static com.windchat.im.ZalyIM.KEY_CONN_STATUS;
-import static com.windchat.im.ZalyIM.KEY_CONN_TYPE;
-import static com.windchat.im.socket.Connection.CONN_IM;
 
 /**
  * IMClient，负责对接业务层对IM的操作逻辑
@@ -118,7 +109,7 @@ public class IMClient implements IConnectionHandler {
 //        bundle.putString(KEY_CONN_IDENTITY, this.address.toOldSiteIdentity());
 //        bundle.putInt(KEY_CONN_STATUS, statusType);
 //        bundle.putInt(KEY_CONN_TYPE, CONN_IM);
-//        Intent intent = new Intent(ZalyIM.CONNECTION_ACTION);
+//        Intent intent = new Intent(IMConst.CONNECTION_ACTION);
 //        intent.putExtras(bundle);
 //        intent.setPackage(PackageSign.getPackage());
 //        ZalyApplication.getContext().sendBroadcast(intent);
@@ -132,7 +123,7 @@ public class IMClient implements IConnectionHandler {
      * 此方法为非阻塞方法，可以在主线程安全调用
      */
     public void sendPing() {
-        this.sendIMRequest(ZalyIM.Action.Ping, null);
+        this.sendIMRequest(IMConst.Action.Ping, null);
     }
 
     /**
@@ -149,7 +140,7 @@ public class IMClient implements IConnectionHandler {
             return;
         }
 
-        this.sendIMRequest(ZalyIM.Action.ImCtsMessage, request);
+        this.sendIMRequest(IMConst.Action.ImCtsMessage, request);
     }
 
     /**
@@ -166,7 +157,7 @@ public class IMClient implements IConnectionHandler {
                     .putAllGroupsPointer(new HashMap<String, Long>())
                     .build();
 
-            this.sendIMRequest(ZalyIM.Action.Sync, request);
+            this.sendIMRequest(IMConst.Action.Sync, request);
         } catch (Exception e) {
             ZalyLogUtils.getInstance().info(TAG, e.getMessage());
         }
@@ -192,7 +183,7 @@ public class IMClient implements IConnectionHandler {
                     .putAllGroupsPointer(groupPointers)
                     .build();
 
-            this.sendIMRequest(ZalyIM.Action.SyncFinish, request);
+            this.sendIMRequest(IMConst.Action.SyncFinish, request);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -219,7 +210,7 @@ public class IMClient implements IConnectionHandler {
             imSyncMsgStatusRequestBuilder.addAllU2MsgId(msgIds);
         }
         ImSyncMsgStatusProto.ImSyncMsgStatusRequest imSyncMsgStatusRequest = imSyncMsgStatusRequestBuilder.build();
-        this.sendIMRequest(ZalyIM.Action.SyncMsgStatus, imSyncMsgStatusRequest);
+        this.sendIMRequest(IMConst.Action.SyncMsgStatus, imSyncMsgStatusRequest);
     }
 
     // =======================================

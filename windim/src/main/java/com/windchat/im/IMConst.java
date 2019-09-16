@@ -4,7 +4,7 @@ package com.windchat.im;
  * Created by yichao on 2017/10/18.
  */
 
-public abstract class ZalyIM {
+public abstract class IMConst {
 
     /**
      * 消息action

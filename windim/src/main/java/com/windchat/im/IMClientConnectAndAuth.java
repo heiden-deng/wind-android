@@ -52,7 +52,7 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
                 .setClientVersion("0.0.1")
                 .build();
 
-        TransportPackageForRequest tRequest = new TransportPackageForRequest(ZalyIM.Action.Hello, request);
+        TransportPackageForRequest tRequest = new TransportPackageForRequest(IMConst.Action.Hello, request);
         TransportPackageForResponse tResponse = this.client.imConnection.requestAndResponse(tRequest, false);
 
         ImSiteHelloProto.ImSiteHelloResponse response = ImSiteHelloProto.ImSiteHelloResponse.parseFrom(tResponse.data.getData());
@@ -75,7 +75,7 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
             String sessionId = siteInfo.getSiteSessionId();
 
             if (StringUtils.isEmpty(sessionId)) {
-                throw new Exception("ZalyIM.userSessionId is empty!");
+                throw new Exception("IMConst.userSessionId is empty!");
             }
 
             ZalyLogUtils.getInstance().debug(
@@ -90,12 +90,12 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
                     .setSiteUserId(siteInfo.getSiteUserId())
                     .build();
 
-            TransportPackageForRequest tRequest = new TransportPackageForRequest(ZalyIM.Action.Auth, request);
+            TransportPackageForRequest tRequest = new TransportPackageForRequest(IMConst.Action.Auth, request);
             TransportPackageForResponse tResponse = this.client.imConnection.requestAndResponse(tRequest, false);
 
             if (tResponse.data.getErr() != null) {
                 try {
-                    return ZalyIM.IM_SUCCESS.equals(tResponse.data.getErr().getCode());
+                    return IMConst.IM_SUCCESS.equals(tResponse.data.getErr().getCode());
                 } catch (Exception e) {
                     ZalyLogUtils.getInstance().debug(this.logTag, e.getMessage());
                     return false;

@@ -1,6 +1,5 @@
 package com.windchat.im;
 
-import android.content.Intent;
 import android.util.Base64;
 
 import com.windchat.im.bean.AudioInfo;
@@ -20,7 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by yichao on 2017/10/18.
@@ -58,7 +56,7 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
                 "im.recv " + action
         );
         switch (action) {
-            case ZalyIM.Action.PSN:
+            case IMConst.Action.PSN:
                 long nowTime = System.currentTimeMillis();
                 /////没有执行到recevice msg finish , psn 和上次finish时间小于2秒不执行
                 if (!isReceiveMsgFinish && (nowTime - lastSyncFinishTime < syncTimeOut)) {
@@ -68,19 +66,19 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
 
 
                 break;
-            case ZalyIM.Action.MsgFinish:
+            case IMConst.Action.MsgFinish:
                 isReceiveMsgFinish = true;
                 lastSyncFinishTime = System.currentTimeMillis();
                 this.imClient.syncFinish(pointer, groupPointers);
                 break;
 
-            case ZalyIM.Action.Notice:
+            case IMConst.Action.Notice:
                 dealNoticeAction(packet.data.toByteArray());
                 break;
-            case ZalyIM.Action.ReceiveMsgFrmSite:
+            case IMConst.Action.ReceiveMsgFrmSite:
                 dealReceiveMsg(packet.data.toByteArray());
                 break;
-            case ZalyIM.Action.Pong:
+            case IMConst.Action.Pong:
                 this.imClient.keepAlivedWorker.recvPong();
                 break;
 
@@ -99,10 +97,10 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
             CoreProto.TransportPackageData packageData = CoreProto.TransportPackageData.parseFrom(data);
             ImStcNoticeProto.ImStcNoticeRequest request = ImStcNoticeProto.ImStcNoticeRequest.parseFrom(packageData.getData());
 
-//            Intent intent = new Intent(ZalyIM.IM_NOTICE_ACTION);
+//            Intent intent = new Intent(IMConst.IM_NOTICE_ACTION);
 //            intent.setPackage(PackageSign.getPackage());
-//            intent.putExtra(ZalyIM.KEY_NOTICE_SITE_IDENTITY, this.imClient.imConnection.getConnSiteIdentity());
-//            intent.putExtra(ZalyIM.KEY_NOTICE_TYPE, request.getTypeValue());
+//            intent.putExtra(IMConst.KEY_NOTICE_SITE_IDENTITY, this.imClient.imConnection.getConnSiteIdentity());
+//            intent.putExtra(IMConst.KEY_NOTICE_TYPE, request.getTypeValue());
 //            ZalyApplication.getContext().sendBroadcast(intent);
 
         } catch (Exception e) {
@@ -113,7 +111,7 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
 
     /**
      * 处理从site收到的请求，故需要解析request
-     * ZalyIM.KEY_NOTICE_TYPE
+     * IMConst.KEY_NOTICE_TYPE
      *
      * @param data
      */
