@@ -21,8 +21,8 @@ import java.util.HashMap;
 public class ZalyBaseDao {
     private static final String TAG = ZalyBaseDao.class.getSimpleName();
 
-    public volatile  static HashMap<String, SQLiteDatabase> daoHelperMap = new HashMap<>();
-    public   volatile  static HashMap<String, SQLiteDatabase> daoCommonHelperMap = new HashMap<>();
+    public volatile static HashMap<String, SQLiteDatabase> daoHelperMap = new HashMap<>();
+    public volatile static HashMap<String, SQLiteDatabase> daoCommonHelperMap = new HashMap<>();
 
     protected static AkxSiteDBHelper dbHelper;
     protected static SiteAddress siteAddress;
@@ -33,29 +33,29 @@ public class ZalyBaseDao {
     protected static SQLiteDatabase commonDatabase;
     private static ZalyBaseDao instance = null;
 
-    public  SQLiteDatabase getSiteDatabase(SiteAddress address){
+    public SQLiteDatabase getSiteDatabase(SiteAddress address) {
 
         SQLiteDatabase database = daoHelperMap.get(address.getSiteDBAddress());
-        if(database == null) {
+        if (database == null) {
             openSiteDb(address);
         }
         database = daoHelperMap.get(address.getSiteDBAddress());
-        if(database.isReadOnly()) {
-            ZalyLogUtils.getInstance().info(TAG, "db is read only , address is " + address.getSiteAddress() );
+        if (database.isReadOnly()) {
+            ZalyLogUtils.getInstance().info(TAG, "db is read only , address is " + address);
             openSiteDb(address);
         }
         database = daoHelperMap.get(address.getSiteDBAddress());
         return database;
     }
 
-    public  SQLiteDatabase getCommonDatabase(){
+    public SQLiteDatabase getCommonDatabase() {
         SQLiteDatabase commonDb = daoCommonHelperMap.get(SiteConfig.DB_COMMON_HELPER);
-        if(commonDb == null) {
+        if (commonDb == null) {
             openCommonDb();
         }
         commonDb = daoCommonHelperMap.get(SiteConfig.DB_COMMON_HELPER);
-        if(commonDb.isReadOnly()) {
-            ZalyLogUtils.getInstance().info(TAG, "db is read only "  );
+        if (commonDb.isReadOnly()) {
+            ZalyLogUtils.getInstance().info(TAG, "db is read only ");
             openCommonDb();
         }
         commonDb = daoCommonHelperMap.get(SiteConfig.DB_COMMON_HELPER);
@@ -68,21 +68,23 @@ public class ZalyBaseDao {
         }
     }
 
-    private static void  openSiteDb(SiteAddress siteAddress){
+    private static void openSiteDb(SiteAddress siteAddress) {
         synchronized (ZalyBaseDao.class) {
             //查询当前站点的siteUserId
+            String host = siteAddress.getHost();
+            int port = siteAddress.getPort();
             Site site = AkxCommonDao.getInstance().querySiteInfo(siteAddress);
-            siteUserId   = site.getSiteUserId();
+            siteUserId = site.getSiteUserId();
             globalUserId = site.getGlobalUserId();
 
-            dbHelper     = AkxDBManager.getSiteDBHelper(ZalyApplication.getContext(), siteAddress, globalUserId);
-            database     = dbHelper.getWritableDatabase();
+            dbHelper = AkxDBManager.getSiteDBHelper(ZalyApplication.getContext(), siteAddress, globalUserId);
+            database = dbHelper.getWritableDatabase();
             daoHelperMap.put(siteAddress.getSiteDBAddress(), database);
         }
     }
 
     public static synchronized ZalyBaseDao getInstance(SiteAddress siteAddress) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new ZalyBaseDao(siteAddress);
         }
         return instance;
@@ -94,7 +96,7 @@ public class ZalyBaseDao {
         }
     }
 
-    private static void openCommonDb(){
+    private static void openCommonDb() {
         synchronized (ZalyBaseDao.class) {
             dbCommonHelper = AkxDBManager.getCommonDBHelper(ZalyApplication.getContext());
             commonDatabase = dbCommonHelper.getWritableDatabase();
@@ -102,7 +104,7 @@ public class ZalyBaseDao {
         }
     }
 
-    public static  ZalyBaseDao getInstance() {
+    public static ZalyBaseDao getInstance() {
         return ZalyBaseDao.SingletonCommonHolder.instance;
     }
 

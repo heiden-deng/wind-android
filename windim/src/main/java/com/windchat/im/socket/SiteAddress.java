@@ -24,7 +24,7 @@ public class SiteAddress {
         String[] ret = address.split("[:_]");
         int retLength = ret.length;
         if (retLength > 0) {
-            this.host = StringUtils.join(ret, ".", "", 0, retLength - 1);
+            this.host = ret[0];
             this.port = Integer.valueOf(ret[retLength - 1]);
         } else {
             this.host = "127.0.0.1 这段代码还没有写完呢";
@@ -32,8 +32,8 @@ public class SiteAddress {
         }
     }
 
-    public SiteAddress(Site beanSite) {
-        this.config = ConnectionConfig.getConnectionCfg(beanSite);
+    public SiteAddress(Site site) {
+        this.config = ConnectionConfig.getConnectionCfg(site);
         this.host = this.config.getHost();
         this.port = this.config.getPort();
     }
@@ -80,8 +80,5 @@ public class SiteAddress {
         }
         return null;
     }
-
-    public String getSiteAddress() {
-        return "host:" + this.host + " port:" + this.port;
-    }
+    
 }

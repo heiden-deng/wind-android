@@ -267,7 +267,8 @@ public class Site extends com.windchat.im.bean.Site implements Parcelable {
 
     @Override
     public String toString() {
-        return GsonUtils.toJson(this);
+        return this.siteHost + ":" + this.sitePort;
+//        return GsonUtils.toJson(this);
     }
 
     public boolean isMute() {

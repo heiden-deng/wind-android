@@ -467,8 +467,8 @@ public class AkxCommonDao {
      *
      * @return
      */
-    public synchronized long querySiteTotalUnreadNum(String siteAddress) {
-        SiteAddress siteAddressObj = new SiteAddress(siteAddress);
+    public synchronized long querySiteTotalUnreadNum(String address) {
+        SiteAddress siteAddressObj = new SiteAddress(address);
         return SiteChatSessionDao.getInstance(siteAddressObj).querySiteAllUnreadNum();
     }
 }
