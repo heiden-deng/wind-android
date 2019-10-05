@@ -5,7 +5,6 @@ import android.util.Base64;
 import com.akaxin.client.Configs;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.api.ApiClient;
-import com.akaxin.client.api.ApiClientForPlatform;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.mvp.BasePresenterImpl;
@@ -39,7 +38,8 @@ public class ScanQRCodePresenter extends BasePresenterImpl<ScanQRCodeContract.Vi
                 map.put("pubk", Base64.encodeToString(encryptedUserPubKey, Base64.NO_WRAP));
                 map.put("prik", Base64.encodeToString(encryptedUserPriKey, Base64.NO_WRAP));
                 String tempSpaceContent = new JSONObject(map).toString();
-                return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite()).getTempApi().applyTempSpace(spaceKey, tempSpaceContent);
+//                return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite()).getTempApi().applyTempSpace(spaceKey, tempSpaceContent);
+                return null;
             }
 
             @Override

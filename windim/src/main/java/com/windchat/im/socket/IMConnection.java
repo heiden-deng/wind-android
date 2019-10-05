@@ -1,7 +1,7 @@
 package com.windchat.im.socket;
 
 import com.windchat.im.IMClientToClientRequestHandler;
-import com.windchat.logger.ZalyLogUtils;
+import com.windchat.logger.WindLogger;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -10,14 +10,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Logger;
 
-
-/**
- * Created by yichao on 2017/10/12.
- */
-
-public class Connection {
+public class IMConnection {
 
 
     public IConnectionHandler connectionHandler = null;
@@ -27,7 +21,7 @@ public class Connection {
     public static final int TIMEOUT_WRITE = 16000;
     public static final int TIMEOUT_READ = 16000;
 
-    public static final String TAG = Connection.class.getSimpleName();
+    public static final String TAG = IMConnection.class.getSimpleName();
 
     // 一些状态码，干嘛用的
     public static final int STATUS_CONN_NORMAL = 0;
@@ -43,7 +37,7 @@ public class Connection {
     // 服务的业务类型
     public static final int CONN_IM = 2;   //api长链接
 
-    public String logTag = "Connection";
+    public static String logTag = "IMConnection";
 
     // TCPSocket相关
     protected ConnectionConfig configuration;
@@ -59,7 +53,7 @@ public class Connection {
 
 
     // 构造函数
-    public Connection(ConnectionConfig config) {
+    public IMConnection(ConnectionConfig config) {
         this.configuration = config;
     }
 
@@ -121,14 +115,14 @@ public class Connection {
         try {
 
             // 日志
-            ZalyLogUtils.getInstance().debug(
+            WindLogger.getInstance().debug(
                     this.logTag,
                     "requestAndResponse.start " + fullAction + " isDoingRequestAndResponse = " + (isDoingRequestAndResponse ? 1 : 0)
             );
 
             // 防止重入
             if (this.isDoingRequestAndResponse) {
-                ZalyLogUtils.getInstance().debug(
+                WindLogger.getInstance().debug(
                         this.logTag,
                         "requestAndResponse duplicate " + fullAction
                 );
@@ -163,7 +157,7 @@ public class Connection {
                 errInfo = response.data.getErr().getInfo();
             }
 
-            ZalyLogUtils.getInstance().info(
+            WindLogger.getInstance().info(
                     this.logTag,
                     "requestAndResponse.done " + fullAction + " " + errorCode + "  " + errInfo
             );
@@ -173,7 +167,7 @@ public class Connection {
             }
             return response;
         } catch (Exception e) {
-            ZalyLogUtils.getInstance().error(this.logTag, e, "requestAndResponse.error " + fullAction + " " + e.getMessage());
+            WindLogger.getInstance().error(this.logTag, e, "requestAndResponse.error " + fullAction + " " + e.getMessage());
         } finally {
             this.isDoingRequestAndResponse = false;
         }
@@ -254,7 +248,7 @@ public class Connection {
 
     public void disconnectWithError(Exception e) {
         if (null != connectionHandler) {
-            ZalyLogUtils.getInstance().error(this.logTag, e, "reconnect.disconnectWithError " + this.configuration.getHost());
+            WindLogger.getInstance().error(this.logTag, e, "reconnect.disconnectWithError " + this.configuration.getHost());
             connectionHandler.onConnectionDisconnected(e);
         }
         this.disconnect();
@@ -271,7 +265,7 @@ public class Connection {
 
         boolean isConnected = this.isConnected();
 
-        ZalyLogUtils.getInstance().debug(
+        WindLogger.getInstance().debug(
                 this.logTag,
                 this.logMessage("disconnect isConnected:" + String.valueOf(isConnected))
         );
@@ -313,11 +307,11 @@ public class Connection {
         try {
             socket.connect(new InetSocketAddress(host, port), TIMEOUT_CONNECT);
             long endTime = System.currentTimeMillis();
-            ZalyLogUtils.getInstance().debug(this.logTag, "connect_success " + this.getSiteAddress() + " " + (endTime - currentTime) + "ms");
+            WindLogger.getInstance().debug(this.logTag, "connect_success " + this.getSiteAddress() + " " + (endTime - currentTime) + "ms");
         } catch (Exception e) {
             e.printStackTrace();
             long endTime = System.currentTimeMillis();
-            ZalyLogUtils.getInstance().warn(
+            WindLogger.getInstance().warn(
                     this.logTag,
                     "connect_failed " + this.getSiteAddress() + " " + (endTime - currentTime) + "ms");
 

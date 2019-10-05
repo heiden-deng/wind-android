@@ -22,7 +22,6 @@ import com.akaxin.client.Configs;
 import com.akaxin.client.R;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.api.ApiClient;
-import com.akaxin.client.api.ApiClientForPlatform;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.bean.User;
@@ -34,9 +33,6 @@ import com.akaxin.client.constant.ServerConfig;
 import com.akaxin.client.im.files.IMFileUtils;
 import com.akaxin.client.maintab.BaseActivity;
 import com.akaxin.client.maintab.ZalyMainActivity;
-import com.akaxin.client.platform.task.ApiUserPushTokenTask;
-import com.akaxin.client.platform.task.GetPhoneCode;
-import com.akaxin.client.platform.task.PushAuthTask;
 import com.akaxin.client.register.presenter.ILoginSitePresenter;
 import com.akaxin.client.register.presenter.impl.LoginSitePresenter;
 import com.akaxin.client.register.view.ILoginSiteView;
@@ -54,7 +50,6 @@ import com.akaxin.proto.core.FileProto;
 import com.akaxin.proto.core.PhoneProto;
 import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.platform.ApiPhoneApplyTokenProto;
-import com.akaxin.proto.platform.ApiPhoneVerifyCodeProto;
 import com.akaxin.proto.platform.ApiPlatformLoginProto;
 import com.akaxin.proto.site.ApiFileUploadProto;
 import com.akaxin.proto.site.ApiPlatformRegisterByPhoneProto;
@@ -264,7 +259,6 @@ public class RegisterActivity extends BaseActivity implements ViewPager.OnPageCh
                     Toaster.show(getString(R.string.without_network_hint));
                     return;
                 }
-                ZalyTaskExecutor.executeUserTask(TAG, new GetCodeTask(phoneNum));
                 break;
             case R.id.vp_headportrait_avtor:
                 PhotoPicker.PhotoPickerBuilder builder = PhotoPicker.builder()
@@ -294,169 +288,6 @@ public class RegisterActivity extends BaseActivity implements ViewPager.OnPageCh
         if (StringUtils.isEmpty(verifyPhoneCode)) {
             Toaster.showInvalidate("请输入验证码");
             return;
-        }
-        ZalyTaskExecutor.executeUserTask(TAG, new ApiPlatformRegisterTask());
-    }
-
-    /**
-     * 注册平台
-     */
-    class ApiPlatformRegisterTask extends ZalyTaskExecutor.Task<Void, Void, ApiPlatformRegisterByPhoneProto.ApiPlatformRegisterByPhoneResponse> {
-
-        String userPrivKeyPem = ZalyApplication.getCfgSP().getKey(Configs.USER_PRI_KEY);
-        String userPubKeyPem = ZalyApplication.getCfgSP().getKey(Configs.USER_PUB_KEY);
-
-        @Override
-        protected ApiPlatformRegisterByPhoneProto.ApiPlatformRegisterByPhoneResponse executeTask(Void... voids) throws Exception {
-            return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite())
-                    .getPlatformApi().registerPlatform(phoneNum, userPrivKeyPem, userPubKeyPem, verifyPhoneCode, PhoneProto.VCType.PHONE_REGISTER_FOR_SITE_VALUE);
-        }
-
-        @Override
-        protected void onPreTask() {
-        }
-
-        @Override
-        protected void onTaskSuccess(ApiPlatformRegisterByPhoneProto.ApiPlatformRegisterByPhoneResponse response) {
-            User user = new User();
-            user.setGlobalUserId(StringUtils.getGlobalUserIdHash(userPubKeyPem));
-            user.setIdentityName(ServerConfig.LOGIN_WITH_PHONE_NAME);
-            user.setIdentitySource(ServerConfig.LOGIN_WITH_PHONE);
-            int flag = SitePresenter.getInstance().delUserIdentity();
-            if (flag == User.DEL_USER_FAILED) {
-                Toaster.showInvalidate("请稍候再试");
-            } else {
-                SitePresenter.getInstance().insertUserIdentity(user);
-                ZalyTaskExecutor.executeUserTask(TAG, new LoginPlatformTask());
-            }
-        }
-
-        @Override
-        protected void onAPIError(ZalyAPIException zalyAPIException) {
-            hideProgress();
-            Logger.e(zalyAPIException);
-            byte[] result = zalyAPIException.getZalyResult();
-
-            String errorCode = zalyAPIException.getErrorInfoCode();
-            if (errorCode.equals(ErrorCode.PHONE_HAS_USER)) {
-                try {
-                    ApiPlatformRegisterByPhoneProto.ApiPlatformRegisterByPhoneResponse response = ApiPlatformRegisterByPhoneProto.ApiPlatformRegisterByPhoneResponse.parseFrom(result);
-                    final String platformPubk = response.getUserIdPubk();
-                    final String platformPrik = response.getUserIdPrik();
-
-                    String platformPubkBase64 = Base64.encodeToString(platformPubk.getBytes(), Base64.NO_WRAP);
-                    String localPubkBase64 = Base64.encodeToString(userPubKeyPem.getBytes(), Base64.NO_WRAP);
-
-                    if (!platformPubkBase64.equals(localPubkBase64)) {
-                        new MaterialDialog.Builder(getContext())
-                                .content("手机号已经绑定，需要更换实名账户")
-                                .positiveText("确定")
-                                .negativeText("取消")
-                                .onAny(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        switch (which) {
-                                            case NEUTRAL:
-                                                dialog.dismiss();
-                                                break;
-                                            case NEGATIVE:
-                                                dialog.dismiss();
-                                                break;
-                                            case POSITIVE:
-                                                ZalyApplication.getCfgSP().putKey(Configs.USER_PUB_KEY, platformPubk);
-                                                ZalyApplication.getCfgSP().putKey(Configs.USER_PRI_KEY, platformPrik);
-                                                User user = new User();
-                                                user.setGlobalUserId(StringUtils.getGlobalUserIdHash(platformPubk));
-                                                user.setIdentityName(ServerConfig.LOGIN_WITH_PHONE_NAME);
-                                                user.setIdentitySource(ServerConfig.LOGIN_WITH_PHONE);
-                                                int flag = SitePresenter.getInstance().delUserIdentity();
-                                                if (flag > 0) {
-                                                    // 清理每个站点下的DB
-                                                    if (ZalyApplication.siteList != null) {
-                                                        for (Site site : ZalyApplication.siteList) {
-                                                            IMClient.getInstance(site.toSiteAddress()).disconnect();
-                                                        }
-                                                    }
-                                                    SitePresenter.getInstance().updateGlobalUserId(user.getGlobalUserId());
-
-                                                    SitePresenter.getInstance().insertUserIdentity(user);
-
-                                                    ZalyTaskExecutor.executeUserTask(TAG, new LoginPlatformTask());
-
-                                                } else {
-                                                    Toaster.showInvalidate("请稍候再试");
-                                                }
-                                                break;
-                                        }
-                                    }
-                                })
-                                .show();
-                    }
-                } catch (Exception e) {
-                    ZalyLogUtils.getInstance().exceptionError(e);
-                    ZalyLogUtils.getInstance().errorToInfo(TAG, e.getMessage());
-                    Toaster.showInvalidate("请稍候再试");
-                }
-            } else if (errorCode.equals(ErrorCode.PHONE_SAME_USER)) {
-                ZalyTaskExecutor.executeUserTask(TAG, new GetPlatformToken());
-            } else {
-                super.onAPIError(zalyAPIException);
-            }
-        }
-
-        @Override
-        protected void onTaskError(Exception e) {
-            hideProgress();
-            ZalyLogUtils.getInstance().exceptionError(e);
-            super.onTaskError(e);
-        }
-
-        @Override
-        protected void onTaskFinish() {
-            hideProgress();
-        }
-    }
-
-    /**
-     * 获取注册验证码
-     */
-    class GetCodeTask extends GetPhoneCode {
-        public GetCodeTask(String phoneNum) {
-            super(phoneNum, PhoneProto.VCType.PHONE_REGISTER_FOR_SITE_VALUE, ServerConfig.CHINA_COUNTRY_CODE);
-        }
-
-        @Override
-        protected void onPreTask() {
-            super.onPreTask();
-            hideSoftKey();
-
-            showProgress("正在获取验证码...");
-        }
-
-        @Override
-        protected void onAPIError(ZalyAPIException zalyAPIException) {
-            super.onAPIError(zalyAPIException);
-            Logger.e(zalyAPIException);
-            ZalyLogUtils.getInstance().info(TAG, zalyAPIException.getMessage());
-        }
-
-        @Override
-        protected void onTaskError(Exception e) {
-            super.onTaskError(e);
-            Logger.e(e);
-
-            ZalyLogUtils.getInstance().info(TAG, e.getMessage());
-        }
-
-        @Override
-        protected void onTaskSuccess(ApiPhoneVerifyCodeProto.ApiPhoneVerifyCodeResponse phoneVerifyCodeResponse) {
-            super.onTaskSuccess(phoneVerifyCodeResponse);
-            verifyViewGetPhoneCode.onStart();
-        }
-
-        @Override
-        protected void onTaskFinish() {
-            hideProgress();
         }
     }
 
@@ -584,58 +415,6 @@ public class RegisterActivity extends BaseActivity implements ViewPager.OnPageCh
         }
 
         ZalyTaskExecutor.executeUserTask(TAG, new RegisterTask(builder.build(), loginSite));
-    }
-
-    /**
-     * 获取平台token 实名注册
-     */
-    class GetPlatformToken extends ZalyTaskExecutor.Task<Void, Void, ApiPhoneApplyTokenProto.ApiPhoneApplyTokenResponse> {
-
-        @Override
-        protected void onPreTask() {
-            super.onPreTask();
-            showProgress();
-        }
-
-        @Override
-        protected ApiPhoneApplyTokenProto.ApiPhoneApplyTokenResponse executeTask(Void... voids) throws Exception {
-            return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite())
-                    .getPhoneApi().getPlatformToken(loginSite.getSiteAddress());
-        }
-
-        @Override
-        protected void onTaskSuccess(ApiPhoneApplyTokenProto.ApiPhoneApplyTokenResponse apiPhoneApplyTokenResponse) {
-            super.onTaskSuccess(apiPhoneApplyTokenResponse);
-            //写入phoneId
-            ZalyApplication.getCfgSP().putKey(Configs.PHONE_ID, apiPhoneApplyTokenResponse.getPhoneId());
-            ZalyApplication.getCfgSP().putKey(Configs.PHONE_TOKEN + "_" + loginSite.getSiteAddress(), apiPhoneApplyTokenResponse.getPhoneToken());
-            ///// 输入手机号绑定页面 改成 已经手机号已经存在的页面， 手机号是 apiPhoneApplyTokenResponse.getPhoneId()
-            adapter.updataViewPagerItem(exitPhoneView, views.size() - 1);
-
-            notifyDataSetChanged();
-            registerSiteAndLogin();
-
-        }
-
-        @Override
-        protected void onTaskError(Exception e) {
-            ZalyLogUtils.getInstance().exceptionError(e);
-            super.onTaskError(e);
-            Toaster.showInvalidate("获取平台token失败，请稍后再试");
-        }
-
-        @Override
-        protected void onAPIError(ZalyAPIException zalyAPIException) {
-            ZalyLogUtils.getInstance().exceptionError(zalyAPIException);
-            super.onAPIError(zalyAPIException);
-            Toaster.showInvalidate("获取平台token失败，请稍后再试");
-        }
-
-        @Override
-        protected void onTaskFinish() {
-            super.onTaskFinish();
-            hideProgress();
-        }
     }
 
     public void notifyDataSetChanged() {
@@ -787,7 +566,6 @@ public class RegisterActivity extends BaseActivity implements ViewPager.OnPageCh
                     if (userImgUri != null) {
                         ZalyTaskExecutor.executeUserTask(TAG, new UploadUserImageTask(userImgUri));
                     }
-                    ZalyTaskExecutor.executeUserTask(TAG, new PushAuthTask(currentSite));
                 }
             });
         }
@@ -959,57 +737,6 @@ public class RegisterActivity extends BaseActivity implements ViewPager.OnPageCh
         super.onDestroy();
         if (verifyViewGetPhoneCode != null)
             verifyViewGetPhoneCode.onDestroy();
-    }
-
-    /**
-     * 登录平台
-     */
-    class LoginPlatformTask extends ZalyTaskExecutor.Task<Void, Void, ApiPlatformLoginProto.ApiPlatformLoginResponse> {
-
-        @Override
-        protected ApiPlatformLoginProto.ApiPlatformLoginResponse executeTask(Void... voids) throws Exception {
-
-            String userPrivKeyPem = ZalyApplication.getCfgSP().getKey(Configs.USER_PRI_KEY);
-            String userPubKeyPem = ZalyApplication.getCfgSP().getKey(Configs.USER_PUB_KEY);
-            String devicePubKeyPem = ZalyApplication.getCfgSP().getKey(Configs.DEVICE_PUB_KEY);
-
-            String userSignBase64 = RSAUtils.getInstance().signInBase64String(userPrivKeyPem, userPubKeyPem);
-            String deviceSignBase64 = RSAUtils.getInstance().signInBase64String(userPrivKeyPem, devicePubKeyPem);
-            return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite()).getPlatformApi().loginPlatform(userSignBase64, deviceSignBase64);
-        }
-
-
-        @Override
-        protected void onTaskSuccess(ApiPlatformLoginProto.ApiPlatformLoginResponse apiPlatformLoginResponse) {
-            super.onTaskSuccess(apiPlatformLoginResponse);
-            try {
-                Site site = ApiClientForPlatform.getPlatformSite();
-                site.setSiteSessionId(apiPlatformLoginResponse.getSessionId());
-                site.setPlatformUserId(apiPlatformLoginResponse.getGlobalUserId());
-                site.setSiteUserId(apiPlatformLoginResponse.getGlobalUserId());
-
-                SitePresenter.getInstance().updateUserPlatformSessionId(apiPlatformLoginResponse.getGlobalUserId(), apiPlatformLoginResponse.getSessionId());
-
-                ///发送push token
-                ZalyTaskExecutor.executeUserTask(TAG, new ApiUserPushTokenTask());
-
-                /////请求phone TOKEN
-                ZalyTaskExecutor.executeUserTask(TAG, new GetPlatformToken());
-            } catch (Exception e) {
-                ZalyLogUtils.getInstance().exceptionError(e);
-            }
-        }
-
-        @Override
-        protected void onTaskError(Exception e) {
-
-        }
-
-        @Override
-        protected void onAPIError(ZalyAPIException zalyAPIException) {
-
-        }
-
     }
 
 }

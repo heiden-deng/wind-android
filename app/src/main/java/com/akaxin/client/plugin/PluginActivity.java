@@ -108,7 +108,7 @@ public class PluginActivity extends BaseActivity {
 //                    ApiPluginListProto.ApiPluginListResponse apiPluginListResponse = ApiPluginListProto.ApiPluginListResponse.parseFrom(data);
 //                    displayUI(apiPluginListResponse);
 //                }catch (Exception e) {
-//                    ZalyLogUtils.getInstance().errorToInfo(TAG, e.getMessage());
+//                    WindLogger.getInstance().errorToInfo(TAG, e.getMessage());
 //                }
 //            }
         }

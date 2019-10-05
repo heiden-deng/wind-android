@@ -9,7 +9,7 @@ import com.windchat.im.bean.Site;
 import com.windchat.im.socket.IMessageHandler;
 import com.windchat.im.socket.SiteAddress;
 import com.windchat.im.socket.TransportPackage;
-import com.windchat.logger.ZalyLogUtils;
+import com.windchat.logger.WindLogger;
 import com.windchat.proto.client.ImStcMessageProto;
 import com.windchat.proto.client.ImStcNoticeProto;
 import com.windchat.proto.core.CoreProto;
@@ -51,7 +51,7 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
     public boolean matchReceive(TransportPackage packet) throws Exception {
         String action = packet.action;
 
-        ZalyLogUtils.getInstance().debug(
+        WindLogger.getInstance().debug(
                 IMClientToClientRequestHandler.TAG,
                 "im.recv " + action
         );
@@ -135,7 +135,7 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
 
             //消息指针 服务端需要
             for (ImStcMessageProto.MsgWithPointer withPointer : msgWithPointers) {
-                ZalyLogUtils.getInstance().info(TAG, withPointer.toString());
+                WindLogger.getInstance().info(TAG, withPointer.toString());
                 try {
 
                     // 在最后更新this.pointer
@@ -517,7 +517,7 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
 
             if (messages != null && messages.size() > 0) {
 
-                ZalyLogUtils.getInstance().info(TAG, "batch inserting...");
+                WindLogger.getInstance().info(TAG, "batch inserting...");
                 // 插入数据库
                 SiteAddress siteAddressObj = new SiteAddress(siteAddress);
 
@@ -530,11 +530,11 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
                 }
                 if (u2Messages.size() > 0) {
 //                    SiteMessageDao.getInstance(siteAddressObj).batchInsertU2Messages(u2Messages);
-//                    ZalyLogUtils.getInstance().info(TAG, "inserting U2 messages: " + u2Messages);
+//                    WindLogger.getInstance().info(TAG, "inserting U2 messages: " + u2Messages);
                 }
                 if (groupMessages.size() > 0) {
 //                    SiteMessageDao.getInstance(siteAddressObj).batchInsertGroupMessages(groupMessages);
-//                    ZalyLogUtils.getInstance().info(TAG, "inserting Group messages: " + groupMessages);
+//                    WindLogger.getInstance().info(TAG, "inserting Group messages: " + groupMessages);
                 }
             }
 

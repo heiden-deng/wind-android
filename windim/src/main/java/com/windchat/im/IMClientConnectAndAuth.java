@@ -3,10 +3,10 @@ package com.windchat.im;
 
 import com.windchat.im.bean.Site;
 import com.windchat.im.bean.Version;
-import com.windchat.im.socket.Connection;
+import com.windchat.im.socket.IMConnection;
 import com.windchat.im.socket.TransportPackageForRequest;
 import com.windchat.im.socket.TransportPackageForResponse;
-import com.windchat.logger.ZalyLogUtils;
+import com.windchat.logger.WindLogger;
 import com.windchat.proto.server.ImSiteAuthProto;
 import com.windchat.proto.server.ImSiteHelloProto;
 
@@ -14,8 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.Callable;
 
-import static com.windchat.im.socket.Connection.STATUS_AUTH_LOGIN;
-import static com.windchat.im.socket.Connection.STATUS_AUTH_SUCCESS;
+import static com.windchat.im.socket.IMConnection.STATUS_AUTH_LOGIN;
+import static com.windchat.im.socket.IMConnection.STATUS_AUTH_SUCCESS;
 
 /**
  * Created by sssl on 09/06/2018.
@@ -30,7 +30,7 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
 
     public IMClientConnectAndAuth(IMClient client) {
         this.client = client;
-        site = new Site(client.address.getHost(), client.address.getPort());
+        this.site = new Site(client.address.getHost(), client.address.getPort());
     }
 
     // 打日志
@@ -71,23 +71,22 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
     protected boolean auth(Site site) {
 
         try {
-            Site siteInfo = site;
-            String sessionId = siteInfo.getSiteSessionId();
+            String sessionId = site.getSiteSessionId();
 
             if (StringUtils.isEmpty(sessionId)) {
                 throw new Exception("IMConst.userSessionId is empty!");
             }
 
-            ZalyLogUtils.getInstance().debug(
+            WindLogger.getInstance().debug(
                     this.logTag,
                     " siteAddress is " + this.client.address.getFullUrl()
-                            + " userId is " + siteInfo.getSiteUserId()
+                            + " userId is " + site.getSiteUserId()
                             + " session id Is " + sessionId
             );
 
             ImSiteAuthProto.ImSiteAuthRequest request = ImSiteAuthProto.ImSiteAuthRequest.newBuilder()
                     .setSiteSessionId(sessionId)
-                    .setSiteUserId(siteInfo.getSiteUserId())
+                    .setSiteUserId(site.getSiteUserId())
                     .build();
 
             TransportPackageForRequest tRequest = new TransportPackageForRequest(IMConst.Action.Auth, request);
@@ -97,12 +96,12 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
                 try {
                     return IMConst.IM_SUCCESS.equals(tResponse.data.getErr().getCode());
                 } catch (Exception e) {
-                    ZalyLogUtils.getInstance().debug(this.logTag, e.getMessage());
+                    WindLogger.getInstance().debug(this.logTag, e.getMessage());
                     return false;
                 }
             }
         } catch (Exception e) {
-            ZalyLogUtils.getInstance().debug(this.logTag, e.getClass().getName() + " " + e.getMessage());
+            WindLogger.getInstance().debug(this.logTag, e.getClass().getName() + " " + e.getMessage());
         }
         return false;
     }
@@ -113,7 +112,7 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
         boolean isError = false;
 
         try {
-            ZalyLogUtils.getInstance().debug(logTag, logMessage("doConnectTask "));
+            WindLogger.getInstance().debug(logTag, logMessage("doConnectTask "));
 
             this.client.imConnection.connect();
 
@@ -131,19 +130,19 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
                     ///throw new Exception("auth fail");
                 }
             } else {
-                ZalyLogUtils.getInstance().debug(logTag, logMessage("hello action fail "));
+                WindLogger.getInstance().debug(logTag, logMessage("hello action fail "));
             }
 
             isError = true;
-            this.client.sendConnectionStatus(Connection.STATUS_AUTH_FAIL);
+            this.client.sendConnectionStatus(IMConnection.STATUS_AUTH_FAIL);
         } catch (Exception e) {
             isError = true;
 
-            ZalyLogUtils.getInstance().error(logTag, e, "");
+            WindLogger.getInstance().error(logTag, e, "");
 
             // 不处理注册，login接口处理注册
 
-            this.client.sendConnectionStatus(Connection.STATUS_CONN_RETRY);
+            this.client.sendConnectionStatus(IMConnection.STATUS_CONN_RETRY);
             return false;
         } finally {
             // 状态修改

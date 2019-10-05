@@ -5,7 +5,6 @@ import android.net.Uri;
 import com.akaxin.client.Configs;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.api.ApiClient;
-import com.akaxin.client.api.ApiClientForPlatform;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.db.bean.UserFriendBean;
@@ -67,15 +66,12 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
 
     @Override
     public void getPlatformSiteSetting() {
-        ZalyTaskExecutor.executeUserTask(TAG, new GetPlatformSiteSettingTask());
+
     }
 
     @Override
     public void updateSiteMute(boolean mute) {
         muteUpdateSuccessful = false;
-        ZalyTaskExecutor.executeUserTask(TAG, new UpdateSiteMuteTask(mute));
-        ZalyTaskExecutor.executeUserTask(TAG, new UpdatePlatformSiteSettingTask(mute));
-
     }
 
     @Override
@@ -186,58 +182,6 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
         }
     }
 
-    /**
-     * 从平台获取站点是否静音。
-     * <p>
-     * 获取平台接口时，
-     * 1. 如果结果为静音状态，开关设置为静音状态，站点接口不需要访问
-     * 2. 如果平台获取结果为非静音，需要调用站点的接口，进行依次校验
-     */
-    class GetPlatformSiteSettingTask extends ZalyTaskExecutor.Task<Void, Void, ApiSettingSiteMuteProto.ApiSettingSiteMuteResponse> {
-
-
-        @Override
-        protected ApiSettingSiteMuteProto.ApiSettingSiteMuteResponse executeTask(Void... voids) throws Exception {
-            return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite()).getSettingApi().getSiteSetting(site);
-        }
-
-        @Override
-        protected void onPreTask() {
-            super.onPreTask();
-            iView.onGetPlatformSiteSettingStart();
-        }
-
-
-        @Override
-        protected void onTaskSuccess(ApiSettingSiteMuteProto.ApiSettingSiteMuteResponse apiSettingSiteMuteResponse) {
-            super.onTaskSuccess(apiSettingSiteMuteResponse);
-            messageMute = apiSettingSiteMuteResponse.getMute();
-            if (messageMute) {
-                SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort() + "", messageMute);
-                iView.onGetPlatformSiteSettingSuccess(messageMute);
-            } else {
-                // go on querying site
-                ZalyTaskExecutor.executeUserTask(TAG, new GetSiteMuteTask());
-            }
-        }
-
-        @Override
-        protected void onTaskError(Exception e) {
-            super.onTaskError(e);
-            // go on querying site
-            ZalyTaskExecutor.executeUserTask(TAG, new GetSiteMuteTask());
-        }
-
-        @Override
-        protected void onAPIError(ZalyAPIException zalyAPIException) {
-            super.onAPIError(zalyAPIException);
-            // go on querying site
-
-            ZalyTaskExecutor.executeUserTask(TAG, new GetSiteMuteTask());
-        }
-    }
-
-
     class GetSiteMuteTask extends ZalyTaskExecutor.Task<Void, Void, ApiUserMuteProto.ApiUserMuteResponse> {
 
         @Override
@@ -318,65 +262,6 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
         @Override
         protected void onAPIError(ZalyAPIException zalyAPIException) {
             super.onAPIError(zalyAPIException);
-            if (!muteUpdateSuccessful) {
-                messageMute = !mute;
-                iView.onUpdateSiteSettingError(messageMute);
-            }
-        }
-
-    }
-
-    /**
-     * 更新平台的站点是否静音信息。
-     * <p>
-     * 1. 调用平台接口
-     * 平台：api.setting.updateSiteMute
-     * 设置平台上，该用户的静音状态
-     * 2.调用站点，设置静音状态
-     * 站点：api.user.updateSetting
-     * 上述1/2 其中一个状态为成功，则返回操作成功
-     */
-    class UpdatePlatformSiteSettingTask extends ZalyTaskExecutor.Task<Void, Void, ApiSettingUpdateSiteMuteProto.ApiSettingUpdateSiteMuteResponse> {
-        boolean mute;
-
-        public UpdatePlatformSiteSettingTask(boolean mute) {
-            this.mute = mute;
-        }
-
-        @Override
-        protected ApiSettingUpdateSiteMuteProto.ApiSettingUpdateSiteMuteResponse executeTask(Void... voids) throws Exception {
-            return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite()).getSettingApi().updateSiteSetting(site, mute);
-        }
-
-        @Override
-        protected void onPreTask() {
-            super.onPreTask();
-            iView.onUpdateSiteSettingStart();
-        }
-
-        @Override
-        protected void onTaskSuccess(ApiSettingUpdateSiteMuteProto.ApiSettingUpdateSiteMuteResponse apiSettingUpdateSiteMuteResponse) {
-            super.onTaskSuccess(apiSettingUpdateSiteMuteResponse);
-            muteUpdateSuccessful = true;
-            messageMute = mute;
-            SitePresenter.getInstance().updateSiteMute(site.getSiteHost(), site.getSitePort() + "", messageMute);
-            iView.onUpdateSiteSettingSuccess();
-        }
-
-        @Override
-        protected void onTaskError(Exception e) {
-            super.onTaskError(e);
-            // 如果此前站点更改静音状态也未成功，才恢复按钮。
-            if (!muteUpdateSuccessful) {
-                messageMute = !mute;
-                iView.onUpdateSiteSettingError(messageMute);
-            }
-        }
-
-        @Override
-        protected void onAPIError(ZalyAPIException zalyAPIException) {
-            super.onAPIError(zalyAPIException);
-            // 如果此前站点更改静音状态也未成功，才恢复按钮。
             if (!muteUpdateSuccessful) {
                 messageMute = !mute;
                 iView.onUpdateSiteSettingError(messageMute);

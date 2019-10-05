@@ -4,9 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.windchat.im.socket.SiteAddress;
-import com.windchat.logger.ZalyLogUtils;
-
-import org.apache.commons.lang3.StringUtils;
+import com.windchat.logger.WindLogger;
 
 
 /**
@@ -224,7 +222,7 @@ public class Site implements Parcelable {
         try {
             return siteHost.replace('.', '_') + "_" + sitePort;
         } catch (Exception e) {
-            ZalyLogUtils.getInstance().error("site", e, "");
+            WindLogger.getInstance().error("site", e, "");
             return "";
         }
     }
@@ -285,7 +283,6 @@ public class Site implements Parcelable {
 
     @Override
     public String toString() {
-//        return GsonUtils.toJson(this);
-        return "";
+        return this.siteHost + ":" + this.sitePort;
     }
 }

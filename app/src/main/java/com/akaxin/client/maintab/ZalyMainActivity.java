@@ -23,7 +23,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -42,7 +41,6 @@ import com.akaxin.client.activitys.ScanQRCodeActivity;
 import com.akaxin.client.activitys.ShareQRCodeActivity;
 import com.akaxin.client.activitys.SiteConnListActivity;
 import com.akaxin.client.api.ApiClient;
-import com.akaxin.client.api.ApiClientForPlatform;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.bean.event.AppEvent;
@@ -57,11 +55,6 @@ import com.akaxin.client.friend.ContactsFragment;
 import com.akaxin.client.friend.FriendSearchActivity;
 import com.akaxin.client.group.GroupCreateActivity;
 import com.akaxin.client.maintab.adapter.MainTabPagerAdapter;
-import com.akaxin.client.platform.task.ApiUserPushTokenTask;
-import com.akaxin.client.platform.task.GetUserPhoneTask;
-import com.akaxin.client.platform.task.PlatformLoginTask;
-import com.akaxin.client.platform.task.PushAuthTask;
-import com.akaxin.client.site.presenter.impl.PlatformPresenter;
 import com.akaxin.client.site.task.GetSitesInfoTask;
 import com.akaxin.client.site.task.GetSitesTask;
 import com.akaxin.client.site.task.LoginSiteTask;
@@ -79,7 +72,7 @@ import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.UpgradeInfo;
 import com.windchat.im.IMClient;
 import com.windchat.im.IMConst;
-import com.windchat.im.socket.Connection;
+import com.windchat.im.socket.IMConnection;
 import com.windchat.im.socket.SiteAddress;
 
 import org.greenrobot.eventbus.EventBus;
@@ -548,11 +541,7 @@ public class ZalyMainActivity extends BaseActivity
         ZalyLogUtils.getInstance().info(TAG, event.getAction() + "");
         switch (event.getAction()) {
             case AppEvent.LOGIN_PLATFORM_SUCCESS:
-                ZalyTaskExecutor.executeUserTask(TAG, new ApiUserPushTokenTask());
-                ZalyTaskExecutor.executeUserTask(TAG, new PushAuthTask(ApiClientForPlatform.getPlatformSite()));
-                ZalyTaskExecutor.executeTask(TAG, new GetUserPhoneTask());
             case AppEvent.ERROR_SESSION:
-                ZalyTaskExecutor.executeUserTask(TAG, new PlatformLoginTask());
                 break;
             case AppEvent.NO_PLUGIN:
                 tabSwitch(SESSION_TAB_INDEX);
@@ -606,11 +595,6 @@ public class ZalyMainActivity extends BaseActivity
                 }
             }
         });
-        if (PlatformPresenter.getInstance().getPlatformSessionId() == null) {
-            //2.登陆平台
-            ZalyTaskExecutor.executeUserTask(TAG, new PlatformLoginTask());
-        }
-
 
         getIMEI();
     }
@@ -710,7 +694,7 @@ public class ZalyMainActivity extends BaseActivity
                         int statusType = bundle.getInt(IMConst.KEY_CONN_STATUS);
                         switch (statusType) {
                             // 避免SessionFragment注册该事件晚于STATUS_AUTH_SUCCESS
-                            case Connection.STATUS_AUTH_SUCCESS:
+                            case IMConnection.STATUS_AUTH_SUCCESS:
                                 syncSiteInfo(currentSite);
                                 break;
                         }
@@ -845,27 +829,27 @@ public class ZalyMainActivity extends BaseActivity
     @Override
     public void onConnectionChange(String connIdentity, int connType, int statusType) {
         super.onConnectionChange(connIdentity, connType, statusType);
-        ZalyLogUtils.getInstance().info(TAG, " connIdentity  == " + connIdentity + " error.session == " + (Connection.STATUS_AUTH_LOGIN == statusType ? true : false));
+        ZalyLogUtils.getInstance().info(TAG, " connIdentity  == " + connIdentity + " error.session == " + (IMConnection.STATUS_AUTH_LOGIN == statusType ? true : false));
 
         if (connIdentity.equals(currentSite.getSiteIdentity())) {
             switch (statusType) {
-                case Connection.STATUS_CONN_NORMAL: // TODO: 目前永远收不到这个状态, 这里 syncSiteInfo() 是干什么的?
+                case IMConnection.STATUS_CONN_NORMAL: // TODO: 目前永远收不到这个状态, 这里 syncSiteInfo() 是干什么的?
                     if (!firstFlag) {
                         firstFlag = true;
                     }
                     connStatusBar.setVisibility(View.GONE);
                     connStatusBar.setOnClickListener(null);
                     break;
-                case Connection.STATUS_AUTH_SUCCESS:
+                case IMConnection.STATUS_AUTH_SUCCESS:
                     connStatusBar.setVisibility(View.GONE);
                     connStatusBar.setOnClickListener(null);
                     break;
-                case Connection.STATUS_AUTH_LOGIN:
+                case IMConnection.STATUS_AUTH_LOGIN:
                     ZalyTaskExecutor.executeUserTask(TAG, new LoginSiteTask(currentSite, this));
                     ZalyLogUtils.getInstance().info(TAG, "imconnection Auth failed. Need login");
                     break;
-                case Connection.STATUS_CONN_RETRY:
-                case Connection.STATUS_CONN_DISCONN:
+                case IMConnection.STATUS_CONN_RETRY:
+                case IMConnection.STATUS_CONN_DISCONN:
                     if (currentSite.getConnStatus() == Site.MANUAL_CONTROL_DISCONNECT_STATUS) {
                         connStatusBar.setText(R.string.error_conn_manual_disconnected);
                     } else {
@@ -875,11 +859,11 @@ public class ZalyMainActivity extends BaseActivity
                     connStatusBar.setOnClickListener(null);
                     break;
 
-                case Connection.STATUS_CONN_RETRY_FAIL:
+                case IMConnection.STATUS_CONN_RETRY_FAIL:
                     ////仅仅展示了文字，并没有重连操作， 虽然Im service进程有，但是这个并不准确
                     retrySiteConnected();
                     break;
-                case Connection.STATUS_AUTH_FAIL:
+                case IMConnection.STATUS_AUTH_FAIL:
                     connStatusBar.setVisibility(View.VISIBLE);
                     connStatusBar.setText(R.string.error_auth_failed);
                     connStatusBar.setOnClickListener(new View.OnClickListener() {
@@ -892,8 +876,7 @@ public class ZalyMainActivity extends BaseActivity
             }
         } else if (connIdentity.equals(ServerConfig.PLATFORM_INDENTIY)) {
             switch (statusType) {
-                case Connection.STATUS_AUTH_LOGIN:
-                    ZalyTaskExecutor.executeUserTask(TAG, new PlatformLoginTask());
+                case IMConnection.STATUS_AUTH_LOGIN:
                     ZalyLogUtils.getInstance().info(TAG, "imconnection Auth failed. Need login");
                     break;
             }

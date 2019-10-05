@@ -11,7 +11,7 @@ public class PacketWorker {
     private PacketWriter packetWriter;
     private PacketReader packetReader;
 
-    public PacketWorker(Connection conn) {
+    public PacketWorker(IMConnection conn) {
 
         if (packetWriter == null) {
             packetWriter = new PacketWriter(conn);

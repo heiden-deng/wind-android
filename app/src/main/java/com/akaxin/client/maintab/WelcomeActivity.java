@@ -12,11 +12,7 @@ import com.akaxin.client.bean.Site;
 import com.akaxin.client.bean.User;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.jump.presenter.impl.GoToPagePresenter;
-import com.akaxin.client.platform.task.ApiUserPushTokenTask;
-import com.akaxin.client.platform.task.PlatformLoginTask;
-import com.akaxin.client.platform.task.PushAuthTask;
 import com.akaxin.client.register.LoginSiteActivity;
-import com.akaxin.client.site.presenter.impl.PlatformPresenter;
 import com.akaxin.client.site.presenter.impl.SitePresenter;
 import com.akaxin.client.util.SiteUtils;
 import com.akaxin.client.util.data.StringUtils;
@@ -118,10 +114,6 @@ public class WelcomeActivity extends BaseActivity {
                     } else {
                         List<Site> sites = SitePresenter.getInstance().getAllSiteLists();
                         if (sites != null && sites.size() > 0) {
-                            if (currentSite != null) {
-                                ZalyTaskExecutor.executeUserTask(TAG, new PushAuthTask(currentSite));
-                                ZalyTaskExecutor.executeUserTask(TAG, new ApiUserPushTokenTask());
-                            }
                             Intent mainIntent = new Intent(WelcomeActivity.this, ZalyMainActivity.class);
                             mainIntent.putExtra(IntentKey.KEY_CURRENT_SITE, currentSite);
                             startActivity(mainIntent);
@@ -135,12 +127,6 @@ public class WelcomeActivity extends BaseActivity {
                     finish();
                 }
             });
-            //2.登陆平台
-            if (PlatformPresenter.getInstance().getPlatformSessionId() == null) {
-                //2.登陆平台
-                ZalyLogUtils.getInstance().platformLoginIn(TAG, " platfrom login");
-                ZalyTaskExecutor.executeUserTask(TAG, new PlatformLoginTask());
-            }
         }
 
     }
@@ -210,6 +196,5 @@ public class WelcomeActivity extends BaseActivity {
 
         }
     }
-
 }
 

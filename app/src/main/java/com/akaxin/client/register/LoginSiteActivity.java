@@ -14,8 +14,6 @@ import com.akaxin.client.R;
 import com.akaxin.client.activitys.LoginActivity;
 import com.akaxin.client.constant.ServerConfig;
 import com.akaxin.client.maintab.BaseActivity;
-import com.akaxin.client.platform.task.PlatformLoginTask;
-import com.akaxin.client.platform.task.PlatformLogoutTask;
 import com.akaxin.client.register.presenter.ILoginSitePresenter;
 import com.akaxin.client.register.presenter.impl.LoginSitePresenter;
 import com.akaxin.client.register.view.ILoginSiteView;
@@ -86,7 +84,6 @@ public class LoginSiteActivity extends BaseActivity implements ILoginSiteView {
         //2.登陆平台
         if (PlatformPresenter.getInstance().getPlatformSessionId() == null) {
             ZalyLogUtils.getInstance().platformLoginIn(TAG, " platfrom login");
-            ZalyTaskExecutor.executeUserTask(TAG, new PlatformLoginTask());
         }
     }
 
@@ -163,7 +160,6 @@ public class LoginSiteActivity extends BaseActivity implements ILoginSiteView {
                                         dialog.dismiss();
                                         break;
                                     case POSITIVE:
-                                        ZalyTaskExecutor.executeUserTask(TAG, new PlatformLogoutTask());
                                         startActivity(new Intent(LoginSiteActivity.this, LoginActivity.class));
                                         finish();
                                         break;

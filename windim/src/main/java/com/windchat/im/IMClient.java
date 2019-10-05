@@ -3,12 +3,12 @@ package com.windchat.im;
 import android.os.RemoteException;
 
 import com.windchat.im.bean.Message;
-import com.windchat.im.socket.Connection;
+import com.windchat.im.socket.IMConnection;
 import com.windchat.im.socket.ConnectionConfig;
 import com.windchat.im.socket.IConnectionHandler;
 import com.windchat.im.socket.SiteAddress;
 import com.windchat.im.socket.TransportPackageForRequest;
-import com.windchat.logger.ZalyLogUtils;
+import com.windchat.logger.WindLogger;
 import com.windchat.proto.core.CoreProto;
 import com.windchat.proto.server.ImCtsMessageProto;
 import com.windchat.proto.server.ImSyncFinishProto;
@@ -60,7 +60,7 @@ public class IMClient implements IConnectionHandler {
      * @param address
      */
     public static void makeSureClientAlived(SiteAddress address) {
-        IMClient.getInstance(address).makeSureSocketAlived();
+        IMClient.getInstance(address).checkSocketAlive();
     }
 
     /**
@@ -84,14 +84,14 @@ public class IMClient implements IConnectionHandler {
 
     public String logTag = TAG;
     public SiteAddress address;
-    public Connection imConnection;
+    public IMConnection imConnection;
     public IMClientHeartWorker keepAlivedWorker;
     private ExecutorService connExecutor;
 
     private IMClient(SiteAddress address) {
         this.address = address;
         this.setConnExecutor();
-        this.makeSureSocketAlived();
+        this.checkSocketAlive();
     }
 
     private void setConnExecutor() {
@@ -159,7 +159,7 @@ public class IMClient implements IConnectionHandler {
 
             this.sendIMRequest(IMConst.Action.Sync, request);
         } catch (Exception e) {
-            ZalyLogUtils.getInstance().info(TAG, e.getMessage());
+            WindLogger.getInstance().info(TAG, e.getMessage());
         }
     }
 
@@ -222,7 +222,7 @@ public class IMClient implements IConnectionHandler {
 
         // auth 成功前，服务器不会处理任何请求的。
         if (false == this.authSuccessed) {
-            ZalyLogUtils.getInstance().info(this.logTag, this.address.getFullUrl() + "/" + action + " Error. Donot send im request before auth.");
+            WindLogger.getInstance().info(this.logTag, this.address.getFullUrl() + "/" + action + " Error. Donot send im request before auth.");
             return;
         }
 
@@ -237,9 +237,9 @@ public class IMClient implements IConnectionHandler {
 
             TransportPackageForRequest tRequest = new TransportPackageForRequest(action, packageData);
             this.imConnection.nonBlockRequest(tRequest);
-            ZalyLogUtils.getInstance().info(this.logTag, this.address.getFullUrl() + "/" + action + " DONE ");
+            WindLogger.getInstance().info(this.logTag, this.address.getFullUrl() + "/" + action + " DONE ");
         } catch (Exception e) {
-            ZalyLogUtils.getInstance().warn(this.logTag, this.address.getFullUrl() + "/" + action + " exception: " + e.getMessage());
+            WindLogger.getInstance().warn(this.logTag, this.address.getFullUrl() + "/" + action + " exception: " + e.getMessage());
         }
     }
 
@@ -265,7 +265,7 @@ public class IMClient implements IConnectionHandler {
             this.connExecutor.shutdownNow();
             this.setConnExecutor();
         }
-        sendConnectionStatus(Connection.STATUS_CONN_DISCONN);
+        sendConnectionStatus(IMConnection.STATUS_CONN_DISCONN);
     }
 
     public void retryConnect() {
@@ -275,12 +275,12 @@ public class IMClient implements IConnectionHandler {
 
     public void closeSocketWithError(Exception e) {
         try {
-            ZalyLogUtils.getInstance().warn(this.logTag, "reconnect.closeSocketWithError " + this.address.getFullUrl() + " " + e.getMessage());
+            WindLogger.getInstance().warn(this.logTag, "reconnect.closeSocketWithError " + this.address.getFullUrl() + " " + e.getMessage());
             if (null != this.imConnection) {
                 this.imConnection.disconnectWithError(e);
             }
         } catch (Exception ex) {
-            ZalyLogUtils.getInstance().error(this.logTag, ex, "");
+            WindLogger.getInstance().error(this.logTag, ex, "");
         }
     }
 
@@ -299,11 +299,10 @@ public class IMClient implements IConnectionHandler {
      * <p>
      * 此方法可以随意的重入，方法内部做了去重判断。
      */
-    private synchronized void makeSureSocketAlived() {
+    private synchronized void checkSocketAlive() {
 
-        // 如果现在连接是好的，则什么都不做
-        if (null != this.imConnection && this.imConnection.isConnected()) {
-            ZalyLogUtils.getInstance().debug(
+        if (this.imConnection != null && this.imConnection.isConnected()) {
+            WindLogger.getInstance().debug(
                     this.logTag,
                     "renewSocketAndHelloAuth ignore socket is connected");
             return;
@@ -317,11 +316,11 @@ public class IMClient implements IConnectionHandler {
 
         // 如果正在连接，则啥也不做，直接返回
         if (this.isDoingConnectAndAuth) {
-            ZalyLogUtils.getInstance().debug(this.logTag, "reconnect.onConnectionDisconnected isDoingConnectAndAuth == true, ignore");
+            WindLogger.getInstance().debug(this.logTag, "reconnect.onConnectionDisconnected isDoingConnectAndAuth == true, ignore");
             return;
         }
         this.isDoingConnectAndAuth = true;
-        ZalyLogUtils.getInstance().info(TAG, " connection site address =" + address.getFullUrl());
+        WindLogger.getInstance().info(TAG, " connection site address =" + address.getFullUrl());
         ConnectionConfig config = this.address.toConnectionConfig();
 
         try {
@@ -329,7 +328,7 @@ public class IMClient implements IConnectionHandler {
             // 先释放掉之前的资源
             this.disconnect();
 
-            this.imConnection = new Connection(config);
+            this.imConnection = new IMConnection(config);
             this.imConnection.logTag = "IMClient." + this.imConnection.logTag;
 
             // Request And Response 模式更优先
@@ -342,7 +341,7 @@ public class IMClient implements IConnectionHandler {
         } catch (Exception e) {
             this.isDoingConnectAndAuth = false;
             this.onConnectionDisconnected(e);
-            ZalyLogUtils.getInstance().debug(
+            WindLogger.getInstance().debug(
                     TAG,
                     "build socket error siteAddress is " + address + "message is " + e.getMessage()
             );
@@ -367,7 +366,7 @@ public class IMClient implements IConnectionHandler {
             return;
         }
 
-        sendConnectionStatus(Connection.STATUS_CONN_DISCONN);
+        sendConnectionStatus(IMConnection.STATUS_CONN_DISCONN);
 
         this.connExecutor.submit(new Runnable() {
             @Override
@@ -375,9 +374,9 @@ public class IMClient implements IConnectionHandler {
                 // 发起重连
                 try {
                     Thread.sleep(2000);
-                    makeSureSocketAlived();
+                    checkSocketAlive();
                 } catch (Exception ee) {
-                    ZalyLogUtils.getInstance().debug(
+                    WindLogger.getInstance().debug(
                             TAG,
                             "onConnectionDisconnected siteAddress is " + address + "message is " + ee.getMessage()
                     );

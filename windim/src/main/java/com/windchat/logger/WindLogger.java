@@ -4,11 +4,11 @@ package com.windchat.logger;
  * Created by anguoyue on 2019/9/14.
  */
 
-public class ZalyLogUtils {
+public class WindLogger {
 
-    private static ZalyLogUtils logger = new ZalyLogUtils();
+    private static WindLogger logger = new WindLogger();
 
-    public static ZalyLogUtils getInstance() {
+    public static WindLogger getInstance() {
         return logger;
     }
 

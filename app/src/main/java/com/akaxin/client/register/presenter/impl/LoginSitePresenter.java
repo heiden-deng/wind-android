@@ -15,10 +15,6 @@ import com.akaxin.client.bean.event.AppEvent;
 import com.akaxin.client.constant.ErrorCode;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.maintab.ZalyMainActivity;
-import com.akaxin.client.platform.task.ApiPhoneApplyTokenTask;
-import com.akaxin.client.platform.task.ApiSettingSiteMuteTask;
-import com.akaxin.client.platform.task.ApiUserPushTokenTask;
-import com.akaxin.client.platform.task.PushAuthTask;
 import com.akaxin.client.register.RegisterActivity;
 import com.akaxin.client.register.presenter.ILoginSitePresenter;
 import com.akaxin.client.register.view.ILoginSiteView;
@@ -196,10 +192,6 @@ public class LoginSitePresenter implements ILoginSitePresenter {
                 String phoneToken = ZalyApplication.getCfgSP().getKey(Configs.PHONE_TOKEN + "_" + site.getSiteAddress());
                 loginSiteView.hideProgressDialog();
 
-                //站点非实名，不调用实名接口
-                if (site.getRealNameConfig() == ConfigProto.RealNameConfig.REALNAME_YES_VALUE) {
-                    ZalyTaskExecutor.executeUserTask(TAG, new ApiPhoneApplyTokenTask(site));
-                }
                 ZalyTaskExecutor.executeUserTask(TAG, new LoginTask(userSignBase64, deviceSignBase64, userToken, phoneToken, site));
             }
         }
@@ -255,7 +247,6 @@ public class LoginSitePresenter implements ILoginSitePresenter {
         @Override
         protected ApiSiteLoginProto.ApiSiteLoginResponse executeTask(Void... voids) throws Exception {
             // push auth
-            ZalyTaskExecutor.executeUserTask(TAG, new PushAuthTask(site));
             return ApiClient.getInstance(ConnectionConfig.getConnectionCfg(site)).getSiteApi().loginSite(userSignBase64, deviceSignBase64, pushToken, phoneToken);
         }
 
@@ -332,7 +323,6 @@ public class LoginSitePresenter implements ILoginSitePresenter {
         @Override
         protected ApiSiteLoginProto.ApiSiteLoginResponse executeTask(Void... voids) throws Exception {
             // push auth
-            ZalyTaskExecutor.executeUserTask(TAG, new PushAuthTask(site));
             return ApiClient.getInstance(ConnectionConfig.getConnectionCfg(site)).getSiteApi().loginSite(userSignBase64, deviceSignBase64, "", phoneToken);
         }
 
@@ -402,8 +392,6 @@ public class LoginSitePresenter implements ILoginSitePresenter {
             });
 
             ZalyTaskExecutor.executeUserTask(TAG, new ApiUserProfileTask(site));
-            ZalyTaskExecutor.executeUserTask(TAG, new ApiSettingSiteMuteTask(site));
-            ZalyTaskExecutor.executeUserTask(TAG, new ApiUserPushTokenTask());
 
             Intent intent = new Intent(loginSiteView.getAppContext(), ZalyMainActivity.class);
             intent.putExtra(IntentKey.KEY_CURRENT_SITE, site);

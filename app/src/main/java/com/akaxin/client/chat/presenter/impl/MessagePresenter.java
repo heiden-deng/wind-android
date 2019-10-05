@@ -5,7 +5,6 @@ import android.util.Base64;
 
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.api.ApiClient;
-import com.akaxin.client.api.ApiClientForPlatform;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.AudioInfo;
 import com.akaxin.client.bean.ChatSession;
@@ -496,7 +495,7 @@ public class MessagePresenter implements IMessagePresenter {
 
                 @Override
                 public void onProcessRate(int processNum) {
-//                    ZalyLogUtils.getInstance().info(TAG, " process num is " + processNum);
+//                    WindLogger.getInstance().info(TAG, " process num is " + processNum);
                     sendDBContent(message, processNum);
                 }
 
@@ -897,52 +896,6 @@ public class MessagePresenter implements IMessagePresenter {
         protected void onTaskError(Exception e) {
             super.onTaskError(e);
             iView.onSendingMessageError(rawMessage);
-        }
-    }
-
-
-    /**
-     * 通过此 Task 开启绝密聊天: 先获取平台是否允许站点绝密的 Task. 如果允许绝密, 则打开绝密模式.
-     */
-    class TopSecretTask extends ZalyTaskExecutor.Task<Void, Void, ApiPlatformTopSecretProto.ApiPlatformTopSecretResponse> {
-        @Override
-        protected void onPreTask() {
-            super.onPreTask();
-        }
-
-        @Override
-        protected ApiPlatformTopSecretProto.ApiPlatformTopSecretResponse executeTask(Void... voids) throws Exception {
-            return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite()).getPlatformApi().getTopSecret(currentSite);
-        }
-
-        @Override
-        protected void onTaskSuccess(ApiPlatformTopSecretProto.ApiPlatformTopSecretResponse topSecretResponse) {
-            boolean isTopSecret = topSecretResponse.getOpenTopSecret();
-            if (!isTopSecret) {
-                iView.onTopSecretOff();
-                return;
-            }
-            ZalyTaskExecutor.executeUserTask(TAG, new ApplySecretTask(friendSiteUserId));
-        }
-
-        @Override
-        protected void onTaskError(Exception e) {
-            super.onTaskError(e);
-            iView.onTopSecretOff();
-            Toaster.showInvalidate("开启绝密失败，请稍候再试");
-        }
-
-        @Override
-        protected void onAPIError(ZalyAPIException zalyApiException) {
-            super.onAPIError(zalyApiException);
-            iView.onTopSecretOff();
-            Toaster.showInvalidate("开启绝密失败，请稍候再试");
-        }
-
-
-        @Override
-        protected void onTaskFinish() {
-            super.onTaskFinish();
         }
     }
 

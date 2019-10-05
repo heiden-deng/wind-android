@@ -60,7 +60,7 @@ import com.blankj.utilcode.util.CacheDiskUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.orhanobut.logger.Logger;
 import com.windchat.im.IMClient;
-import com.windchat.im.socket.Connection;
+import com.windchat.im.socket.IMConnection;
 import com.windchat.im.socket.SiteAddress;
 
 import java.io.File;
@@ -305,21 +305,21 @@ public abstract class BaseMsgActivity extends BaseActivity implements SensorEven
 
         if (connIdentity.equals(currentSite.getSiteIdentity())) {
             switch (statusType) {
-                case Connection.STATUS_AUTH_SUCCESS:
+                case IMConnection.STATUS_AUTH_SUCCESS:
                     connStatusBar.setVisibility(View.GONE);
                     connStatusBar.setOnClickListener(null);
                     break;
-                case Connection.STATUS_CONN_RETRY:
-                case Connection.STATUS_CONN_DISCONN:
+                case IMConnection.STATUS_CONN_RETRY:
+                case IMConnection.STATUS_CONN_DISCONN:
                     connStatusBar.setVisibility(View.VISIBLE);
                     connStatusBar.setText(R.string.error_conn_retrying);
                     connStatusBar.setOnClickListener(null);
                     break;
-                case Connection.STATUS_CONN_RETRY_FAIL:
+                case IMConnection.STATUS_CONN_RETRY_FAIL:
                     ////暂时屏蔽这个代码，只留下用户手动触发，目前发现并不准确
                     retrySiteConnected();
                     break;
-                case Connection.STATUS_AUTH_FAIL:
+                case IMConnection.STATUS_AUTH_FAIL:
                     connStatusBar.setVisibility(View.VISIBLE);
                     connStatusBar.setText(R.string.error_auth_failed);
                     connStatusBar.setOnClickListener(new View.OnClickListener() {

@@ -199,7 +199,7 @@ public abstract class MVPBaseFragment<V extends BaseView, T extends BasePresente
      * @param statusType
      */
     public void onConnectionChange(String connIdentity, int connType, int statusType) {
-//        ZalyLogUtils.getInstance().info(TAG, "connIdentity: " + connIdentity +
+//        WindLogger.getInstance().info(TAG, "connIdentity: " + connIdentity +
 //                ", connType: " + connType +
 //                ", statusType: " + statusType);
     }

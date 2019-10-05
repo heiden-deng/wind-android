@@ -5,7 +5,6 @@ import android.util.Base64;
 import com.akaxin.client.Configs;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.api.ApiClient;
-import com.akaxin.client.api.ApiClientForPlatform;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.User;
 import com.akaxin.client.constant.ServerConfig;
@@ -31,54 +30,7 @@ import org.json.JSONObject;
 public class LoginByQRPresenter extends BasePresenterImpl<LoginByQRContract.View> implements LoginByQRContract.Presenter {
     @Override
     public void getTempSpaceContent(final String spaceKey, final byte[] tsk) {
-        ZalyTaskExecutor.executeUserTask("", new ZalyTaskExecutor.Task<Void, Void, ApiTempDownloadProto.ApiTempDownloadResponse>() {
-            @Override
-            protected ApiTempDownloadProto.ApiTempDownloadResponse executeTask(Void... voids) throws Exception {
-                return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite()).getTempApi().getTempSpaceContent(spaceKey);
-            }
 
-            @Override
-            protected void onPreTask() {
-                super.onPreTask();
-            }
-
-            @Override
-            protected void onTaskSuccess(ApiTempDownloadProto.ApiTempDownloadResponse apiTempDownloadResponse) {
-                super.onTaskSuccess(apiTempDownloadResponse);
-                String tempSpaceContent = apiTempDownloadResponse.getContent().toStringUtf8();
-                try {
-                    JSONObject jsonObject = new JSONObject(tempSpaceContent);
-                    String encryptedUserPubKey = jsonObject.getString("pubk");
-                    String encryptedUserPriKey = jsonObject.getString("prik");
-                    String userPubKey = new String(AESUtils.decrypt(tsk, Base64.decode(encryptedUserPubKey, Base64.NO_WRAP)));
-                    String userPriKey = new String(AESUtils.decrypt(tsk, Base64.decode(encryptedUserPriKey, Base64.NO_WRAP)));
-                    ZalyApplication.getCfgSP().putKey(Configs.USER_PUB_KEY, userPubKey);
-                    ZalyApplication.getCfgSP().putKey(Configs.USER_PRI_KEY, userPriKey);
-
-                    //生成本机设备公钥
-                    User user = new User();
-                    user.setUserIdPrik(userPriKey);
-                    user.setUserIdPuk(userPubKey);
-                    user.setGlobalUserId(StringUtils.getGlobalUserIdHash(userPubKey));
-                    if (mView != null)
-                        mView.getTempSpaceContentSuccess(user);
-                } catch (Exception e) {
-                    ZalyLogUtils.getInstance().errorToInfo(TAG, e.getMessage());
-                }
-            }
-
-            @Override
-            protected void onAPIError(ZalyAPIException zalyAPIException) {
-                if (mView != null)
-                    mView.getTempSpaceContentError(zalyAPIException, spaceKey, tsk);
-            }
-
-            @Override
-            protected void onTaskError(Exception e) {
-                if (mView != null)
-                    mView.getTempSpaceContentError(e, spaceKey, tsk);
-            }
-        });
     }
 
     @Override

@@ -6,7 +6,6 @@ import android.net.Uri;
 import com.akaxin.client.Configs;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.api.ApiClient;
-import com.akaxin.client.api.ApiClientForPlatform;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.constant.ErrorCode;
@@ -40,96 +39,11 @@ public class PersonalPresenter extends BasePresenterImpl<PersonalContract.View> 
 
     @Override
     public void getUserPhone() {
-        ZalyTaskExecutor.executeUserTask(TAG, new ZalyTaskExecutor.Task<Void, Void, ApiUserPhoneProto.ApiUserPhoneResponse>() {
 
-            @Override
-            protected ApiUserPhoneProto.ApiUserPhoneResponse executeTask(Void... voids) throws Exception {
-                return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite())
-                        .getUserApi().getUserPhone();
-            }
-
-            @Override
-            protected void onTaskSuccess(ApiUserPhoneProto.ApiUserPhoneResponse apiUserPhoneResponse) {
-                super.onTaskSuccess(apiUserPhoneResponse);
-                ZalyApplication.getCfgSP().putKey(Configs.PHONE_ID, apiUserPhoneResponse.getPhoneId());
-                if (mView != null)
-                    mView.onGetUserPhoneSuccess(apiUserPhoneResponse);
-            }
-
-            @Override
-            protected void onTaskError(Exception e) {
-
-            }
-
-            @Override
-            protected void onAPIError(ZalyAPIException zalyAPIException) {
-
-            }
-        });
     }
 
     @Override
     public void logoutPlatform() {
-        ZalyTaskExecutor.executeUserTask(TAG, new ZalyTaskExecutor.Task<Void, Void, ApiPlatformLogoutProto.ApiPlatformLogoutResponse>() {
-            @Override
-            protected void onPreTask() {
-                super.onPreTask();
-                if (mView != null)
-                mView.onTaskStart("注销平台连接");
-            }
-
-            @Override
-            protected ApiPlatformLogoutProto.ApiPlatformLogoutResponse executeTask(Void... voids) throws Exception {
-                return ApiClient.getInstance(ConnectionConfig.getConnectionCfg(ApiClientForPlatform.getPlatformSite()))
-                        .getPlatformApi().platformLogout();
-            }
-
-            @Override
-            protected void onTaskSuccess(ApiPlatformLogoutProto.ApiPlatformLogoutResponse apiPlatformLogoutResponse) {
-                super.onTaskSuccess(apiPlatformLogoutResponse);
-                if (mView != null)
-                mView.onLogoutPlatformSuccess();
-            }
-
-            @Override
-            protected void onTaskError(Exception e) {
-                super.onTaskError(e);
-                if (e instanceof ZalyAPIException && ((ZalyAPIException) e).getErrorInfoCode().equals(ErrorCode.REQUEST_SESSION_ERROR)) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (Exception ex) {
-                        ZalyLogUtils.getInstance().exceptionError(ex);
-                    }
-                    Toaster.showInvalidate("请稍候再试");
-                    return;
-                }
-            }
-
-            @Override
-            protected void onAPIError(ZalyAPIException zalyAPIException) {
-                super.onAPIError(zalyAPIException);
-
-                if (zalyAPIException != null && zalyAPIException.getErrorInfoCode().equals(ErrorCode.REQUEST_SESSION_ERROR)) {
-                    /////TODO session 过期 需要重新登录login
-                    try {
-                        Thread.sleep(1000);
-                    } catch (Exception ex) {
-                        ZalyLogUtils.getInstance().exceptionError(ex);
-                    }
-                    Toaster.showInvalidate("请稍候再试");
-                    return;
-                }
-
-                //    ZalyTaskExecutor.executeUserTask(TAG, new com.akaxin.client.personal.presenter.impl.PersonalPresenter.DeleteIdentityTask());
-            }
-
-            @Override
-            protected void onTaskFinish() {
-                super.onTaskFinish();
-                if (mView != null)
-                mView.onTaskFinish();
-            }
-        });
     }
 
     @Override
@@ -146,7 +60,7 @@ public class PersonalPresenter extends BasePresenterImpl<PersonalContract.View> 
             protected void onPreTask() {
                 super.onPreTask();
                 if (mView != null)
-                mView.onTaskStart("上传资料...");
+                    mView.onTaskStart("上传资料...");
 
             }
 
@@ -174,7 +88,7 @@ public class PersonalPresenter extends BasePresenterImpl<PersonalContract.View> 
             protected void onTaskSuccess(ApiUserUpdateProfileProto.ApiUserUpdateProfileResponse apiUserUpdateProfileResponse) {
                 super.onTaskSuccess(apiUserUpdateProfileResponse);
                 if (mView != null)
-                mView.onUpdateUserProfileSuccess(site, userProfileDetails);
+                    mView.onUpdateUserProfileSuccess(site, userProfileDetails);
             }
 
 
@@ -188,7 +102,7 @@ public class PersonalPresenter extends BasePresenterImpl<PersonalContract.View> 
             protected void onTaskFinish() {
                 super.onTaskFinish();
                 if (mView != null)
-                mView.onTaskFinish();
+                    mView.onTaskFinish();
             }
         });
     }
@@ -219,21 +133,21 @@ public class PersonalPresenter extends BasePresenterImpl<PersonalContract.View> 
                     return;
                 }
                 if (mView != null)
-                mView.onUploadImageSuccess(apiFileUploadResponse);
+                    mView.onUploadImageSuccess(apiFileUploadResponse);
             }
 
             @Override
             protected void onTaskFinish() {
                 super.onTaskFinish();
                 if (mView != null)
-                mView.onTaskFinish();
+                    mView.onTaskFinish();
             }
 
             @Override
             protected void onPreTask() {
                 super.onPreTask();
                 if (mView != null)
-                mView.onTaskStart("上传图片中");
+                    mView.onTaskStart("上传图片中");
             }
 
             @Override

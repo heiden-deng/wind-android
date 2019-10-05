@@ -113,7 +113,7 @@ public class GroupContactsActivity extends BaseActivity {
 //                    ApiGroupListProto.ApiGroupListResponse apiGroupListResponse = ApiGroupListProto.ApiGroupListResponse.parseFrom(data);
 //                    displayUI(apiGroupListResponse);
 //                } catch (Exception e) {
-//                    ZalyLogUtils.getInstance().errorToInfo(TAG, e.getMessage());
+//                    WindLogger.getInstance().errorToInfo(TAG, e.getMessage());
 //                }
 //            }
         }

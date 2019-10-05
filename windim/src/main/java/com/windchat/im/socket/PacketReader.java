@@ -1,7 +1,7 @@
 package com.windchat.im.socket;
 
 
-import com.windchat.logger.ZalyLogUtils;
+import com.windchat.logger.WindLogger;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,18 +18,18 @@ import java.util.List;
 public class PacketReader {
     public static final String TAG = "PacketReader";
 
-    protected Connection connection = null;
+    protected IMConnection connection = null;
     private AbsReadThread readThread = null;
     private InputStream reader = null;
     protected boolean running;
 
-    public PacketReader(Connection connection) {
+    public PacketReader(IMConnection connection) {
         this.connection = connection;
     }
 
     public synchronized void startup(InputStream is) throws IOException {
 
-        ZalyLogUtils.getInstance().debug(this.logTag, this.logMessage("startup" + String.valueOf(running)));
+        WindLogger.getInstance().debug(this.logTag, this.logMessage("startup" + String.valueOf(running)));
 
         if (running) {
             release();
@@ -323,7 +323,7 @@ public class PacketReader {
 
                     //分发数据包
                     if (StringUtils.isEmpty(action)) {
-                        ZalyLogUtils.getInstance().warn(TAG, "action is empty");
+                        WindLogger.getInstance().warn(TAG, "action is empty");
                         continue;
                     }
 
@@ -331,7 +331,7 @@ public class PacketReader {
 
                 } catch (Exception e) {
 
-                    ZalyLogUtils.getInstance().error(TAG, e, "");
+                    WindLogger.getInstance().error(TAG, e, "");
 
                     isDecoding = false;
                     singularArguments = null;
@@ -354,7 +354,7 @@ public class PacketReader {
      */
     private void dispatchResult(TransportPackage request) throws Exception {
 
-        ZalyLogUtils.getInstance().debug(TAG, request.action);
+        WindLogger.getInstance().debug(TAG, request.action);
 
         // 优先派发给RequestAndResponse模式
         if (this.connection.isDoingRequestAndResponse) {
@@ -364,13 +364,13 @@ public class PacketReader {
             if (null != this.connection.toClientRequestHandler) {
                 this.connection.toClientRequestHandler.matchReceive(request);
             } else {
-                ZalyLogUtils.getInstance().warn("Reader.DispatchResult.none.toClientRequestHandler", request.action);
+                WindLogger.getInstance().warn("Reader.DispatchResult.none.toClientRequestHandler", request.action);
             }
         }
     }
 
     public synchronized void shutdown() {
-        ZalyLogUtils.getInstance().debug(
+        WindLogger.getInstance().debug(
                 this.logTag,
                 this.logMessage("shutdown")
         );
@@ -387,7 +387,7 @@ public class PacketReader {
                 readThread.interrupt();
             } catch (Exception e) {
                 e.printStackTrace();
-                ZalyLogUtils.getInstance().error(TAG, e, "");
+                WindLogger.getInstance().error(TAG, e, "");
             }
         }
     }
@@ -398,7 +398,7 @@ public class PacketReader {
 
     private void readerlog(String message) {
 
-//        ZalyLogUtils.getInstance().debug(
+//        WindLogger.getInstance().debug(
 //                this.logTag,
 //                this.logMessage("readerlog:" + message),
 //                this

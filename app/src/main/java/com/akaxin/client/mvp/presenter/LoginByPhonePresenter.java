@@ -5,7 +5,6 @@ import android.util.Base64;
 import com.akaxin.client.Configs;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.api.ApiClient;
-import com.akaxin.client.api.ApiClientForPlatform;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.User;
 import com.akaxin.client.constant.ErrorCode;
@@ -39,75 +38,11 @@ public class LoginByPhonePresenter extends BasePresenterImpl<LoginByPhoneContrac
 
     @Override
     public void getVerifyCode(final String phoneNum, final int type) {
-        ZalyTaskExecutor.executeUserTask(TAG, new ZalyTaskExecutor.Task<Void, Void, ApiPhoneVerifyCodeProto.ApiPhoneVerifyCodeResponse>() {
-            @Override
-            protected ApiPhoneVerifyCodeProto.ApiPhoneVerifyCodeResponse executeTask(Void... voids) throws Exception {
-                return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite()).getPhoneApi().getVerifyCode(phoneNum, type, ServerConfig.CHINA_COUNTRY_CODE);
-            }
 
-            @Override
-            protected void onPreTask() {
-                super.onPreTask();
-                mView.onTaskStart("正在获取验证码...");
-            }
-
-            @Override
-            protected void onTaskSuccess(ApiPhoneVerifyCodeProto.ApiPhoneVerifyCodeResponse apiPhoneVerifyCodeResponse) {
-                super.onTaskSuccess(apiPhoneVerifyCodeResponse);
-                mView.onGetVerifyCodeSuccess();
-            }
-
-            @Override
-            protected void onTaskFinish() {
-                super.onTaskFinish();
-                mView.onTaskFinish();
-            }
-
-
-        });
     }
 
     @Override
     public void loginPlatformByPhone(final String phoneNum, final String verifyCode) {
-        ZalyTaskExecutor.executeUserTask(TAG, new ZalyTaskExecutor.Task<Void, Void, ApiPhoneLoginProto.ApiPhoneLoginResponse>() {
-            @Override
-            protected ApiPhoneLoginProto.ApiPhoneLoginResponse executeTask(Void... voids) throws Exception {
-                return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite()).getPhoneApi().loginPlatformByPhone(phoneNum, verifyCode);
-            }
-
-            @Override
-            protected void onPreTask() {
-                super.onPreTask();
-                mView.onTaskStart("登录中");
-            }
-
-            @Override
-            protected void onTaskSuccess(ApiPhoneLoginProto.ApiPhoneLoginResponse apiPhoneLoginResponse) {
-                super.onTaskSuccess(apiPhoneLoginResponse);
-                String pubkey = apiPhoneLoginResponse.getUserIdPubk();
-                String prikey = apiPhoneLoginResponse.getUserIdPrik();
-                if (pubkey == null || prikey == null || pubkey.equals("null") || prikey.equals("null")) {
-                    mView.onLoginPlatformByPhoneError();
-                    return;
-                }
-                ZalyApplication.getCfgSP().putKey(Configs.USER_PUB_KEY, pubkey);
-                ZalyApplication.getCfgSP().putKey(Configs.USER_PRI_KEY, prikey);
-                ZalyApplication.getCfgSP().putKey(Configs.PHONE_ID, phoneNum);
-
-                //生成本机设备公钥
-                User user = new User();
-                user.setUserIdPrik(prikey);
-                user.setUserIdPuk(pubkey);
-                user.setGlobalUserId(StringUtils.getGlobalUserIdHash(pubkey));
-                mView.onLoginPlatformByPhoneSuccess(user);
-            }
-
-            @Override
-            protected void onTaskFinish() {
-                super.onTaskFinish();
-                mView.onTaskFinish();
-            }
-        });
     }
 
     @Override
@@ -258,72 +193,6 @@ public class LoginByPhonePresenter extends BasePresenterImpl<LoginByPhoneContrac
     @Override
     public void registPlatformByPhone(final String phoneNum, final String code) {
 
-        ZalyTaskExecutor.executeUserTask(TAG, new ZalyTaskExecutor.Task<Void, Void, ApiPlatformRegisterByPhoneProto.ApiPlatformRegisterByPhoneResponse>() {
-            @Override
-            protected ApiPlatformRegisterByPhoneProto.ApiPlatformRegisterByPhoneResponse executeTask(Void... voids) throws Exception {
-                ZalyLogUtils.getInstance().info(TAG, " ApiPlatformRegisterTask phoneNum is " + phoneNum);
-
-                SPUtils spUtils = ZalyApplication.getCfgSP();
-
-                //一部设备对应一用户密钥对，一设备密钥对，所需要存储在上层配置项
-                String[] deviceKeyPair = RSAUtils.getInstance().generateNewKeyPairPEMStr();
-                spUtils.putKey(Configs.DEVICE_PRI_KEY, deviceKeyPair[0]);
-                spUtils.putKey(Configs.DEVICE_PUB_KEY, deviceKeyPair[1]);
-
-                //用户身份密钥对
-                String[] userKeyPair = RSAUtils.getInstance().generateNewKeyPairPEMStr();
-                spUtils.putKey(Configs.USER_PRI_KEY, userKeyPair[0]);
-                spUtils.putKey(Configs.USER_PUB_KEY, userKeyPair[1]);
-                userPrivKeyPem = userKeyPair[0];
-                userPubKeyPem = userKeyPair[1];
-                return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite())
-                        .getPlatformApi()
-                        .registerPlatform(phoneNum, userPrivKeyPem, userPubKeyPem, code, PhoneProto.VCType.PHONE_REGISTER_VALUE);
-            }
-
-            @Override
-            protected void onTaskSuccess(ApiPlatformRegisterByPhoneProto.ApiPlatformRegisterByPhoneResponse apiPlatformRegisterByPhoneResponse) {
-                super.onTaskSuccess(apiPlatformRegisterByPhoneResponse);
-                User user = new User();
-                user.setGlobalUserId(StringUtils.getGlobalUserIdHash(userPubKeyPem));
-                user.setIdentityName(ServerConfig.LOGIN_WITH_PHONE_NAME);
-                user.setIdentitySource(ServerConfig.LOGIN_WITH_PHONE);
-                ZalyApplication.getCfgSP().putKey(Configs.PHONE_ID, phoneNum);
-                SitePresenter.getInstance().insertUserIdentity(user);
-                mView.onRegistPlatformSuccess();
-            }
-
-            @Override
-            protected void onAPIError(ZalyAPIException zalyAPIException) {
-                super.onAPIError(zalyAPIException);
-                String errorCode = zalyAPIException.getErrorInfoCode();
-                byte[] result = zalyAPIException.getZalyResult();
-                if (errorCode.equals(ErrorCode.PHONE_HAS_USER)) {
-                    try {
-                        ApiPlatformRegisterByPhoneProto.ApiPlatformRegisterByPhoneResponse response = ApiPlatformRegisterByPhoneProto.ApiPlatformRegisterByPhoneResponse.parseFrom(result);
-                        final String platformPubk = response.getUserIdPubk();
-                        final String platformPrik = response.getUserIdPrik();
-
-                        String platformPubkBase64 = Base64.encodeToString(platformPubk.getBytes(), Base64.NO_WRAP);
-                        String localPubkBase64 = Base64.encodeToString(userPubKeyPem.getBytes(), Base64.NO_WRAP);
-
-                        if (!platformPubkBase64.equals(localPubkBase64)) {
-                            mView.onRegistPlatformChangeIdentity(platformPubk, platformPrik);
-                        }
-                    } catch (Exception e) {
-                        ZalyLogUtils.getInstance().exceptionError(e);
-                        Toaster.showInvalidate("请稍候再试");
-                    }
-                }
-
-            }
-
-            @Override
-            protected void onTaskFinish() {
-                super.onTaskFinish();
-                if (mView != null)
-                    mView.onTaskFinish();
-            }
-        });
+        
     }
 }

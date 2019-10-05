@@ -3,20 +3,17 @@ package com.akaxin.client.mvp.presenter;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.akaxin.client.Configs;
 import com.akaxin.client.R;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.api.ApiClient;
-import com.akaxin.client.api.ApiClientForPlatform;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.constant.ErrorCode;
 import com.akaxin.client.db.dao.AkxCommonDao;
 import com.akaxin.client.mvp.BasePresenterImpl;
 import com.akaxin.client.mvp.contract.SiteConnListContract;
-import com.akaxin.client.platform.task.PushAuthTask;
 import com.akaxin.client.site.presenter.impl.SitePresenter;
 import com.akaxin.client.site.task.ApiUserProfileTask;
 import com.akaxin.client.util.SiteUtils;
@@ -101,37 +98,7 @@ public class SiteConnListPresenter extends BasePresenterImpl<SiteConnListContrac
 
     @Override
     public void getPlatformToken(final Site site) {
-        ZalyTaskExecutor.executeUserTask(TAG, new ZalyTaskExecutor.Task<Void, Void, ApiPhoneApplyTokenProto.ApiPhoneApplyTokenResponse>() {
-            @Override
-            protected ApiPhoneApplyTokenProto.ApiPhoneApplyTokenResponse executeTask(Void... voids) throws Exception {
-                ZalyLogUtils.getInstance().info(TAG, " get platform token");
-                return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite())
-                        .getPhoneApi().getPlatformToken(site.getSiteAddress());
-            }
 
-            @Override
-            protected void onTaskSuccess(ApiPhoneApplyTokenProto.ApiPhoneApplyTokenResponse apiPhoneApplyTokenResponse) {
-                super.onTaskSuccess(apiPhoneApplyTokenResponse);
-                ZalyApplication.getCfgSP().putKey(Configs.PHONE_ID, apiPhoneApplyTokenResponse.getPhoneId());
-                ZalyApplication.getCfgSP().putKey(Configs.PHONE_TOKEN + "_" + site.getSiteAddress(), apiPhoneApplyTokenResponse.getPhoneToken());
-            }
-
-            @Override
-            protected void onTaskError(Exception e) {
-                ZalyLogUtils.getInstance().errorToInfo(TAG, e.getMessage());
-                if (null != mView) {
-                    mView.onTaskError();
-                }
-            }
-
-            @Override
-            protected void onAPIError(ZalyAPIException zalyAPIException) {
-                ZalyLogUtils.getInstance().errorToInfo(TAG, zalyAPIException.getMessage());
-                if (null != mView) {
-                    mView.onTaskError();
-                }
-            }
-        });
     }
 
     @Override
@@ -293,7 +260,6 @@ public class SiteConnListPresenter extends BasePresenterImpl<SiteConnListContrac
             @Override
             public void onPrepareSiteSuccess(Site currentSite) {
                 ZalyLogUtils.getInstance().info(TAG, "currentSite == " + currentSite.toString());
-                ZalyTaskExecutor.executeUserTask(TAG, new PushAuthTask(currentSite));
                 ZalyTaskExecutor.executeUserTask(TAG, new ApiUserProfileTask(currentSite));
                 if (null != mView) {
                     Site site = SiteUtils.getAndCheckLegalSite(currentSite);

@@ -15,10 +15,6 @@ import com.akaxin.client.constant.ErrorCode;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.constant.SiteConfig;
 import com.akaxin.client.maintab.ZalyMainActivity;
-import com.akaxin.client.platform.task.ApiPhoneApplyTokenTask;
-import com.akaxin.client.platform.task.ApiSettingSiteMuteTask;
-import com.akaxin.client.platform.task.ApiUserPushTokenTask;
-import com.akaxin.client.platform.task.PushAuthTask;
 import com.akaxin.client.register.RegisterActivity;
 import com.akaxin.client.site.presenter.impl.SitePresenter;
 import com.akaxin.client.util.SiteUtils;
@@ -115,10 +111,6 @@ public class LoginSiteTask extends ZalyTaskExecutor.Task<Void, Void, Site> {
             String deviceSignBase64 = RSAUtils.getInstance().signInBase64String(userPrivateKeyPem, devicePubKeyPem);
             String phoneToken = ZalyApplication.getCfgSP().getKey(Configs.PHONE_TOKEN + "_" + site.getSiteAddress());
 
-            //站点非实名，不调用实名接口
-            if (site.getRealNameConfig() == ConfigProto.RealNameConfig.REALNAME_YES_VALUE) {
-                ZalyTaskExecutor.executeUserTask(TAG, new ApiPhoneApplyTokenTask(site));
-            }
             ZalyTaskExecutor.executeUserTask(TAG, new LoginTask(userSignBase64, deviceSignBase64, userToken, phoneToken, site, mContext));
         }
     }
@@ -170,7 +162,6 @@ class LoginTask extends ZalyTaskExecutor.Task<Void, Void, ApiSiteLoginProto.ApiS
 
     @Override
     protected ApiSiteLoginProto.ApiSiteLoginResponse executeTask(Void... voids) throws Exception {
-        ZalyTaskExecutor.executeUserTask(TAG, new PushAuthTask(site));
         return ApiClient.getInstance(ConnectionConfig.getConnectionCfg(site)).getSiteApi().loginSite(userSignBase64, deviceSignBase64, userToken, phoneToken);
     }
 
@@ -262,8 +253,6 @@ class AddSiteAndChangeIdentityTask extends AddSiteTask {
         });
 
         ZalyTaskExecutor.executeUserTask(TAG, new ApiUserProfileTask(site));
-        ZalyTaskExecutor.executeUserTask(TAG, new ApiSettingSiteMuteTask(site));
-        ZalyTaskExecutor.executeUserTask(TAG, new ApiUserPushTokenTask());
 
         Intent intent = new Intent(ZalyApplication.getContext(), ZalyMainActivity.class);
         intent.putExtra(IntentKey.KEY_CURRENT_SITE, site);

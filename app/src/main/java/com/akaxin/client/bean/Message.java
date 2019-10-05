@@ -27,7 +27,7 @@ public class Message extends com.windchat.im.bean.Message implements Parcelable 
     public static final int STATUS_RECEIVE_UNREAD = 5;              // 收到的消息未读状态
     public static final int STATUS_RECEIVE_READ = 6;                // 收到的消息已读
 
-    public static final long SYNC_MSG_STATUS_EXPIRE_TIME = 24*60*60*1000; ////有效期24小时
+    public static final long SYNC_MSG_STATUS_EXPIRE_TIME = 24 * 60 * 60 * 1000; ////有效期24小时
 
     public static final String MSG_PROCESSS_RATE = "msg_process_rate";
 
@@ -49,7 +49,7 @@ public class Message extends com.windchat.im.bean.Message implements Parcelable 
     private String userName = "";
     private String toDevicePubk = "";
 
-    private int msgWidth  = 0;
+    private int msgWidth = 0;
     private int msgHeight = 0;
     private String hrefUrl = "";
 
@@ -99,11 +99,11 @@ public class Message extends com.windchat.im.bean.Message implements Parcelable 
         return chatSessionId;
     }
 
-    public String getToDevicePubk(){
+    public String getToDevicePubk() {
         return toDevicePubk;
     }
 
-    public void setToDevicePubk(String devicePubk){
+    public void setToDevicePubk(String devicePubk) {
         toDevicePubk = devicePubk;
     }
 
@@ -223,19 +223,19 @@ public class Message extends com.windchat.im.bean.Message implements Parcelable 
         this.groupId = groupId;
     }
 
-    public void setMsgWidth(int width){
+    public void setMsgWidth(int width) {
         this.msgWidth = width;
     }
 
-    public int getMsgWidth(){
+    public int getMsgWidth() {
         return this.msgWidth;
     }
 
-    public void setMsgHeight(int height){
+    public void setMsgHeight(int height) {
         this.msgHeight = height;
     }
 
-    public int getMsgHeight(){
+    public int getMsgHeight() {
         return this.msgHeight;
     }
 
@@ -272,9 +272,9 @@ public class Message extends com.windchat.im.bean.Message implements Parcelable 
         chatSessionId = in.readString();
         secretData = new byte[in.readInt()];
         in.readByteArray(secretData);
-        msgWidth  = in.readInt();
+        msgWidth = in.readInt();
         msgHeight = in.readInt();
-        hrefUrl   = in.readString();
+        hrefUrl = in.readString();
     }
 
     @Override
@@ -342,10 +342,6 @@ public class Message extends com.windchat.im.bean.Message implements Parcelable 
             message.setHrefUrl(msg.getHrefUrl());
         }
         return message;
-    }
-
-    public String toString() {
-        return GsonUtils.toJson(this);
     }
 }
 

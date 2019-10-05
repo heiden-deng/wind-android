@@ -1,7 +1,7 @@
 package com.windchat.im;
 
 
-import com.windchat.logger.ZalyLogUtils;
+import com.windchat.logger.WindLogger;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -52,7 +52,7 @@ public class IMClientHeartWorker {
     }
 
     public void start() {
-        ZalyLogUtils.getInstance().debug(
+        WindLogger.getInstance().debug(
                 LogTag,
                 this.logMessage("start")
         );
@@ -67,7 +67,7 @@ public class IMClientHeartWorker {
 
     public void stop() {
 
-        ZalyLogUtils.getInstance().debug(LogTag, this.logMessage("stop"));
+        WindLogger.getInstance().debug(LogTag, this.logMessage("stop"));
 
         try {
             if (heartThread != null) {

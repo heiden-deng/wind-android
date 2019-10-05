@@ -148,7 +148,7 @@ public class GroupCreateActivity extends BaseActivity implements ChooseFriendLis
 //                    ApiFriendListProto.ApiFriendListResponse response = ApiFriendListProto.ApiFriendListResponse.parseFrom(data);
 //                    listAdapter.addItems(response.getListList());
 //                } catch (Exception ex) {
-//                    ZalyLogUtils.getInstance().errorToInfo(TAG, ex.getMessage());
+//                    WindLogger.getInstance().errorToInfo(TAG, ex.getMessage());
 //                }
 //            }
 

@@ -12,7 +12,7 @@ import com.akaxin.client.util.data.StringUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.google.protobuf.AbstractMessageLite;
 import com.google.protobuf.ByteString;
-import com.windchat.im.socket.Connection;
+import com.windchat.im.socket.IMConnection;
 import com.windchat.im.socket.ConnectionConfig;
 import com.windchat.im.socket.SiteAddress;
 import com.windchat.im.socket.TransportPackageForRequest;
@@ -31,7 +31,6 @@ public class ApiClient {
     private ApiClientForUser userApi = null;
     private ApiClientForFile fileApi = null;
     private ApiClientForSite siteApi = null;
-    private ApiClientForPlatform platformApi = null;
     private ApiClientForFriend friendApi = null;
     private ApiClientForGroup groupApi = null;
     private ApiClientForPhone phoneApi = null;
@@ -58,7 +57,6 @@ public class ApiClient {
         this.userApi = new ApiClientForUser(this);
         this.fileApi = new ApiClientForFile(this);
         this.siteApi = new ApiClientForSite(this);
-        this.platformApi = new ApiClientForPlatform(this);
         this.friendApi = new ApiClientForFriend(this);
         this.groupApi = new ApiClientForGroup(this);
         this.phoneApi = new ApiClientForPhone(this);
@@ -103,12 +101,6 @@ public class ApiClient {
     public ApiClientForTemp getTempApi() {
         return this.tempApi;
     }
-
-    public ApiClientForPlatform getPlatformApi() {
-        ZalyLogUtils.getInstance().debug("ApiClient", this.platformApi.toString());
-        return this.platformApi;
-    }
-
 
     public ApiClientForSetting getSettingApi() {
         return this.settingApi;
@@ -166,8 +158,8 @@ public class ApiClient {
             return null;
         }
 
-        Connection imConnection = new Connection(this.address.toConnectionConfig());
-        imConnection.logTag = "ApiClient.Connection";
+        IMConnection imConnection = new IMConnection(this.address.toConnectionConfig());
+        imConnection.logTag = "ApiClient.IMConnection";
         TransportPackageForRequest realRequest = new TransportPackageForRequest(action, packageData);
         TransportPackageForResponse response = imConnection.requestAndResponse(realRequest);
 

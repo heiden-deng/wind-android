@@ -1,7 +1,6 @@
 package com.akaxin.client.site.task;
 
 import com.akaxin.client.api.ApiClient;
-import com.akaxin.client.api.ApiClientForPlatform;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.util.log.ZalyLogUtils;
@@ -24,8 +23,8 @@ public class DeleteUserToken extends ZalyTaskExecutor.Task<Void, Void, ApiSettin
     @Override
     protected ApiSettingDeleteUserTokenProto.ApiSettingDeleteUserTokenResponse executeTask(Void... voids) throws Exception {
         /////delete user token from site when delete site by user
-        return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite()).getSettingApi().deleteUserToken(site);
-
+//        return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite()).getSettingApi().deleteUserToken(site);
+        return null;
     }
 
     @Override

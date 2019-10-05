@@ -11,21 +11,15 @@ import com.akaxin.client.Configs;
 import com.akaxin.client.R;
 import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.api.ApiClient;
-import com.akaxin.client.api.ApiClientForPlatform;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.constant.IntentKey;
-import com.akaxin.client.constant.ServerConfig;
 import com.akaxin.client.maintab.BaseActivity;
-import com.akaxin.client.maintab.ZalyMainActivity;
-import com.akaxin.client.platform.task.GetPhoneCode;
 import com.akaxin.client.util.NetUtils;
 import com.akaxin.client.util.data.StringUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.client.util.task.ZalyTaskExecutor;
 import com.akaxin.client.util.toast.Toaster;
-import com.akaxin.proto.core.PhoneProto;
-import com.akaxin.proto.platform.ApiPhoneVerifyCodeProto;
 import com.akaxin.proto.platform.ApiUserRealNameProto;
 
 import butterknife.BindView;
@@ -129,7 +123,6 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
                 getCode();
                 break;
             case R.id.submit:
-                submitInfo();
                 break;
         }
     }
@@ -165,128 +158,6 @@ public class BindPhoneActivity extends BaseActivity implements View.OnClickListe
         if (!isNet) {
             Toaster.show(getString(R.string.without_network_hint));
             return;
-        }
-        ZalyTaskExecutor.executeUserTask(TAG, new GetCodeTask(phoneNum));
-    }
-
-    private void submitInfo() {
-        String phoneNum = phoneEdit.getText().toString().trim();
-        if (StringUtils.isEmpty(phoneNum)) {
-            Toaster.showInvalidate("请输入手机号码");
-            return;
-        }
-        String code = codeEdit.getText().toString().trim();
-        if (StringUtils.isEmpty(code)) {
-            Toaster.showInvalidate("请输入验证码");
-            return;
-        }
-        ZalyTaskExecutor.executeUserTask(TAG, new SubmitInfoTask(phoneNum, code));
-    }
-
-
-    class GetCodeTask extends GetPhoneCode {
-
-        private String phoneNum;
-
-        public GetCodeTask(String phoneNum) {
-            super(phoneNum, PhoneProto.VCType.PHONE_REALNAME_VALUE, ServerConfig.CHINA_COUNTRY_CODE);
-            this.phoneNum = phoneNum;
-        }
-
-        @Override
-        protected void onPreTask() {
-            super.onPreTask();
-            hideSoftKey();
-            showProgress("正在获取验证码...");
-        }
-
-        @Override
-        protected void onAPIError(ZalyAPIException zalyAPIException) {
-            super.onAPIError(zalyAPIException);
-        }
-
-        @Override
-        protected void onTaskError(Exception e) {
-            super.onTaskError(e);
-        }
-
-        @Override
-        protected void onTaskFinish() {
-            super.onTaskFinish();
-            hideProgress();
-        }
-
-        @Override
-        protected void onTaskSuccess(ApiPhoneVerifyCodeProto.ApiPhoneVerifyCodeResponse phoneVerifyCodeResponse) {
-            super.onTaskSuccess(phoneVerifyCodeResponse);
-            if (countDownTimer != null) {
-                countDownTimer.start();
-            }
-        }
-    }
-
-    class SubmitInfoTask extends ZalyTaskExecutor.Task<Void, Void, ApiUserRealNameProto.ApiUserRealNameResponse> {
-
-        private String phoneNum;
-        private String code;
-
-        public SubmitInfoTask(String phoneNum, String code) {
-            this.phoneNum = phoneNum;
-            this.code = code;
-        }
-
-        @Override
-        protected void onPreTask() {
-            super.onPreTask();
-            showProgress("正在提交...");
-        }
-
-        @Override
-        protected ApiUserRealNameProto.ApiUserRealNameResponse executeTask(Void... voids) throws Exception {
-            return ApiClient.getInstance(ApiClientForPlatform.getPlatformSite()).getPlatformApi().verifyIdentity(phoneNum,code);
-
-        }
-
-        @Override
-        protected void onTaskSuccess(ApiUserRealNameProto.ApiUserRealNameResponse realNameVerifyResponse) {
-            super.onTaskSuccess(realNameVerifyResponse);
-            //写入phoneId
-            ZalyApplication.getCfgSP().putKey(Configs.PHONE_ID, phoneNum);
-            phoneEdit.setText(phoneId);
-            showUneditable();
-            finish();
-        }
-
-        @Override
-        protected void onTaskError(Exception e) {
-            super.onTaskError(e);
-            if (e instanceof ZalyAPIException) {
-                String errorCode = ((ZalyAPIException) e).getErrorInfoCode();
-                checkErrorCode(errorCode);
-            }
-            Toaster.showInvalidate("绑定失败, 请稍候再试");
-        }
-
-        @Override
-        protected void onAPIError(ZalyAPIException zalyAPIException) {
-            super.onAPIError(zalyAPIException);
-            String errorCode = zalyAPIException.getErrorInfoCode();
-            checkErrorCode(errorCode);
-        }
-
-        @Override
-        protected void onTaskFinish() {
-            super.onTaskFinish();
-            hideProgress();
-        }
-
-        public void checkErrorCode(String errorCode) {
-            if (errorCode.equals(PHONE_ALREADY_BIND)) {
-                ZalyApplication.getCfgSP().putKey(Configs.PHONE_ID, phoneNum);
-                phoneEdit.setText(phoneId);
-                showUneditable();
-                Toaster.showInvalidate("手机号已经绑定");
-            }
         }
     }
 

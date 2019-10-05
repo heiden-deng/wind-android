@@ -24,11 +24,13 @@ public class SiteAddress {
         String[] ret = address.split("[:_]");
         int retLength = ret.length;
         if (retLength > 0) {
-            this.host = ret[0];
-            this.port = Integer.valueOf(ret[retLength - 1]);
-        } else {
-            this.host = "127.0.0.1 这段代码还没有写完呢";
-            this.port = 0;
+            if (retLength == 2) {
+                this.host = ret[0];
+                this.port = Integer.valueOf(ret[1]);
+            } else {
+                this.host = StringUtils.join(ret, ".", 0, retLength - 1).toString();
+                this.port = Integer.valueOf(ret[retLength - 1]);
+            }
         }
     }
 
@@ -80,5 +82,5 @@ public class SiteAddress {
         }
         return null;
     }
-    
+
 }

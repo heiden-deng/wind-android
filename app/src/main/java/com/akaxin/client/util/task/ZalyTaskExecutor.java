@@ -50,10 +50,10 @@ public class ZalyTaskExecutor {
 
     public static void executeUserTask(Object tag, Task task) {
         ThreadPoolExecutor te = (ThreadPoolExecutor) executor;
-//        ZalyLogUtils.getInstance().info("ZalyTaskExecutor", "当前排队线程数：" + te.getQueue().size());
-//        ZalyLogUtils.getInstance().info("ZalyTaskExecutor", "当前活动线程数：" + te.getActiveCount());
-//        ZalyLogUtils.getInstance().info("ZalyTaskExecutor", "执行完成线程数：" + te.getCompletedTaskCount());
-//        ZalyLogUtils.getInstance().info("ZalyTaskExecutor", "总线程数：" + te.getTaskCount());
+//        WindLogger.getInstance().info("ZalyTaskExecutor", "当前排队线程数：" + te.getQueue().size());
+//        WindLogger.getInstance().info("ZalyTaskExecutor", "当前活动线程数：" + te.getActiveCount());
+//        WindLogger.getInstance().info("ZalyTaskExecutor", "执行完成线程数：" + te.getCompletedTaskCount());
+//        WindLogger.getInstance().info("ZalyTaskExecutor", "总线程数：" + te.getTaskCount());
         executeTask(tag, task);
     }
 

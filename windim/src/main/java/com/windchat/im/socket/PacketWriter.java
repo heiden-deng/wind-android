@@ -1,7 +1,7 @@
 package com.windchat.im.socket;
 
 
-import com.windchat.logger.ZalyLogUtils;
+import com.windchat.logger.WindLogger;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -18,14 +18,14 @@ public class PacketWriter {
 
     protected final BlockingQueue<TransportPackage> queue;
 
-    protected Connection imConnection = null;
+    protected IMConnection imConnection = null;
     protected AbsWriteThread writingThread = null;
     protected OutputStream streamWriter = null;
     protected boolean isRunning = false;
 
     private String logTag = "PacketWriter";
 
-    public PacketWriter(Connection imConnection) {
+    public PacketWriter(IMConnection imConnection) {
         this.imConnection = imConnection;
         queue = new LinkedBlockingQueue<>();
     }
@@ -43,7 +43,7 @@ public class PacketWriter {
 
     public synchronized void startup(OutputStream os) throws IOException {
 
-        ZalyLogUtils.getInstance().debug(
+        WindLogger.getInstance().debug(
                 this.logTag,
                 this.logMessage("startup")
         );
@@ -60,7 +60,7 @@ public class PacketWriter {
      * 这个方法可以重复调用
      */
     public synchronized void shutdown() {
-        ZalyLogUtils.getInstance().debug(
+        WindLogger.getInstance().debug(
                 this.logTag,
                 this.logMessage("shutdown")
         );
@@ -71,7 +71,7 @@ public class PacketWriter {
                 this.writingThread.interrupt();
             }
         } catch (Exception e) {
-            ZalyLogUtils.getInstance().error(this.logTag, e, this.logMessage("shutdown error"));
+            WindLogger.getInstance().error(this.logTag, e, this.logMessage("shutdown error"));
         }
     }
 
@@ -81,7 +81,7 @@ public class PacketWriter {
             queue.put(pack);
         } catch (InterruptedException e) {
             e.printStackTrace();
-            ZalyLogUtils.getInstance().error(TAG, e, "writeTransportPackage error " + e.getMessage());
+            WindLogger.getInstance().error(TAG, e, "writeTransportPackage error " + e.getMessage());
         }
     }
 
@@ -112,10 +112,10 @@ public class PacketWriter {
 
                     streamWriter.flush();
                 } catch (InterruptedException e) {
-                    ZalyLogUtils.getInstance().error(TAG, e, "");
+                    WindLogger.getInstance().error(TAG, e, "");
                     return;
                 } catch (IOException e) {
-                    ZalyLogUtils.getInstance().debug(TAG, "WriteThread is error, socket is error, will stop");
+                    WindLogger.getInstance().debug(TAG, "WriteThread is error, socket is error, will stop");
                     writing = false;
                     if (null != imConnection) {
                         imConnection.disconnectWithError(e);

@@ -5,10 +5,6 @@ import com.windchat.proto.core.CoreProto;
 
 import java.nio.ByteBuffer;
 
-/**
- * Created by sssl on 08/06/2018.
- */
-
 public class TransportPackage {
 
     public String protoVersion = "1";

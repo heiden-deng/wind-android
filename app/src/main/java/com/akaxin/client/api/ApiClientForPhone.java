@@ -13,7 +13,7 @@ import com.windchat.im.socket.TransportPackageForResponse;
  */
 
 public class ApiClientForPhone {
-    private static String TAG = ApiClientForPlatform.class.getSimpleName();
+    private static String TAG = ApiClientForPhone.class.getSimpleName();
     private String logTag = "ApiClientForPhone";
     private ApiClient client = null;
 
@@ -46,6 +46,7 @@ public class ApiClientForPhone {
         TransportPackageForResponse response = this.client.sendRequest(API_PHONE_VERIFY_CODE, request);
         return ApiPhoneVerifyCodeProto.ApiPhoneVerifyCodeResponse.parseFrom(response.data.getData());
     }
+
     /**
      * 根据手机登录平台
      *

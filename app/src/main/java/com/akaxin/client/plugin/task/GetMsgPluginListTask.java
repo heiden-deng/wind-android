@@ -89,7 +89,7 @@ public class GetMsgPluginListTask extends ZalyTaskExecutor.Task<Void, Void, ApiP
 //                    iMessageView.setExpandViewData(apiPluginListResponse.getPluginList());
 //                }
 //            } catch (Exception e) {
-//                ZalyLogUtils.getInstance().exceptionError(e);
+//                WindLogger.getInstance().exceptionError(e);
 //                if (type.equals(GROUP_MSG_PLUGIN)) {
 //                    iGroupMsgView.setExpandViewData(plugins);
 //                } else {
