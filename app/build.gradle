@@ -36,7 +36,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [
                     packagename: "com.akaxin.client",
-                    appname    : "阿卡信"
+                    appname    : "风信"
             ]
             buildConfigField("String", "PROTOCOL_VERSION", "\"${APPLICATION_PROTOCOLVERSION}\"")
         }
@@ -46,7 +46,7 @@ android {
             minifyEnabled false     //是否混淆
             manifestPlaceholders = [
                     packagename: "com.akaxin.client.debug",
-                    appname    : "阿卡信测试包"
+                    appname    : "风信测试包"
             ]
             buildConfigField("String", "PROTOCOL_VERSION", "\"${APPLICATION_PROTOCOLVERSION}\"")
         }
