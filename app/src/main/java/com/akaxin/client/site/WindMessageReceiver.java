@@ -10,7 +10,9 @@ import com.akaxin.client.db.ZalyDbContentHelper;
 import com.akaxin.client.db.dao.SiteMessageDao;
 import com.windchat.im.IMConst;
 import com.windchat.im.IMessageReceiver;
+import com.windchat.im.MsgStatus;
 import com.windchat.im.bean.Message;
+import com.windchat.im.bean.Site;
 import com.windchat.im.socket.SiteAddress;
 import com.windchat.im.socket.TransportPackage;
 import com.windchat.proto.client.ImStcNoticeProto;
@@ -24,32 +26,33 @@ import java.util.List;
 public class WindMessageReceiver implements IMessageReceiver {
 
     @Override
-    public void handleMessageStatus(SiteAddress siteAddressO, String msgId, long msgTime, int msgStatus) throws Exception {
+    public void handleMessageStatus(Site site, String msgId, long msgTime, MsgStatus msgStatus) throws Exception {
 
+        String siteIdentity = site.getSiteHost().replace('.', '_') + "_" + site.getSitePort();
+        String siteAddress = site.getHostAndPort();
 
-        String siteIdentity = siteAddressO.getHost().replace('.', '_') + "_" + siteAddressO.getPort();
-        String siteAddress = siteAddressO.getFullUrl();
+        int status = msgStatus.getValue() > 0 ? msgStatus.getValue() + 1 : msgStatus.getValue();
 
-        int updateStatusFlag = SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(siteAddress)).updateU2MsgStatusForSend(msgId, msgTime, msgStatus);
-        // 如果不是单人消息则去群组表中更新数据, 回写时间
-        if (updateStatusFlag == 0) {
-            if (SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(siteAddress)).updateGroupMsgStatusForSend(msgId, msgTime, msgStatus) == 0) {
-            }
+        if (msgId.startsWith("U2")) {
+            SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(siteAddress)).updateU2MsgStatusForSend(msgId, msgTime, status);
+        } else {
+            SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(siteAddress)).updateGroupMsgStatusForSend(msgId, msgTime, status);
         }
 
         //通知UI进程
         Bundle bundle = new Bundle();
         bundle.putString(ZalyDbContentHelper.KEY_MSG_ID, msgId);
         bundle.putString(ZalyDbContentHelper.KEY_SITE_IDENTITY, siteIdentity);
-//        bundle.putString(ZalyDbContentHelper.KEY_CUR_SITE_USER_ID, curSiteUserId);
-        bundle.putInt(ZalyDbContentHelper.KEY_MSG_STATUS, msgStatus);
+        bundle.putString(ZalyDbContentHelper.KEY_CUR_SITE_USER_ID, site.getSiteUserId());
+        bundle.putInt(ZalyDbContentHelper.KEY_MSG_STATUS, status);
         ZalyDbContentHelper.executeAction(ZalyDbContentHelper.Action.MSG_STATUS, bundle);
+
     }
 
     @Override
-    public void handleNoticeMessage(SiteAddress siteAddress, ImStcNoticeProto.ImStcNoticeRequest request) throws Exception {
+    public void handleNoticeMessage(Site site, ImStcNoticeProto.ImStcNoticeRequest request) throws Exception {
 
-        String siteIdentity = siteAddress.getHost().replace('.', '_') + "_" + siteAddress.getPort();
+        String siteIdentity = site.getSiteHost().replace('.', '_') + "_" + site.getSitePort();
 
         Intent intent = new Intent(IMConst.IM_NOTICE_ACTION);
         intent.setPackage(PackageSign.getPackage());
@@ -59,17 +62,19 @@ public class WindMessageReceiver implements IMessageReceiver {
     }
 
     @Override
-    public void handleU2Message(SiteAddress siteAddress, List<Message> u2Messages) throws Exception {
-        SiteMessageDao.getInstance(siteAddress).batchInsertU2Messages(u2Messages);
+    public void handleU2Message(Site site, List<Message> u2Messages) throws Exception {
+        SiteMessageDao.getInstance(site.getSiteAddress()).batchInsertU2Messages(u2Messages);
+
+        // goto ui
     }
 
     @Override
-    public void handleGroupMessage(SiteAddress siteAddress, List<Message> groupMessages) throws Exception {
-        SiteMessageDao.getInstance(siteAddress).batchInsertGroupMessages(groupMessages);
+    public void handleGroupMessage(Site site, List<Message> groupMessages) throws Exception {
+        SiteMessageDao.getInstance(site.getSiteAddress()).batchInsertGroupMessages(groupMessages);
     }
 
     @Override
-    public void handleException(Throwable t) {
+    public void handleException(Site site, Throwable t) {
 
     }
 

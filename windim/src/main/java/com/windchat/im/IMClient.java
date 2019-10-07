@@ -86,19 +86,20 @@ public class IMClient implements IConnectionHandler {
     private IMessageReceiver _messageReceiver;
     private IConnectionHandler _connectionHandler;
 
+    private Site site;
 
-    protected IMClient(SiteAddress address) {
-        this.address = address;
+    protected IMClient(Site site) {
+        this.site = site;
+        this.address = site.getSiteAddress();
         this._messageReceiver = messageReceiver;
         this._connectionHandler = connectionHandler;
         this.setConnExecutor();
         this.checkSocketAlive();
     }
 
-    protected IMClient(Site site) {
-        this(site.getSiteAddress());
+    public Site getSite() {
+        return this.site;
     }
-
 
     public IMessageReceiver getMessageReceiver() {
         return this._messageReceiver;

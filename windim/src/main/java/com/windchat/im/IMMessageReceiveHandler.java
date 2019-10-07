@@ -29,8 +29,8 @@ import java.util.List;
  * 处理所有服务端主动推送给客户端的消息
  */
 public class IMMessageReceiveHandler implements IMessageHandler {
+    public static final String TAG = "IMMessageReceiveHandler";
 
-    public static final String TAG = "ZalyMsgSynchronizer";
     private IMClient imClient;
     private Site site;
 
@@ -38,7 +38,6 @@ public class IMMessageReceiveHandler implements IMessageHandler {
 
     private static final long syncTimeOut = 2 * 1000;
     private long lastSyncFinishTime = 0l;
-    private static boolean isSendSyncMsg = true;
 
     private long pointer = 0l;
     private HashMap<String, Long> groupPointers = new HashMap<>();
@@ -48,6 +47,7 @@ public class IMMessageReceiveHandler implements IMessageHandler {
     public IMMessageReceiveHandler(IMClient client) {
         this.imClient = client;
         this.messageReceiver = client.getMessageReceiver();
+        this.site = client.getSite();
     }
 
     @Override
@@ -57,18 +57,15 @@ public class IMMessageReceiveHandler implements IMessageHandler {
         WindLogger.getInstance().debug(IMMessageReceiveHandler.TAG, "im.receive " + action);
 
         switch (action) {
+            case IMConst.Action.Pong:
+                this.imClient.keepAlivedWorker.recvPong();
+                break;
             case IMConst.Action.PSN:
                 long nowTime = System.currentTimeMillis();
-                /////没有执行到recevice msg finish , psn 和上次finish时间小于2秒不执行
                 if (!isReceiveMsgFinish && (nowTime - lastSyncFinishTime < syncTimeOut)) {
                     return false;
                 }
                 this.imClient.syncMessage();
-                break;
-            case IMConst.Action.MsgFinish:
-                isReceiveMsgFinish = true;
-                lastSyncFinishTime = System.currentTimeMillis();
-                this.imClient.syncFinish(pointer, groupPointers);
                 break;
             case IMConst.Action.Notice:
                 receiveMessageNotice(packet.data.toByteArray());
@@ -76,8 +73,10 @@ public class IMMessageReceiveHandler implements IMessageHandler {
             case IMConst.Action.ReceiveMsgFromSite:
                 receiveMessage(packet.data.toByteArray());
                 break;
-            case IMConst.Action.Pong:
-                this.imClient.keepAlivedWorker.recvPong();
+            case IMConst.Action.MsgFinish:
+                isReceiveMsgFinish = true;
+                lastSyncFinishTime = System.currentTimeMillis();
+                this.imClient.syncFinish(pointer, groupPointers);
                 break;
         }
         return false;
@@ -93,11 +92,9 @@ public class IMMessageReceiveHandler implements IMessageHandler {
             CoreProto.TransportPackageData packageData = CoreProto.TransportPackageData.parseFrom(data);
             ImStcNoticeProto.ImStcNoticeRequest request = ImStcNoticeProto.ImStcNoticeRequest.parseFrom(packageData.getData());
 
-            String address = this.imClient.imConnection.getSiteAddress();
-            SiteAddress siteAddress = new SiteAddress(address);
-            messageReceiver.handleNoticeMessage(siteAddress, request);
+            messageReceiver.handleNoticeMessage(this.site, request);
         } catch (Exception e) {
-            messageReceiver.handleException(e);
+            messageReceiver.handleException(this.site, e);
         }
     }
 
@@ -117,11 +114,8 @@ public class IMMessageReceiveHandler implements IMessageHandler {
             //接收消息是否完成，完成时需要发送synchFinish数据包
             isReceiveMsgFinish = false;
 
-            //获取站点信息
-            String siteIdentity = this.imClient.imConnection.getConnSiteIdentity();
-            String siteAddress = this.imClient.imConnection.getSiteAddress();
-            Site tmpSite = new Site(this.imClient.address.getHost(), this.imClient.address.getPort());
-            String curSiteUserId = tmpSite.getSiteUserId();
+            //获取用户ID
+            String curSiteUserId = this.site.getSiteUserId();
 
             //消息指针 服务端需要
             for (ImStcMessageProto.MsgWithPointer withPointer : msgWithPointers) {
@@ -140,27 +134,9 @@ public class IMMessageReceiveHandler implements IMessageHandler {
                                 serverMsgTime = System.currentTimeMillis();
                             }
 
-                            int messageStatus = Message.STATUS_SENDING;
-                            /*
-                             * 根据返回的消息状态选择入库的消息状态
-                             * msg_status: 1 发送成功
-                             * msg_status: 0 默认状态
-                             * msg_status: -1 用户非好友关系，二人消息发送失败
-                             * msg_status: -2 用户非群成员，群消息发送失败
-                             */
-                            switch (withPointer.getStatus().getMsgStatus()) {
-                                case -2:
-                                    messageStatus = Message.STATUS_SEND_FAILED_NOT_IN_GROUP;
-                                    break;
-                                case -1:
-                                    messageStatus = Message.STATUS_SEND_FAILED_NOT_FRIEND;
-                                    break;
-                                case 1:
-                                    messageStatus = Message.STATUS_SEND_SUCCESS;
-                                    break;
-                            }
-
-                            messageReceiver.handleMessageStatus(new SiteAddress(siteAddress), msgId, serverMsgTime, messageStatus);
+                            int messageStatus = withPointer.getStatus().getMsgStatus();
+                            MsgStatus msgStatus = MsgStatus.parseFrom(messageStatus);
+                            messageReceiver.handleMessageStatus(this.site, msgId, serverMsgTime, msgStatus);
                             return;
                         case CoreProto.MsgType.TEXT_VALUE:
                             //二人文本
@@ -479,12 +455,13 @@ public class IMMessageReceiveHandler implements IMessageHandler {
                             break;
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    messageReceiver.handleException(this.site, e);
                 }
 
                 for (Message message : messages) {
                     String tmpGroupId = message.getGroupId();
                     if (tmpGroupId == null || tmpGroupId.isEmpty()) {
+                        // get max pointerss
                         this.pointer = withPointer.getPointer();
                     } else {
                         this.groupPointers.put(tmpGroupId, withPointer.getPointer());
@@ -495,35 +472,26 @@ public class IMMessageReceiveHandler implements IMessageHandler {
             if (messages != null && messages.size() > 0) {
 
                 WindLogger.getInstance().info(TAG, "batch inserting...");
-                // 插入数据库
-                SiteAddress siteAddressObj = new SiteAddress(siteAddress);
 
                 ArrayList<Message> u2Messages = new ArrayList<>();
                 ArrayList<Message> groupMessages = new ArrayList<>();
                 for (Message message : messages) {
                     if (StringUtils.isEmpty(message.getGroupId()))
                         u2Messages.add(message);
-                    else groupMessages.add(message);
+                    else {
+                        groupMessages.add(message);
+                    }
                 }
                 if (u2Messages.size() > 0) {
-                    WindLogger.getInstance().info(TAG, "inserting U2 messages: " + u2Messages);
-                    messageReceiver.handleU2Message(siteAddressObj, u2Messages);
+                    messageReceiver.handleU2Message(this.site, u2Messages);
                 }
                 if (groupMessages.size() > 0) {
-                    WindLogger.getInstance().info(TAG, "inserting Group messages: " + groupMessages);
-                    messageReceiver.handleGroupMessage(siteAddressObj, groupMessages);
+                    messageReceiver.handleGroupMessage(this.site, groupMessages);
                 }
             }
 
-            // 通知UI进程
-//            Bundle bundle = new Bundle();
-//            bundle.putString(ZalyDbContentHelper.KEY_SITE_IDENTITY, siteIdentity);
-//            bundle.putString(ZalyDbContentHelper.KEY_CUR_SITE_USER_ID, curSiteUserId);
-//            bundle.putParcelableArrayList(ZalyDbContentHelper.KEY_MSG_RECEIVE_LIST, messages);
-//            bundle.putBoolean(ZalyDbContentHelper.KEY_MSG_RECEIVE_FINISH, isReceiveMsgFinish);
-//            ZalyDbContentHelper.executeAction(ZalyDbContentHelper.Action.MSG_RECEIVE, bundle);
         } catch (Exception e) {
-            e.printStackTrace();
+            messageReceiver.handleException(this.site, e);
         }
     }
 }
