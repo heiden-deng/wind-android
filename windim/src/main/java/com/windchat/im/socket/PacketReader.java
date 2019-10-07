@@ -361,10 +361,10 @@ public class PacketReader {
             this.connection.setToClientPackage(request);
             this.connection.endWaitingForResponse();
         } else {
-            if (null != this.connection.toClientRequestHandler) {
-                this.connection.toClientRequestHandler.matchReceive(request);
+            if (null != this.connection.messageReceiveHandler) {
+                this.connection.messageReceiveHandler.handle(request);
             } else {
-                WindLogger.getInstance().warn("Reader.DispatchResult.none.toClientRequestHandler", request.action);
+                WindLogger.getInstance().warn("Reader.DispatchResult.none.messageReceiveHandler", request.action);
             }
         }
     }

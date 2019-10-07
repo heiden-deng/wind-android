@@ -139,7 +139,7 @@ public class SiteMessageDao {
      *
      * @param messages
      */
-    public synchronized void batchInsertU2Messages(List<Message> messages) {
+    public synchronized void batchInsertU2Messages(List<? extends com.windchat.im.bean.Message> messages) {
         if (messages != null && messages.size() > 0) {
             //插入消息
             List<ChatSession> chatSessions = insertU2Messages(messages);
@@ -204,7 +204,7 @@ public class SiteMessageDao {
 
     }
 
-    public synchronized List<ChatSession> insertU2Messages(List<Message> messages) {
+    public synchronized List<ChatSession> insertU2Messages(List<? extends com.windchat.im.bean.Message> messages) {
         long startTime = System.currentTimeMillis();
         List<ChatSession> chatSessionList = new ArrayList<>();
         database.beginTransaction();
@@ -229,7 +229,7 @@ public class SiteMessageDao {
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         SQLiteStatement statement = database.compileStatement(sql);
-        for (Message msg : messages) {
+        for (com.windchat.im.bean.Message msg : messages) {
             try {
                 if (StringUtils.isEmpty(msg.getMsgId())) {
                     continue;
@@ -282,7 +282,7 @@ public class SiteMessageDao {
         return _id;
     }
 
-    public synchronized void batchInsertGroupMessages(List<Message> messages) {
+    public synchronized void batchInsertGroupMessages(List<? extends com.windchat.im.bean.Message> messages) {
         //批量插入群消息
         List<ChatSession> chatSessionList = insertGroupMessages(messages);
         //批量插入会话
@@ -346,7 +346,7 @@ public class SiteMessageDao {
      *
      * @param messages
      */
-    public synchronized List<ChatSession> insertGroupMessages(List<Message> messages) {
+    public synchronized List<ChatSession> insertGroupMessages(List<? extends com.windchat.im.bean.Message> messages) {
         long startTime = System.currentTimeMillis();
         List<ChatSession> chatSessionList = new ArrayList<>();
         String sql = "INSERT INTO " + SITE_GROUP_MSG_TABLE +
@@ -364,7 +364,7 @@ public class SiteMessageDao {
 
         database.beginTransaction();
         SQLiteStatement statement = database.compileStatement(sql);
-        for (Message msg : messages) {
+        for (com.windchat.im.bean.Message msg : messages) {
             if (StringUtils.isEmpty(msg.getMsgId())) {
                 continue;
             }
@@ -409,7 +409,7 @@ public class SiteMessageDao {
     }
 
 
-    private ChatSession buildChatSessionFromMessage(Message message, String type) {
+    private ChatSession buildChatSessionFromMessage(com.windchat.im.bean.Message message, String type) {
         ChatSession chatSession = new ChatSession();
         chatSession.setLastMsgId(message.getMsgId());
         chatSession.setChatSessionId(message.getChatSessionId());
@@ -435,7 +435,7 @@ public class SiteMessageDao {
      * @param message
      * @return
      */
-    public String getSessionDesc(Message message) {
+    public String getSessionDesc(com.windchat.im.bean.Message message) {
         long startTime = System.currentTimeMillis();
         String sessionDesc;
         switch (message.getMsgType()) {

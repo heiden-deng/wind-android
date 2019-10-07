@@ -12,6 +12,8 @@ import com.akaxin.client.bean.Site;
 import com.akaxin.client.constant.SiteConfig;
 import com.akaxin.client.push.MiPushUtils;
 import com.akaxin.client.push.UmengPushUtils;
+import com.akaxin.client.site.WindConnectionHandler;
+import com.akaxin.client.site.WindMessageReceiver;
 import com.akaxin.client.site.presenter.impl.SitePresenter;
 import com.akaxin.client.util.ClientTypeHepler;
 import com.akaxin.client.util.NotificationUtils;
@@ -36,7 +38,7 @@ import java.util.Map;
 
 public class ZalyApplication extends Application {
     public static final String TAG = ZalyApplication.class.getSimpleName();
-    
+
     public static Map<String, Long> map;
     public static boolean active = false;
     private static Context mContext;
@@ -71,6 +73,8 @@ public class ZalyApplication extends Application {
          * connect site address
          */
         List<Site> sites = SitePresenter.getInstance().getAllSiteLists();
+
+        IMClient.setConnectionHandler(new WindConnectionHandler(), new WindMessageReceiver());
         IMClient.connect(sites);
 
         NotificationUtils.initChannels(getApplicationContext());

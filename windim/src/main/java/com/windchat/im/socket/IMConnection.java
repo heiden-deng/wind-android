@@ -1,6 +1,7 @@
 package com.windchat.im.socket;
 
-import com.windchat.im.IMClientToClientRequestHandler;
+import com.windchat.im.IConnectionHandler;
+import com.windchat.im.IMMessageReceiveHandler;
 import com.windchat.logger.WindLogger;
 
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class IMConnection {
     // packetReader需要独立
     private volatile PacketWorker packetWorker;
 
-    protected IMessageHandler toClientRequestHandler;
+    protected IMessageHandler messageReceiveHandler;
 
 
     // 构造函数
@@ -191,20 +192,13 @@ public class IMConnection {
     }
 
 
-    /*
-
-    原来的设计里有两种handler
-        actionHandler，用于处理服务器下发给客户端的请求，即action不是_的
-        idHandler，一般用于处理request-response模式的response
-
-        actionHandler确实是需要注册的
-        idHandler就没必要了，都是统一的逻辑
-    * */
-
-    public void setToClientRequestHandler(IMClientToClientRequestHandler handler) {
-        this.toClientRequestHandler = handler;
+    public void setMessageReceiveHandler(IMMessageReceiveHandler handler) {
+        this.messageReceiveHandler = handler;
     }
 
+    public void setConnectionHandler(IConnectionHandler handler) {
+        this.connectionHandler = handler;
+    }
 
     public boolean isConnected() {
         return null != this.socket && this.socket.isConnected();

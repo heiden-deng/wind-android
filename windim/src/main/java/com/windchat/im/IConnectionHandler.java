@@ -1,4 +1,4 @@
-package com.windchat.im.socket;
+package com.windchat.im;
 
 /**
  * Created by sssl on 11/06/2018.

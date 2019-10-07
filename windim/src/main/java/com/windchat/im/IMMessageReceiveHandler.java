@@ -28,7 +28,7 @@ import java.util.List;
  * <p>
  * 处理所有服务端主动推送给客户端的消息
  */
-public class IMClientToClientRequestHandler implements IMessageHandler {
+public class IMMessageReceiveHandler implements IMessageHandler {
 
     public static final String TAG = "ZalyMsgSynchronizer";
     private IMClient imClient;
@@ -43,18 +43,19 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
     private long pointer = 0l;
     private HashMap<String, Long> groupPointers = new HashMap<>();
 
-    public IMClientToClientRequestHandler(IMClient client) {
+    private IMessageReceiver messageReceiver;
+
+    public IMMessageReceiveHandler(IMClient client) {
         this.imClient = client;
+        this.messageReceiver = client.getMessageReceiver();
     }
 
     @Override
-    public boolean matchReceive(TransportPackage packet) throws Exception {
+    public boolean handle(TransportPackage packet) throws Exception {
         String action = packet.action;
 
-        WindLogger.getInstance().debug(
-                IMClientToClientRequestHandler.TAG,
-                "im.recv " + action
-        );
+        WindLogger.getInstance().debug(IMMessageReceiveHandler.TAG, "im.receive " + action);
+
         switch (action) {
             case IMConst.Action.PSN:
                 long nowTime = System.currentTimeMillis();
@@ -63,25 +64,21 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
                     return false;
                 }
                 this.imClient.syncMessage();
-
-
                 break;
             case IMConst.Action.MsgFinish:
                 isReceiveMsgFinish = true;
                 lastSyncFinishTime = System.currentTimeMillis();
                 this.imClient.syncFinish(pointer, groupPointers);
                 break;
-
             case IMConst.Action.Notice:
-                dealNoticeAction(packet.data.toByteArray());
+                receiveMessageNotice(packet.data.toByteArray());
                 break;
-            case IMConst.Action.ReceiveMsgFrmSite:
-                dealReceiveMsg(packet.data.toByteArray());
+            case IMConst.Action.ReceiveMsgFromSite:
+                receiveMessage(packet.data.toByteArray());
                 break;
             case IMConst.Action.Pong:
                 this.imClient.keepAlivedWorker.recvPong();
                 break;
-
         }
         return false;
     }
@@ -91,33 +88,26 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
      *
      * @param data
      */
-    private void dealNoticeAction(byte[] data) {
-
+    private void receiveMessageNotice(byte[] data) {
         try {
             CoreProto.TransportPackageData packageData = CoreProto.TransportPackageData.parseFrom(data);
             ImStcNoticeProto.ImStcNoticeRequest request = ImStcNoticeProto.ImStcNoticeRequest.parseFrom(packageData.getData());
 
-//            Intent intent = new Intent(IMConst.IM_NOTICE_ACTION);
-//            intent.setPackage(PackageSign.getPackage());
-//            intent.putExtra(IMConst.KEY_NOTICE_SITE_IDENTITY, this.imClient.imConnection.getConnSiteIdentity());
-//            intent.putExtra(IMConst.KEY_NOTICE_TYPE, request.getTypeValue());
-//            ZalyApplication.getContext().sendBroadcast(intent);
-
+            String address = this.imClient.imConnection.getSiteAddress();
+            SiteAddress siteAddress = new SiteAddress(address);
+            messageReceiver.handleNoticeMessage(siteAddress, request);
         } catch (Exception e) {
-            e.printStackTrace();
+            messageReceiver.handleException(e);
         }
     }
 
 
     /**
-     * 处理从site收到的请求，故需要解析request
-     * IMConst.KEY_NOTICE_TYPE
-     *
      * @param data
      */
-    private void dealReceiveMsg(byte[] data) {
-        try {
+    private void receiveMessage(byte[] data) {
 
+        try {
             CoreProto.TransportPackageData packageData = CoreProto.TransportPackageData.parseFrom(data);
 
             ImStcMessageProto.ImStcMessageRequest request = ImStcMessageProto.ImStcMessageRequest.parseFrom(packageData.getData());
@@ -170,20 +160,7 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
                                     break;
                             }
 
-//                            int updateStatusFlag = SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(siteAddress)).updateU2MsgStatusForSend(msgId, serverMsgTime, messageStatus);
-//                            // 如果不是单人消息则去群组表中更新数据, 回写时间
-//                            if (updateStatusFlag == 0) {
-////                                if (SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(siteAddress)).updateGroupMsgStatusForSend(msgId, serverMsgTime, messageStatus) == 0) {
-////                                }
-//                            }
-
-//                            //通知UI进程
-//                            Bundle bundle = new Bundle();
-//                            bundle.putString(ZalyDbContentHelper.KEY_MSG_ID, msgId);
-//                            bundle.putString(ZalyDbContentHelper.KEY_SITE_IDENTITY, siteIdentity);
-//                            bundle.putString(ZalyDbContentHelper.KEY_CUR_SITE_USER_ID, curSiteUserId);
-//                            bundle.putInt(ZalyDbContentHelper.KEY_MSG_STATUS, messageStatus);
-//                            ZalyDbContentHelper.executeAction(ZalyDbContentHelper.Action.MSG_STATUS, bundle);
+                            messageReceiver.handleMessageStatus(new SiteAddress(siteAddress), msgId, serverMsgTime, messageStatus);
                             return;
                         case CoreProto.MsgType.TEXT_VALUE:
                             //二人文本
@@ -529,12 +506,12 @@ public class IMClientToClientRequestHandler implements IMessageHandler {
                     else groupMessages.add(message);
                 }
                 if (u2Messages.size() > 0) {
-//                    SiteMessageDao.getInstance(siteAddressObj).batchInsertU2Messages(u2Messages);
-//                    WindLogger.getInstance().info(TAG, "inserting U2 messages: " + u2Messages);
+                    WindLogger.getInstance().info(TAG, "inserting U2 messages: " + u2Messages);
+                    messageReceiver.handleU2Message(siteAddressObj, u2Messages);
                 }
                 if (groupMessages.size() > 0) {
-//                    SiteMessageDao.getInstance(siteAddressObj).batchInsertGroupMessages(groupMessages);
-//                    WindLogger.getInstance().info(TAG, "inserting Group messages: " + groupMessages);
+                    WindLogger.getInstance().info(TAG, "inserting Group messages: " + groupMessages);
+                    messageReceiver.handleGroupMessage(siteAddressObj, groupMessages);
                 }
             }
 

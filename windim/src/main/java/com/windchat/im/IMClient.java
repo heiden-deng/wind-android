@@ -5,7 +5,6 @@ import android.os.RemoteException;
 import com.windchat.im.bean.Message;
 import com.windchat.im.bean.Site;
 import com.windchat.im.socket.ConnectionConfig;
-import com.windchat.im.socket.IConnectionHandler;
 import com.windchat.im.socket.IMConnection;
 import com.windchat.im.socket.SiteAddress;
 import com.windchat.im.socket.TransportPackageForRequest;
@@ -26,10 +25,18 @@ public class IMClient implements IConnectionHandler {
 
     private static String TAG = IMClient.class.getSimpleName();
 
+    private static IMessageReceiver messageReceiver;
+    private static IConnectionHandler connectionHandler;
+
     // 获取IMClient实例
     public static IMClient getInstance(Site site) {
         return IMManager.get(site);
 
+    }
+
+    public static void setConnectionHandler(IConnectionHandler handler, IMessageReceiver receiver) {
+        messageReceiver = receiver;
+        connectionHandler = handler;
     }
 
     public static void connect(Site site) {
@@ -76,14 +83,29 @@ public class IMClient implements IConnectionHandler {
     public IMClientHeartWorker keepAlivedWorker;
     private ExecutorService connExecutor;
 
+    private IMessageReceiver _messageReceiver;
+    private IConnectionHandler _connectionHandler;
+
+
     protected IMClient(SiteAddress address) {
         this.address = address;
+        this._messageReceiver = messageReceiver;
+        this._connectionHandler = connectionHandler;
         this.setConnExecutor();
         this.checkSocketAlive();
     }
 
     protected IMClient(Site site) {
         this(site.getSiteAddress());
+    }
+
+
+    public IMessageReceiver getMessageReceiver() {
+        return this._messageReceiver;
+    }
+
+    public IConnectionHandler getConnectionHandler() {
+        return this._connectionHandler;
     }
 
     private void setConnExecutor() {
@@ -118,7 +140,7 @@ public class IMClient implements IConnectionHandler {
      * @throws RemoteException
      */
     public void sendMessage(Message message) throws RemoteException {
-        ImCtsMessageProto.ImCtsMessageRequest request = MessageIMTask.makeMessageRequest(message);
+        ImCtsMessageProto.ImCtsMessageRequest request = MessageBuilder.buildMessageRequest(message);
         if (null == request) {
             return;
         }
@@ -156,8 +178,6 @@ public class IMClient implements IConnectionHandler {
      */
     public void syncFinish(long pointer, HashMap<String, Long> groupPointers) {
         try {
-
-
             Set<String> keys = groupPointers.keySet();
 
             //生成请求
@@ -265,8 +285,6 @@ public class IMClient implements IConnectionHandler {
 
     // 这两个属性，送给makeSureSocketAlived使用
     protected boolean isDoingConnectAndAuth = false;
-    // 为空，代表还没有auth成功。
-    // 在hello发起时清空，auth成功后赋值
     protected boolean authSuccessed = false;
     protected long lastTimeDoConnectAndAuth = 0;
 
@@ -310,8 +328,11 @@ public class IMClient implements IConnectionHandler {
             this.imConnection.logTag = "IMClient." + this.imConnection.logTag;
 
             // Request And Response 模式更优先
-            this.imConnection.setToClientRequestHandler(new IMClientToClientRequestHandler(this));
-            this.imConnection.connectionHandler = this;
+            this.imConnection.setMessageReceiveHandler(new IMMessageReceiveHandler(this));
+
+            if (this._connectionHandler != null) {
+                this.imConnection.setConnectionHandler(this._connectionHandler);
+            }
             this.connExecutor.submit(new IMClientConnectAndAuth(this));
 
 

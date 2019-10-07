@@ -15,21 +15,17 @@ import com.windchat.logger.WindLogger;
 
 public class Site {
 
-    public static final int STATUS_SITE_ONLINE = 1;
-    public static final int STATUS_SITE_KEEPING = 2;
+    protected String siteHost;
+    protected int sitePort;
 
-    public static final int AUTO_DISCONNECT_STATUS = 0;////自动断开连接
-    public static final int MANUAL_CONTROL_DISCONNECT_STATUS = 1;////手动断开连接
-    
-    private String siteHost;
-    private int sitePort;
+    protected String siteUserId;
+    protected String siteSessionId;
+
     private String siteName;
     private String siteIcon;
     private String globalUserId;
-    private String siteUserId;
     private String siteUserName;
     private String siteUserImage;
-    private String siteSessionId;
     private String siteVersion;
     private int siteStatus;
     private long lastLoginTime;

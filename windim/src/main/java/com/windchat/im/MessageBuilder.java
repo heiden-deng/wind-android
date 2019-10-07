@@ -10,9 +10,9 @@ import com.windchat.proto.server.ImCtsMessageProto;
 import org.apache.commons.lang3.StringUtils;
 
 
-public class MessageIMTask {
+public class MessageBuilder {
 
-    public static ImCtsMessageProto.ImCtsMessageRequest makeMessageRequest(Message message) {
+    public static ImCtsMessageProto.ImCtsMessageRequest buildMessageRequest(Message message) {
 
         ImCtsMessageProto.ImCtsMessageRequest request;
 

@@ -132,7 +132,8 @@ public class SiteUtils {
             if (sites != null) {
                 //////TODO DBChange 检查所有站点的数据库
                 for (Site site : sites) {
-                    SitePresenter.getInstance().checkSiteBaseTable(site.getHostAndPort());
+                    String address = site.getHostAndPort();
+                    SitePresenter.getInstance().checkSiteBaseTable(address);
                 }
                 return true;
             } else {

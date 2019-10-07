@@ -10,7 +10,7 @@ public class IMConst {
         public static final String Auth = "im.site.auth";
         public static final String PSN = "im.stc.psn";
         public static final String ImCtsMessage = "im.cts.message";
-        public static final String ReceiveMsgFrmSite = "im.stc.message";
+        public static final String ReceiveMsgFromSite = "im.stc.message";
         public static final String MsgFinish = "im.msg.finish";
         public static final String Sync = "im.sync.message";
         public static final String SyncFinish = "im.sync.finish";

@@ -25,8 +25,6 @@ public class Site extends com.windchat.im.bean.Site implements Parcelable {
 
 //    public static final String SITE_VERSION = "0.2.2";
 
-    private String siteHost;
-    private int sitePort;
     private String siteName;
     private String siteIcon;
     private String globalUserId;
