@@ -5,19 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.akaxin.client.Configs;
 import com.akaxin.client.R;
 import com.akaxin.client.ZalyApplication;
@@ -47,18 +43,13 @@ import com.akaxin.client.util.toast.Toaster;
 import com.akaxin.client.view.TimeButton;
 import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.core.FileProto;
-import com.akaxin.proto.core.PhoneProto;
 import com.akaxin.proto.core.UserProto;
-import com.akaxin.proto.platform.ApiPhoneApplyTokenProto;
-import com.akaxin.proto.platform.ApiPlatformLoginProto;
 import com.akaxin.proto.site.ApiFileUploadProto;
-import com.akaxin.proto.site.ApiPlatformRegisterByPhoneProto;
 import com.akaxin.proto.site.ApiSiteLoginProto;
 import com.akaxin.proto.site.ApiSiteRegisterProto;
 import com.akaxin.proto.site.ApiUserUpdateProfileProto;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.orhanobut.logger.Logger;
 import com.windchat.im.IMClient;
 import com.windchat.im.socket.ConnectionConfig;
 import com.yalantis.ucrop.UCrop;
@@ -124,7 +115,7 @@ public class RegisterActivity extends BaseActivity implements ViewPager.OnPageCh
         adapter = new RegisterPagerAdapter();
         registerVp.setAdapter(adapter);
         registerVp.addOnPageChangeListener(this);
-        setMultTitle(loginSite.getSiteHost(), loginSite.getSiteAddress());
+        setMultTitle(loginSite.getSiteHost(), loginSite.getHostAndPort());
         mProgressBar.setProgress((100 / views.size()));
         registerActivity = this;
     }
@@ -556,7 +547,7 @@ public class RegisterActivity extends BaseActivity implements ViewPager.OnPageCh
                 public void onPrepareSiteSuccess(Site currentSite) {
                     hideProgress();
                     try {
-                        IMClient.makeSureClientAlived(currentSite.toSiteAddress());
+                        IMClient.makeSureClientAlived(currentSite);
                     } catch (Exception e) {
                         ZalyLogUtils.getInstance().info(TAG, e.getMessage());
                     }
@@ -670,7 +661,7 @@ public class RegisterActivity extends BaseActivity implements ViewPager.OnPageCh
 
         @Override
         protected ApiUserUpdateProfileProto.ApiUserUpdateProfileResponse executeTask(Void... voids) throws Exception {
-            Site site = SitePresenter.getInstance().getSiteUser(loginSite.getSiteAddress());
+            Site site = SitePresenter.getInstance().getSiteUser(loginSite.getHostAndPort());
 
             UserProto.UserProfile userProfileDetails = UserProto.UserProfile.newBuilder()
                     .setSiteUserId(loginSite.getSiteUserId())

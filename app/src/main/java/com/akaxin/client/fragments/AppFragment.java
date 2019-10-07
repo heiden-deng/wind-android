@@ -148,7 +148,7 @@ public class AppFragment extends MVPBaseFragment<AppContract.View, AppPresenter>
     }
 
     public void showApp(PluginProto.Plugin plugin, boolean isAddCookie) {
-        String referrer = SiteConfig.PLUGIN_HOME_REFERER.replace("siteAddress", currentSite.getSiteAddress());
+        String referrer = SiteConfig.PLUGIN_HOME_REFERER.replace("siteAddress", currentSite.getHostAndPort());
         jsWebViewUtil = new JsWebViewUtil(currentSite, getContext(), getActivity(), fragmentAppWeb, plugin, referrer, isAddCookie);
         jsWebViewUtil.setLoadWebViewListener(this);
         jsWebViewUtil.onLoadData();

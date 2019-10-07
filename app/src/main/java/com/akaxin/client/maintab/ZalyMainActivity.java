@@ -791,8 +791,7 @@ public class ZalyMainActivity extends BaseActivity
         try {
             boolean isConnected = isSiteConnected(currentSite);
             if (isConnected) {
-                String curSiteIdentity = currentSite.getSiteIdentity();
-                IMClient.getInstance(new SiteAddress(curSiteIdentity)).syncMessage();
+                IMClient.getInstance(currentSite).syncMessage();
             }
 
         } catch (Exception e) {
@@ -818,7 +817,7 @@ public class ZalyMainActivity extends BaseActivity
                 @Override
                 public void onClick(View v) {
                     connStatusBar.setText(R.string.error_conn_netretrying);
-                    IMClient.getInstance(new SiteAddress(currentSite)).makeSureClientAlived(currentSite.toSiteAddress());
+                    IMClient.makeSureClientAlived(currentSite);
 
                 }
             });
@@ -869,7 +868,7 @@ public class ZalyMainActivity extends BaseActivity
                     connStatusBar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            IMClient.getInstance(new SiteAddress(currentSite)).makeSureClientAlived(currentSite.toSiteAddress());
+                            IMClient.makeSureClientAlived(currentSite);
                         }
                     });
                     break;

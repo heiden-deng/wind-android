@@ -458,8 +458,7 @@ public class GroupProfileActivity extends BaseActivity
                 break;
             case R.id.action_share:
                 if (ClipboardUtils.copyToClipboard(
-                        UrlUtils.buildShareLinkForGroup(
-                                currentSite.getSiteAddress(), iPresenter.getGroupId())))
+                        UrlUtils.buildShareLinkForGroup(currentSite.getHostAndPort(), iPresenter.getGroupId())))
                     Toaster.show(R.string.share_copied);
                 break;
             case R.id.item_group_name:
@@ -539,10 +538,10 @@ public class GroupProfileActivity extends BaseActivity
                 break;
             case R.id.item_share_qr_code:
                 Intent shareQrCode = new Intent(this, ShareQRCodeActivity.class);
-                shareQrCode.putExtra(IntentKey.KEY_QR_CODE_TYPE,IntentKey.KEY_TYPE_GROUP);
+                shareQrCode.putExtra(IntentKey.KEY_QR_CODE_TYPE, IntentKey.KEY_TYPE_GROUP);
                 shareQrCode.putExtra(IntentKey.KEY_CURRENT_SITE, currentSite);
                 shareQrCode.putExtra(IntentKey.KEY_GROUP_ID, groupId);
-                shareQrCode.putExtra(IntentKey.KEY_GROUP_NAME,groupName);
+                shareQrCode.putExtra(IntentKey.KEY_GROUP_NAME, groupName);
                 startActivity(shareQrCode);
                 break;
         }

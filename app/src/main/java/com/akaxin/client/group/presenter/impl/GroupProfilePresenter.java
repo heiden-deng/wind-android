@@ -420,7 +420,7 @@ public class GroupProfilePresenter implements IGroupProfilePresenter {
         @Override
         protected void onTaskSuccess(ApiGroupUpdateProfileProto.ApiGroupUpdateProfileResponse apiGroupUpdateProfileResponse) {
             super.onTaskSuccess(apiGroupUpdateProfileResponse);
-            SiteGroupProfileDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).updateSiteGroupProfile(groupId, groupName);
+            SiteGroupProfileDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).updateSiteGroupProfile(groupId, groupName);
             iView.onChangeGroupNameSucceed(groupName);
         }
 

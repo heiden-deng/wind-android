@@ -24,7 +24,7 @@ public class AddSiteTask extends ZalyTaskExecutor.Task<Void, Void, Long> {
     @Override
     protected Long executeTask(Void... voids) throws Exception {
         site.setGlobalUserId(ZalyApplication.getGlobalUserId());
-        Site siteInfo = SitePresenter.getInstance().getSiteUser(site.getSiteAddress());
+        Site siteInfo = SitePresenter.getInstance().getSiteUser(site.getHostAndPort());
         if (siteInfo != null && StringUtils.isNotEmpty(siteInfo.getSiteUserId()) && siteInfo.getSiteUserId().length() > 0) {
             AkxCommonDao.getInstance().updateUserSiteSessionId(site.getSiteHost(), site.getSitePort(), site);
             return null;

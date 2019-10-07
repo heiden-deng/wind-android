@@ -65,7 +65,7 @@ public class UserProfilePresenter implements IUserProfilePresenter {
     }
 
     public SiteAddress getCurrentSite() {
-        return ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress());
+        return ZalyApplication.getSiteAddressObj(currentSite.toString());
     }
 
     @Override

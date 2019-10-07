@@ -30,7 +30,7 @@ public class ApiUserProfileTask extends ZalyTaskExecutor.Task<Void, Void, ApiUse
     public ApiUserProfileTask(Site site) {
         this.site = site;
         this.siteUserId = site.getSiteUserId();
-        this.siteAddress = site.getSiteAddress();
+        this.siteAddress = site.getHostAndPort();
     }
 
     @Override

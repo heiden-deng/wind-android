@@ -31,6 +31,8 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
     public IMClientConnectAndAuth(IMClient client) {
         this.client = client;
         this.site = new Site(client.address.getHost(), client.address.getPort());
+        site.setSiteSessionId(client.address.toConnectionConfig().getSessionId());
+        site.setSiteUserId(client.address.toConnectionConfig().getSiteUserId());
     }
 
     // 打日志

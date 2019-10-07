@@ -19,8 +19,6 @@ import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.client.util.task.ZalyTaskExecutor;
 import com.akaxin.proto.core.FileProto;
 import com.akaxin.proto.core.UserProto;
-import com.akaxin.proto.platform.ApiSettingSiteMuteProto;
-import com.akaxin.proto.platform.ApiSettingUpdateSiteMuteProto;
 import com.akaxin.proto.site.ApiFileUploadProto;
 import com.akaxin.proto.site.ApiUserMuteProto;
 import com.akaxin.proto.site.ApiUserUpdateMuteProto;
@@ -346,7 +344,7 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
         protected Boolean executeTask(Void... voids) throws Exception {
             ////手动断开连接
             SitePresenter.getInstance().updateSiteConnStatus(Site.MANUAL_CONTROL_DISCONNECT_STATUS, site.getSiteHost(), site.getSitePort() + "");
-            IMClient.getInstance(site.toSiteAddress()).disconnect();
+            IMClient.getInstance(site).disconnect();
             site.setConnStatus(Site.MANUAL_CONTROL_DISCONNECT_STATUS);
 
             Thread.sleep(1000); // 有意sleep，等待IM断开
@@ -386,7 +384,7 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
         protected Boolean executeTask(Void... voids) throws Exception {
             SitePresenter.getInstance().updateSiteConnStatus(Site.AUTO_DISCONNECT_STATUS, site.getSiteHost(), site.getSitePort() + "");
             site.setConnStatus(Site.AUTO_DISCONNECT_STATUS);
-            IMClient.makeSureClientAlived(site.toSiteAddress());
+            IMClient.makeSureClientAlived(site);
             iView.onConnectStart();
             Thread.sleep(2000);//有意sleep，等待IM断开
             return true;
@@ -426,10 +424,10 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
             ZalyTaskExecutor.executeUserTask(TAG, new DeleteUserToken(site));
             ////手动断开连接
             SitePresenter.getInstance().updateSiteConnStatus(Site.MANUAL_CONTROL_DISCONNECT_STATUS, site.getSiteHost(), site.getSitePort() + "");
-            IMClient.getInstance(site.toSiteAddress()).disconnect();
+            IMClient.getInstance(site).disconnect();
             Thread.sleep(1000); // 有意sleep，等待IM断开
-            IMClient.removeClient(site.toSiteAddress());
-            SitePresenter.getInstance().deleteSiteDB(ZalyApplication.getSiteAddressObj(site.getSiteAddress()));
+            IMClient.removeClient(site.getSiteAddress());
+            SitePresenter.getInstance().deleteSiteDB(ZalyApplication.getSiteAddressObj(site.toString()));
             SitePresenter.getInstance().delSiteInfo(site.getSiteHost(), site.getSitePort() + "");
             ZalyApplication.getCfgSP().put(site.getSiteIdentity() + KEY_NEW_APPLY_FRIEND, false);
 

@@ -120,7 +120,7 @@ public class PluginActivity extends BaseActivity {
                     .setPageNumber(FIRST_PAGE_NUMBER)
                     .setPageSize(PAGE_SIZE)
                     .build();
-            String referer = SiteConfig.PLUGIN_HOME_REFERER.replace("siteAddress", currentSite.getSiteAddress());
+            String referer = SiteConfig.PLUGIN_HOME_REFERER.replace("siteAddress", currentSite.getHostAndPort());
             return ApiClient.getInstance(currentSite).getPluginApi().getPluginList(referer);
         }
 

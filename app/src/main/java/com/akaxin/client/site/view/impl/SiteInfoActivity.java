@@ -123,7 +123,7 @@ public class SiteInfoActivity extends BaseActivity
         if (site == null) {
             return;
         }
-        Site siteInfo = SitePresenter.getInstance().getSiteUser(site.getSiteAddress());
+        Site siteInfo = SitePresenter.getInstance().getSiteUser(site.getHostAndPort());
         if (siteInfo == null) {
             return;
         }
@@ -153,7 +153,7 @@ public class SiteInfoActivity extends BaseActivity
 
 
         siteName.setText(site.getSiteName());
-        siteAddress.setText(site.getSiteAddress());
+        siteAddress.setText(site.getHostAndPort());
         siteLoginIdTV.setText(site.getSiteLoginId());
         boolean isNet = NetUtils.getNetInfo();
         siteLoginId = site.getSiteLoginId();

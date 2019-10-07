@@ -318,7 +318,7 @@ public class MessagePresenter implements IMessagePresenter {
      */
     @Override
     public void deleteU2Msg(String msgId) {
-        SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).deleteU2MsgById(msgId);
+        SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).deleteU2MsgById(msgId);
     }
 
     /**
@@ -328,7 +328,7 @@ public class MessagePresenter implements IMessagePresenter {
      */
     @Override
     public void deleteU2MsgByChatSessionId(String chatSessionId) {
-        SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).deleteU2MsgByChatSessionId(chatSessionId);
+        SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).deleteU2MsgByChatSessionId(chatSessionId);
     }
 
     @Override
@@ -685,7 +685,7 @@ public class MessagePresenter implements IMessagePresenter {
 
         @Override
         protected Message executeTask(Void... voids) throws Exception {
-            SiteAddress siteAddress = ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress());
+            SiteAddress siteAddress = ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort());
 
             if (mode == INSERT_MODE) {
                 long _id = SiteMessageDao.getInstance(siteAddress).insertU2Message(message);
@@ -735,7 +735,7 @@ public class MessagePresenter implements IMessagePresenter {
             Long _id = null;
             if (mode == INSERT_MODE) {
                 ////修改信息写入2人消息表
-                SiteAddress siteAddress = ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress());
+                SiteAddress siteAddress = ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort());
                 _id = SiteMessageDao.getInstance(siteAddress).insertU2Message(message);
 
             }
@@ -785,7 +785,7 @@ public class MessagePresenter implements IMessagePresenter {
         @Override
         protected Message executeTask(Void... voids) throws Exception {
             Long _id = null;
-            SiteAddress siteAddress = ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress());
+            SiteAddress siteAddress = ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort());
 
             if (mode == INSERT_MODE) {
                 ////修改信息写入2人消息表
@@ -830,8 +830,7 @@ public class MessagePresenter implements IMessagePresenter {
         boolean isNet = NetUtils.getNetInfo();
         if (isNet) {
             try {
-                String curSiteIdentity = currentSite.getSiteIdentity();
-                IMClient.getInstance(new SiteAddress(curSiteIdentity)).sendMessage(message);
+                IMClient.getInstance(currentSite).sendMessage(message);
             } catch (Exception e) {
                 ZalyLogUtils.getInstance().errorToInfo(TAG, e.getMessage());
             }
@@ -870,7 +869,7 @@ public class MessagePresenter implements IMessagePresenter {
             Long _id = null;
             ////修改信息写入2人消息表
             if (mode == INSERT_MODE) {
-                SiteAddress siteAddress = new SiteAddress(currentSite.getSiteAddress());
+                SiteAddress siteAddress = currentSite.getSiteAddress();
                 _id = SiteMessageDao.getInstance(siteAddress).insertU2Message(rawMessage);
             }
             if (mode == UPDATE_MODE) {
@@ -990,7 +989,7 @@ public class MessagePresenter implements IMessagePresenter {
 
         @Override
         protected List<Message> executeTask(Void... voids) throws Exception {
-            return SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).queryU2NewMsg(-1, U2_MSG_PAGE_SIZE, chatSessionId);
+            return SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).queryU2NewMsg(-1, U2_MSG_PAGE_SIZE, chatSessionId);
         }
 
         @Override
@@ -1029,8 +1028,7 @@ public class MessagePresenter implements IMessagePresenter {
             }
             if (msgIds.size() > 0) {
                 ZalyLogUtils.getInstance().info(TAG, "shaoye --  sync msg status == " + msgIds.toString());
-                String curSiteIdentity = currentSite.getSiteIdentity();
-                IMClient.getInstance(new SiteAddress(curSiteIdentity)).syncMessageStatus(msgIds, CoreProto.MsgType.TEXT_VALUE);
+                IMClient.getInstance(currentSite).syncMessageStatus(msgIds, CoreProto.MsgType.TEXT_VALUE);
                 return;
             }
             ZalyLogUtils.getInstance().info(TAG, "shaoye -- no sync msg status");
@@ -1049,7 +1047,7 @@ public class MessagePresenter implements IMessagePresenter {
 
         @Override
         protected List<Message> executeTask(Void... voids) throws Exception {
-            return SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).queryU2NewMsg(_id, -1, chatSessionId);
+            return SiteMessageDao.getInstance(currentSite.getSiteAddress()).queryU2NewMsg(_id, -1, chatSessionId);
         }
 
         @Override
@@ -1087,7 +1085,7 @@ public class MessagePresenter implements IMessagePresenter {
 
         @Override
         protected List<Message> executeTask(Void... voids) throws Exception {
-            SiteAddress siteAddress = new SiteAddress(currentSite.getSiteAddress());
+            SiteAddress siteAddress = currentSite.getSiteAddress();
             return SiteMessageDao.getInstance(siteAddress).queryU2HistoryMsg(_id, count, friendSiteUserId);
         }
 
@@ -1184,7 +1182,7 @@ public class MessagePresenter implements IMessagePresenter {
                 }
                 chatSession.setTitle(userName);
             }
-            return SitePresenter.getInstance().insertChatSession(currentSite.getSiteAddress(), chatSession);
+            return SitePresenter.getInstance().insertChatSession(currentSite.getHostAndPort(), chatSession);
         }
 
         @Override

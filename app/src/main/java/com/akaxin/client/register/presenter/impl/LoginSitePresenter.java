@@ -29,7 +29,6 @@ import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.client.util.security.RSAUtils;
 import com.akaxin.client.util.task.ZalyTaskExecutor;
 import com.akaxin.client.util.toast.Toaster;
-import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.site.ApiSiteConfigProto;
 import com.akaxin.proto.site.ApiSiteLoginProto;
 import com.akaxin.proto.site.ApiSiteRegisterProto;
@@ -384,7 +383,7 @@ public class LoginSitePresenter implements ILoginSitePresenter {
                     bundle.putParcelable(IntentKey.KEY_CURRENT_SITE, site);
                     EventBus.getDefault().post(new AppEvent(AppEvent.ACTION_SWITCH_SITE, bundle));
                     try {
-                        IMClient.makeSureClientAlived(site.toSiteAddress());
+                        IMClient.makeSureClientAlived(site);
                     } catch (Exception e) {
                         ZalyLogUtils.getInstance().exceptionError(e);
                     }

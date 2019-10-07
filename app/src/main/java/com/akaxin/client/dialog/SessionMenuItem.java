@@ -70,14 +70,14 @@ public class SessionMenuItem extends Dialog {
         @Override
         protected Boolean executeTask(Void... voids) throws Exception {
             if (mSession != null && !StringUtils.isEmpty(mSession.getChatSessionId())) {
-                int flag = SiteChatSessionDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).deleteSessionById(mSession.getChatSessionId());
+                int flag = SiteChatSessionDao.getInstance(currentSite.getSiteAddress()).deleteSessionById(mSession.getChatSessionId());
                 ZalyLogUtils.getInstance().info(TAG, " delete session flag ==" + flag);
                 ZalyLogUtils.getInstance().info(TAG, " delete session id  ==" + mSession.getChatSessionId());
                 ZalyLogUtils.getInstance().info(TAG, " delete session getType  ==" + mSession.getType());
 
-                if(flag>0 && mSession.getType() == ChatSession.TYPE_GROUP_SESSION) {
+                if (flag > 0 && mSession.getType() == ChatSession.TYPE_GROUP_SESSION) {
                     SitePresenter.getInstance().deleteGroupMsgByChatSessionId(currentSite, mSession.getChatSessionId());
-                } else if(flag>0 && mSession.getType() == ChatSession.TYPE_FRIEND_SESSION) {
+                } else if (flag > 0 && mSession.getType() == ChatSession.TYPE_FRIEND_SESSION) {
                     SitePresenter.getInstance().deleteU2MsgByChatSessionId(currentSite, mSession.getChatSessionId());
                 }
                 EventBus.getDefault().post(new AppEvent(AppEvent.ACTION_UPDATE_SESSION_LIST, null));

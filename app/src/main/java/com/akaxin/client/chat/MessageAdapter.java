@@ -1049,7 +1049,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     RSAUtils.getInstance().decryptMsg(msg, priKey);
                     msg.setMsgTsk("");//这里一定要置空
                     //这里一定要置更新数据库一次，解密一次，更新数据库，后期使用的均为解密以后的消息内容
-                    SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).updateSecretU2MsgContent(msg.get_id(), msg.getContent(), msg.getMsgTsk());
+                    SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).updateSecretU2MsgContent(msg.get_id(), msg.getContent(), msg.getMsgTsk());
                 } catch (Exception e) {
                     //解密二人文本消息失败，则替换成notice消息
                     ZalyTaskExecutor.executeTask(TAG, new ZalyTaskExecutor.Task<Void, Void, Boolean>() {
@@ -1063,7 +1063,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 msg.setMsgType(CoreProto.MsgType.U2_NOTICE_VALUE);
                             }
                             msg.setContent(newContent);
-                            SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).updateSecretU2MsgContent(msg.get_id(), msg.getContent(), msg.getMsgType());
+                            SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).updateSecretU2MsgContent(msg.get_id(), msg.getContent(), msg.getMsgType());
                             return true;
                         }
 
@@ -1197,7 +1197,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             receiveAudio.setAudioTime(millSecond);
                             receiveAudio.setAudioFilePath(downloadFilePath);
                             msg.setContent(AudioInfo.toJSON(receiveAudio));
-                            SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).updateU2MsgContent(msg.get_id(), msg.getContent(), msg.getMsgTsk());
+                            SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).updateU2MsgContent(msg.get_id(), msg.getContent(), msg.getMsgTsk());
                         }
 
                         @Override
@@ -1213,7 +1213,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             } else {
                                 msg.setMsgType(CoreProto.MsgType.U2_NOTICE_VALUE);
                             }
-                            SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).updateSecretU2MsgContent(msg.get_id(), msg.getContent(), msg.getMsgType());
+                            SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).updateSecretU2MsgContent(msg.get_id(), msg.getContent(), msg.getMsgType());
                             notifyItemChanged(getAdapterPosition());
                         }
                     }, priKey, msg.getMsgTsk(), currentSite);
@@ -1235,7 +1235,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                     receiveAudio.setAudioTime(millSecond);
                                     receiveAudio.setAudioFilePath(downloadFilePath);
                                     msg.setContent(AudioInfo.toJSON(receiveAudio));
-                                    SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).updateU2MsgContent(msg.get_id(), msg.getContent(), msg.getMsgTsk());
+                                    SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).updateU2MsgContent(msg.get_id(), msg.getContent(), msg.getMsgTsk());
                                 }
 
                                 @Override
@@ -1247,7 +1247,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 public void onDownloadFail(Exception e) {
                                     receiveAudio.setAudioTime(AudioInfo.DOWNLOAD_FAIL);
                                     msg.setContent(AudioInfo.toJSON(receiveAudio));
-                                    SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).updateSecretU2MsgContent(msg.get_id(), msg.getContent(), msg.getMsgType());
+                                    SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).updateSecretU2MsgContent(msg.get_id(), msg.getContent(), msg.getMsgType());
                                     notifyItemChanged(getAdapterPosition());
                                 }
                             }, currentSite);
@@ -1366,7 +1366,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                     receiveImg.setStatus(STATUS_RECEIVE_DOWNLOAD);
                                     contentImg.setVisibility(View.VISIBLE);
                                     finalMessage.setContent(ImageInfo.toJSON(receiveImg));
-                                    SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).updateU2MsgContent(finalMessage.get_id(), finalMessage.getContent(), finalMessage.getMsgTsk());
+                                    SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).updateU2MsgContent(finalMessage.get_id(), finalMessage.getContent(), finalMessage.getMsgTsk());
                                 }
 
                                 @Override
@@ -1382,7 +1382,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                     } else {
                                         finalMessage.setMsgType(CoreProto.MsgType.U2_NOTICE_VALUE);
                                     }
-                                    SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).updateSecretU2MsgContent(finalMessage.get_id(), finalMessage.getContent(), finalMessage.getMsgType());
+                                    SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).updateSecretU2MsgContent(finalMessage.get_id(), finalMessage.getContent(), finalMessage.getMsgType());
                                     notifyItemChanged(getAdapterPosition());
                                 }
                             }, priKey, finalMessage.getMsgTsk(), currentSite);
@@ -1478,9 +1478,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         Bundle bundle = new Bundle();
         List<Message> images;
         if (isFromGroup) {
-            images = SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).queryGroupImageMsg(chateSessionId);
+            images = SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).queryGroupImageMsg(chateSessionId);
         } else {
-            images = SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).queryU2ImageMsg(chateSessionId);
+            images = SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).queryU2ImageMsg(chateSessionId);
         }
         int finalPostion = 0;
         for (int j = 0; j < images.size(); j++) {

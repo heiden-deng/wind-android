@@ -241,7 +241,7 @@ public class PersonalFragment extends MVPBaseFragment<PersonalContract.View, Per
     }
 
     public void selectUserInfoFromDB() {
-        Site userInfo = SitePresenter.getInstance().getSiteUser(currentSite.getSiteAddress());
+        Site userInfo = SitePresenter.getInstance().getSiteUser(currentSite.getHostAndPort());
         if (userInfo != null) {
             if (!StringUtils.isEmpty(userInfo.getSiteUserImage())) {
                 userImgId = userInfo.getSiteUserImage();
@@ -321,8 +321,7 @@ public class PersonalFragment extends MVPBaseFragment<PersonalContract.View, Per
         switch (view.getId()) {
             case R.id.action_share:
                 if (ClipboardUtils.copyToClipboard(
-                        UrlUtils.buildShareLinkForUser(
-                                currentSite.getSiteAddress(), currentSite.getSiteUserId())))
+                        UrlUtils.buildShareLinkForUser(currentSite.getHostAndPort(), currentSite.getSiteUserId())))
                     Toaster.show(R.string.share_copied);
                 break;
             case R.id.layout_me:
@@ -385,7 +384,7 @@ public class PersonalFragment extends MVPBaseFragment<PersonalContract.View, Per
         items.add(new PersonalItem(getString(R.string.set_site_login_id), false, PersonalItem.ITEM_SET_SITE_ACCOUNT));
         items.add(new PersonalItem(getString(R.string.change_avatar), false, PersonalItem.ITEM_CHANGE_USER_HEAD));
         items.add(new PersonalItem(getString(R.string.change_username), false, PersonalItem.ITEM_CHANGE_USER_NICK_NAME));
-        Site site = SitePresenter.getInstance().getSiteUser(currentSite.getSiteAddress());
+        Site site = SitePresenter.getInstance().getSiteUser(currentSite.getHostAndPort());
         siteLoginId = site.getSiteLoginId();
         if (siteLoginId != null && siteLoginId.length() > 0 && currentSite.getProtocolVersion() >= SiteConfig.site_login_id_minProtocol) {
             items.get(1).setShowTip(false);

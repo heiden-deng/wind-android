@@ -23,7 +23,6 @@ import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.client.util.security.RSAUtils;
 import com.akaxin.client.util.task.ZalyTaskExecutor;
 import com.akaxin.client.util.toast.Toaster;
-import com.akaxin.proto.core.ConfigProto;
 import com.akaxin.proto.site.ApiSiteConfigProto;
 import com.akaxin.proto.site.ApiSiteLoginProto;
 import com.windchat.im.IMClient;
@@ -245,7 +244,7 @@ class AddSiteAndChangeIdentityTask extends AddSiteTask {
                 bundle.putParcelable(IntentKey.KEY_CURRENT_SITE, currentSite);
                 EventBus.getDefault().post(new AppEvent(AppEvent.ACTION_SWITCH_SITE, bundle));
                 try {
-                    IMClient.makeSureClientAlived(currentSite.toSiteAddress());
+                    IMClient.makeSureClientAlived(currentSite);
                 } catch (Exception e) {
                     ZalyLogUtils.getInstance().exceptionError(e);
                 }

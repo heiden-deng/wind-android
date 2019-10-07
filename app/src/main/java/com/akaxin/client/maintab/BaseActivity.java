@@ -321,7 +321,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public boolean isSiteConnected(Site site) {
         boolean isConnected;
         try {
-            isConnected = IMClient.getInstance(site.toSiteAddress()).isConnected();
+            isConnected = IMClient.getInstance(site).isConnected();
         } catch (Exception e) {
             return false;
         }
@@ -347,7 +347,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             getContext().sendBroadcast(intent);
         }
         if (!isConnected && site.getConnStatus() != Site.MANUAL_CONTROL_DISCONNECT_STATUS) {
-            IMClient.getInstance(new SiteAddress(site)).makeSureClientAlived(site.toSiteAddress());
+            IMClient.makeSureClientAlived(site);
         }
 
         return isConnected;

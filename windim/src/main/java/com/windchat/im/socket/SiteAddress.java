@@ -15,7 +15,6 @@ public class SiteAddress {
     public SiteAddress(ConnectionConfig config) {
         this.host = config.getHost();
         this.port = config.getPort();
-
         this.config = config;
     }
 

@@ -307,8 +307,7 @@ public class FriendProfileActivity extends BaseActivity implements CompoundButto
                 break;
             case R.id.action_share:
                 if (ClipboardUtils.copyToClipboard(
-                        UrlUtils.buildShareLinkForUser(
-                                currentSite.getSiteAddress(), siteUserId)))
+                        UrlUtils.buildShareLinkForUser(currentSite.getHostAndPort(), siteUserId)))
                     Toaster.show(R.string.share_copied);
                 break;
             case R.id.avatar:

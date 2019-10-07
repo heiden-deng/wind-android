@@ -217,7 +217,7 @@ public class SitePresenter implements ISitePresenter {
 
     @Override
     public Long cleanUnreadNum(Site site, String chatSessionId) {
-        SiteAddress siteAddress = new SiteAddress(site.getSiteAddress());
+        SiteAddress siteAddress = site.getSiteAddress();
         return SiteChatSessionDao.getInstance(siteAddress).cleanUnreadNum(chatSessionId);
     }
 
@@ -254,7 +254,7 @@ public class SitePresenter implements ISitePresenter {
      */
     @Override
     public void deleteU2MsgByChatSessionId(Site site, String chatSessionId) {
-        SiteAddress siteAddress = new SiteAddress(site.getSiteAddress());
+        SiteAddress siteAddress = site.getSiteAddress();
         SiteMessageDao.getInstance(siteAddress).deleteU2MsgByChatSessionId(chatSessionId);
     }
 
@@ -266,7 +266,7 @@ public class SitePresenter implements ISitePresenter {
      */
     @Override
     public void deleteGroupMsgByChatSessionId(Site site, String chatSessionId) {
-        SiteAddress siteAddress = new SiteAddress(site.getSiteAddress());
+        SiteAddress siteAddress = site.getSiteAddress();
         SiteMessageDao.getInstance(siteAddress).deleteGroupMsgByChatSessionId(chatSessionId);
     }
 
@@ -280,7 +280,7 @@ public class SitePresenter implements ISitePresenter {
      */
     @Override
     public int updateTSByChatSessionId(Site site, boolean isOpenTS, String chatSessionId) {
-        SiteAddress siteAddress = new SiteAddress(site.getSiteAddress());
+        SiteAddress siteAddress = site.getSiteAddress();
         return SiteChatSessionDao.getInstance(siteAddress).updateTSByChatSessionId(isOpenTS, chatSessionId);
     }
 
@@ -294,7 +294,7 @@ public class SitePresenter implements ISitePresenter {
 
     @Override
     public boolean getTSByChatSessionId(Site site, String chatSessionId) {
-        SiteAddress siteAddress = new SiteAddress(site.getSiteAddress());
+        SiteAddress siteAddress = site.getSiteAddress();
         Long flag = SiteChatSessionDao.getInstance(siteAddress).getTSByChatSessionId(chatSessionId);
         return flag != null && flag > 0 ? true : false;
     }

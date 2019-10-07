@@ -13,16 +13,14 @@ import com.windchat.logger.WindLogger;
  * 站点
  */
 
-public class Site implements Parcelable {
+public class Site {
 
     public static final int STATUS_SITE_ONLINE = 1;
     public static final int STATUS_SITE_KEEPING = 2;
 
     public static final int AUTO_DISCONNECT_STATUS = 0;////自动断开连接
     public static final int MANUAL_CONTROL_DISCONNECT_STATUS = 1;////手动断开连接
-
-//    public static final String SITE_VERSION = "0.2.2";
-
+    
     private String siteHost;
     private int sitePort;
     private String siteName;
@@ -50,80 +48,17 @@ public class Site implements Parcelable {
     public Site() {
     }
 
-    public SiteAddress toSiteAddress() {
-        return new SiteAddress(this.getSiteHost(), this.getSitePort());
+    public SiteAddress getSiteAddress() {
+        return new SiteAddress(this);
+    }
+
+    public String getHostAndPort() {
+        return this.siteHost + ":" + this.sitePort;
     }
 
     public Site(String host, int port) {
         this.siteHost = host;
         this.sitePort = port;
-    }
-
-    protected Site(Parcel in) {
-        siteHost = in.readString();
-        sitePort = in.readInt();
-        siteName = in.readString();
-        siteIcon = in.readString();
-        siteUserId = in.readString();
-        siteUserName = in.readString();
-        siteUserImage = in.readString();
-        siteSessionId = in.readString();
-        siteStatus = in.readInt();
-        lastLoginTime = in.readLong();
-        unreadNum = in.readLong();
-        realNameConfig = in.readInt();
-        connStatus = in.readInt();
-        codeConfig = in.readInt();
-        mute = in.readByte() != 0;
-        siteLoginId = in.readString();
-        siteVersion = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(siteHost);
-        dest.writeInt(sitePort);
-        dest.writeString(siteName);
-        dest.writeString(siteIcon);
-        dest.writeString(siteUserId);
-        dest.writeString(siteUserName);
-        dest.writeString(siteUserImage);
-        dest.writeString(siteSessionId);
-        dest.writeInt(siteStatus);
-        dest.writeLong(lastLoginTime);
-        dest.writeLong(unreadNum);
-        dest.writeInt(realNameConfig);
-        dest.writeInt(connStatus);
-        dest.writeInt(codeConfig);
-        dest.writeByte((byte) (mute ? 1 : 0));
-        dest.writeString(siteLoginId);
-        dest.writeString(siteVersion);
-    }
-
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<Site> CREATOR = new Creator<Site>() {
-        @Override
-        public Site createFromParcel(Parcel in) {
-            return new Site(in);
-        }
-
-        @Override
-        public Site[] newArray(int size) {
-            return new Site[size];
-        }
-    };
-
-    public String getPlatformUserId() {
-        return this.platformUserId;
-    }
-
-    public void setPlatformUserId(String id) {
-        this.platformUserId = id;
     }
 
     public int getConnStatus() {
@@ -226,11 +161,6 @@ public class Site implements Parcelable {
             return "";
         }
     }
-
-    public String getSiteAddress() {
-        return siteHost + ":" + sitePort;
-    }
-
 
     public long getUnreadNum() {
         return unreadNum;

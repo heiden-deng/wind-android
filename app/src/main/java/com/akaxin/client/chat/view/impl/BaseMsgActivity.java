@@ -325,7 +325,7 @@ public abstract class BaseMsgActivity extends BaseActivity implements SensorEven
                     connStatusBar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            IMClient.getInstance(new SiteAddress(currentSite)).makeSureClientAlived(currentSite.toSiteAddress());
+                            IMClient.makeSureClientAlived(currentSite);
                         }
                     });
 
@@ -352,7 +352,7 @@ public abstract class BaseMsgActivity extends BaseActivity implements SensorEven
                 @Override
                 public void onClick(View v) {
                     connStatusBar.setText(R.string.error_conn_netretrying);
-                    IMClient.getInstance(new SiteAddress(currentSite)).makeSureClientAlived(currentSite.toSiteAddress());
+                    IMClient.makeSureClientAlived(currentSite);
                 }
 
             });
@@ -760,7 +760,7 @@ public abstract class BaseMsgActivity extends BaseActivity implements SensorEven
         } else {
             pluginRefererUrl = SiteConfig.PLUGIN_U2_REFERER.replace("chatSessionId", chatSessionId);
         }
-        pluginRefererUrl = pluginRefererUrl.replace("siteAddress", currentSite.getSiteAddress());
+        pluginRefererUrl = pluginRefererUrl.replace("siteAddress", currentSite.getHostAndPort());
         pluginRefererUrl = StringUtils.changeReferer(pluginRefererUrl);
         try {
             pluginRefererUrl = pluginRefererUrl + "&akaxin_param=" + URLEncoder.encode(param, "utf-8");
@@ -922,7 +922,7 @@ public abstract class BaseMsgActivity extends BaseActivity implements SensorEven
                 moreButton.setActivated(false);
                 break;
             case R.id.more_button:
-                if (expandView.isShown()&& expandView.pluginPanel.isShown()) {
+                if (expandView.isShown() && expandView.pluginPanel.isShown()) {
                     hideExpandView();
                     break;
                 }

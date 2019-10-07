@@ -132,7 +132,7 @@ public class SiteUtils {
             if (sites != null) {
                 //////TODO DBChange 检查所有站点的数据库
                 for (Site site : sites) {
-                    SitePresenter.getInstance().checkSiteBaseTable(site.getSiteAddress());
+                    SitePresenter.getInstance().checkSiteBaseTable(site.getHostAndPort());
                 }
                 return true;
             } else {
@@ -344,8 +344,7 @@ public class SiteUtils {
                 ZalyLogUtils.getInstance().info(TAG, " SYNC CUR SITE MSG ");
 
                 try {
-                    String curSiteIdentity = site.getSiteIdentity();
-                    IMClient.getInstance(new SiteAddress(curSiteIdentity)).syncMessage();
+                    IMClient.getInstance(site).syncMessage();
                 } catch (Exception e) {
                     ZalyLogUtils.getInstance().info(TAG, " SYNC CUR SITE MSG FAIL!" + e.getMessage());
                 }

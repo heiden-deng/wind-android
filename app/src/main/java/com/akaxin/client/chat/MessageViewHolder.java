@@ -181,8 +181,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
                     List<String> msgIds = new ArrayList<>();
                     msgIds.add(0, msg.getMsgId());
                     try {
-                        String curSiteIdentity = currentSite.getSiteIdentity();
-                        IMClient.getInstance(new SiteAddress(curSiteIdentity)).syncMessageStatus(msgIds, msg.getMsgType());
+                        IMClient.getInstance(currentSite).syncMessageStatus(msgIds, msg.getMsgType());
                     } catch (Exception e) {
                         ZalyLogUtils.getInstance().exceptionError(e);
                     }

@@ -40,7 +40,7 @@ public class AppPresenter extends BasePresenterImpl<AppContract.View> implements
             @Override
             protected ApiPluginListProto.ApiPluginListResponse executeTask(Void... voids) throws Exception {
                 ZalyLogUtils.getInstance().info(TAG, " current site ==" + currentSite.getSiteIdentity());
-                String referer = SiteConfig.PLUGIN_HOME_REFERER.replace("siteAddress", currentSite.getSiteAddress());
+                String referer = SiteConfig.PLUGIN_HOME_REFERER.replace("siteAddress", currentSite.getHostAndPort());
                 return ApiClient.getInstance(currentSite).getPluginApi().getPluginList(referer);
             }
 

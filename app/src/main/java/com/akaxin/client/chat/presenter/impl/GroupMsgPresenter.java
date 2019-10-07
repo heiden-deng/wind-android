@@ -286,7 +286,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
      */
     @Override
     public void deleteGroupMsg(String msgId) {
-        SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).deleteGroupMsgById(msgId);
+        SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).deleteGroupMsgById(msgId);
     }
 
     @Override
@@ -394,7 +394,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
             Long _id = null;
             if (mode == INSERT_MODE) {
                 //先入库
-                SiteAddress siteAddress = new SiteAddress(currentSite.getSiteAddress());
+                SiteAddress siteAddress = currentSite.getSiteAddress();
                 _id = SiteMessageDao.getInstance(siteAddress).insertGroupMsg(message);
             }
             if (mode == UPDATE_MODE) {
@@ -442,7 +442,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
         @Override
         protected Message executeTask(Void... voids) throws Exception {
             Long _id = null;
-            SiteAddress siteAddress = new SiteAddress(currentSite.getSiteAddress());
+            SiteAddress siteAddress = new SiteAddress(currentSite);
             if (mode == INSERT_MODE) {
                 //先入库
                 _id = SiteMessageDao.getInstance(siteAddress).insertGroupMsg(message);
@@ -483,8 +483,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
         boolean isNet = NetUtils.getNetInfo();
         if (isNet) {
             try {
-                String curSiteIdentity = currentSite.getSiteIdentity();
-                IMClient.getInstance(new SiteAddress(curSiteIdentity)).sendMessage(message);
+                IMClient.getInstance(currentSite).sendMessage(message);
             } catch (Exception e) {
                 ZalyLogUtils.getInstance().errorToInfo(TAG, e.getMessage());
             }
@@ -495,7 +494,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
 
         @Override
         protected List<Message> executeTask(Void... voids) throws Exception {
-            SiteAddress address = ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress());
+            SiteAddress address = ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort());
             return SiteMessageDao.getInstance(address).queryGroupNewMsg(-1, groupId, GROUP_MSG_PAGE_SIZE);
         }
 
@@ -528,7 +527,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
 
         @Override
         protected List<Message> executeTask(Void... voids) throws Exception {
-            return SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).queryGroupNewMsg(_id, groupId, -1);
+            return SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).queryGroupNewMsg(_id, groupId, -1);
         }
 
         @Override
@@ -563,7 +562,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
             }
             if (msgIds.size() > 0) {
                 String curSiteIdentity = currentSite.getSiteIdentity();
-                IMClient.getInstance(new SiteAddress(curSiteIdentity)).syncMessageStatus(msgIds, CoreProto.MsgType.GROUP_TEXT_VALUE);
+                IMClient.getInstance(currentSite).syncMessageStatus(msgIds, CoreProto.MsgType.GROUP_TEXT_VALUE);
                 return;
             }
         } catch (Exception e) {
@@ -581,9 +580,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
 
         @Override
         protected List<Message> executeTask(Void... voids) throws Exception {
-
-            //////得到群组历史消息记录
-            return SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).queryGroupHistoryMsg(_id, groupId, GROUP_MSG_PAGE_SIZE);
+            return SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort())).queryGroupHistoryMsg(_id, groupId, GROUP_MSG_PAGE_SIZE);
         }
 
         @Override
@@ -616,7 +613,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
 
         @Override
         protected Message executeTask(Void... voids) throws Exception {
-            SiteAddress siteAddress = new SiteAddress(currentSite.getSiteAddress());
+            SiteAddress siteAddress = currentSite.getSiteAddress();
 
             if (mode == INSERT_MODE) {
                 long _id = SiteMessageDao.getInstance(siteAddress).insertGroupMsg(message);
@@ -668,7 +665,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
                 chatSession.setTitle(userName);
             }
             ////会话写入session
-            return SitePresenter.getInstance().insertChatSession(currentSite.getSiteAddress(), chatSession);
+            return SitePresenter.getInstance().insertChatSession(currentSite.getHostAndPort(), chatSession);
         }
 
         @Override

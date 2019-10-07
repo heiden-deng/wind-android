@@ -197,7 +197,7 @@ public class GoToPagePresenter implements IGotoPagePresenter {
                 Intent intent = new Intent(ZalyApplication.getContext(), SiteConnListActivity.class);
                 intent.putExtra(IntentKey.KEY_MODE, IntentKey.AUTO_MODE_NORMAL);
                 intent.putExtra(IntentKey.KEY_CURRENT_SITE, currentSite);
-                intent.putExtra(IntentKey.KEY_CURRENT_SITE_ADDRESS, currentSite.getSiteAddress());
+                intent.putExtra(IntentKey.KEY_CURRENT_SITE_ADDRESS, currentSite.getHostAndPort());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 return intent;
             }
@@ -523,7 +523,7 @@ public class GoToPagePresenter implements IGotoPagePresenter {
         Intent intent = new Intent(context, PluginWebActivity.class);
         PluginProto.Plugin plugin = PluginProto.Plugin.newBuilder().setId(pluginId).build();
         intent.putExtra(PluginWebActivity.KEY_WEB_VIEW_DATA, plugin.toByteArray());
-        String referrer = SiteConfig.PLUGIN_HOME_REFERER.replace("siteAddress", currentSite.getSiteAddress());
+        String referrer = SiteConfig.PLUGIN_HOME_REFERER.replace("siteAddress", currentSite.getHostAndPort());
         intent.putExtra(PluginWebActivity.REFERER, referrer);
         intent.putExtra(PluginWebActivity.IS_ADD_COOKIE, false);
         intent.putExtra(IntentKey.KEY_CURRENT_SITE, currentSite);

@@ -52,10 +52,6 @@ public class Site extends com.windchat.im.bean.Site implements Parcelable {
     public Site() {
     }
 
-    public SiteAddress toSiteAddress() {
-        return new SiteAddress(this);
-    }
-
     protected Site(Parcel in) {
         siteHost = in.readString();
         sitePort = in.readInt();
@@ -231,14 +227,12 @@ public class Site extends com.windchat.im.bean.Site implements Parcelable {
         }
     }
 
-    public String getSiteAddress() {
-        return siteHost + ":" + sitePort;
-    }
-
     public String getSiteDisplayAddress() {
         if (String.valueOf(SiteUtils.DEFAULT_PORT).equals(sitePort))
             return siteHost;
-        else return getSiteAddress();
+        else {
+            return this.siteHost + ":" + this.sitePort;
+        }
     }
 
     public long getUnreadNum() {
@@ -268,7 +262,6 @@ public class Site extends com.windchat.im.bean.Site implements Parcelable {
     @Override
     public String toString() {
         return this.siteHost + ":" + this.sitePort;
-//        return GsonUtils.toJson(this);
     }
 
     public boolean isMute() {

@@ -41,7 +41,7 @@ public class SiteManageAdapter extends ZalyListAdapter<Site, SiteManageAdapter.V
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Site site = items.get(position);
         holder.siteName.setText(site.getSiteName());
-        holder.siteAddress.setText(site.getSiteAddress());
+        holder.siteAddress.setText(site.getHostAndPort());
 
 //              ZalyGlideModel model = new ZalyGlideModel.Builder()
 //                .setImageID(site.getSiteIcon())

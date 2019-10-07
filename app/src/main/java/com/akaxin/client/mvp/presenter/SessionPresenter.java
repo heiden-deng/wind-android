@@ -20,7 +20,7 @@ public class SessionPresenter extends BasePresenterImpl<SessionContract.View> im
         ZalyTaskExecutor.executeUserTask(TAG, new ZalyTaskExecutor.Task<Void, Void, List<ChatSession>>() {
             @Override
             protected List<ChatSession> executeTask(Void... voids) throws Exception {
-                return SitePresenter.getInstance().getChatSessionList(currentSite.getSiteAddress());
+                return SitePresenter.getInstance().getChatSessionList(currentSite.getHostAndPort());
             }
 
             @Override

@@ -108,7 +108,7 @@ public class ShareQRCodeActivity extends BaseMVPActivity<ShareQRCodeContract.Vie
         qrGroupName.setText(currentSite.getSiteName());
         qrGroupSiteAddress.setText("站点地址: " + currentSite.getSiteAddress());
         setTitle("扫描进站", currentSite.getSiteName() + "|" + currentSite.getSiteAddress());
-        shareUrl = UrlUtils.buildShareLinkForSite(currentSite.getSiteAddress());
+        shareUrl = UrlUtils.buildShareLinkForSite(currentSite.getHostAndPort());
         new QRThread(shareUrl).start();
         ZalyLogUtils.getInstance().info(TAG, shareUrl);
     }
@@ -134,7 +134,7 @@ public class ShareQRCodeActivity extends BaseMVPActivity<ShareQRCodeContract.Vie
         new ImageUtils(this, currentSite).loadImage(userPhoto, qrGroupImage, R.drawable.ic_default);
         qrGroupSiteAddress.setText("站点地址: " + currentSite.getSiteAddress());
         setTitle("扫描加我", currentSite.getSiteName() + "|" + currentSite.getSiteAddress());
-        shareUrl = UrlUtils.buildShareLinkForUser(currentSite.getSiteAddress(), userID);
+        shareUrl = UrlUtils.buildShareLinkForUser(currentSite.getHostAndPort(), userID);
         new QRThread(shareUrl).start();
         ZalyLogUtils.getInstance().info(TAG, shareUrl);
     }
@@ -151,7 +151,7 @@ public class ShareQRCodeActivity extends BaseMVPActivity<ShareQRCodeContract.Vie
 
     @Override
     public void onGetGroupTokenSuccess(ApiGroupApplyTokenProto.ApiGroupApplyTokenResponse apiGroupApplyTokenResponse) {
-        shareUrl = UrlUtils.buildShareGroupQR(currentSite.getSiteAddress(), groupId, apiGroupApplyTokenResponse.getToken());
+        shareUrl = UrlUtils.buildShareGroupQR(currentSite.getHostAndPort(), groupId, apiGroupApplyTokenResponse.getToken());
         new QRThread(shareUrl).start();
         ZalyLogUtils.getInstance().info(TAG, shareUrl);
     }

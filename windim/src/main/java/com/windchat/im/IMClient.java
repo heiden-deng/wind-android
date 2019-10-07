@@ -3,9 +3,10 @@ package com.windchat.im;
 import android.os.RemoteException;
 
 import com.windchat.im.bean.Message;
-import com.windchat.im.socket.IMConnection;
+import com.windchat.im.bean.Site;
 import com.windchat.im.socket.ConnectionConfig;
 import com.windchat.im.socket.IConnectionHandler;
+import com.windchat.im.socket.IMConnection;
 import com.windchat.im.socket.SiteAddress;
 import com.windchat.im.socket.TransportPackageForRequest;
 import com.windchat.logger.WindLogger;
@@ -18,38 +19,34 @@ import com.windchat.proto.server.ImSyncMsgStatusProto;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-/**
- * IMClient，负责对接业务层对IM的操作逻辑
- * <p>
- * <p>
- * <p>
- * Created by sssl on 09/06/2018.
- */
 
 public class IMClient implements IConnectionHandler {
 
     private static String TAG = IMClient.class.getSimpleName();
 
-    //多站点，使用MAP存放多个IM连接
-    private static ConcurrentHashMap<String, IMClient> connectionPool = new ConcurrentHashMap<>();
-
     // 获取IMClient实例
-    public static IMClient getInstance(SiteAddress address) {
-        synchronized (TAG) {
-            IMClient client;
-            if (connectionPool.containsKey(address.getFullUrl())) {
-                client = connectionPool.get(address.getFullUrl());
-            } else {
-                client = new IMClient(address);
-                connectionPool.put(address.getFullUrl(), client);
-            }
-            return client;
-        }
+    public static IMClient getInstance(Site site) {
+        return IMManager.get(site);
 
+    }
+
+    public static void connect(Site site) {
+        IMClient.getInstance(site).checkSocketAlive();
+    }
+
+    /**
+     * 支持同时连接多个站点
+     *
+     * @param sites
+     */
+    public static void connect(List<? extends Site> sites) {
+        if (sites != null && !sites.isEmpty()) {
+            for (Site site : sites) {
+                connect(site);
+            }
+        }
     }
 
     /**
@@ -57,10 +54,10 @@ public class IMClient implements IConnectionHandler {
      * <p>
      * 此方法是非阻塞方法，可以在主线程调用
      *
-     * @param address
+     * @param site
      */
-    public static void makeSureClientAlived(SiteAddress address) {
-        IMClient.getInstance(address).checkSocketAlive();
+    public static void makeSureClientAlived(Site site) {
+        IMClient.getInstance(site).checkSocketAlive();
     }
 
     /**
@@ -69,16 +66,7 @@ public class IMClient implements IConnectionHandler {
      * @param address
      */
     public static void removeClient(SiteAddress address) {
-        synchronized (TAG) {
-            IMClient client;
-            if (connectionPool.containsKey(address.getFullUrl())) {
-                client = connectionPool.get(address.getFullUrl());
-            } else {
-                return;
-            }
-            client.disconnect();
-            connectionPool.remove(address.getFullUrl());
-        }
+        IMManager.remove(address);
     }
 
 
@@ -88,10 +76,14 @@ public class IMClient implements IConnectionHandler {
     public IMClientHeartWorker keepAlivedWorker;
     private ExecutorService connExecutor;
 
-    private IMClient(SiteAddress address) {
+    protected IMClient(SiteAddress address) {
         this.address = address;
         this.setConnExecutor();
         this.checkSocketAlive();
+    }
+
+    protected IMClient(Site site) {
+        this(site.getSiteAddress());
     }
 
     private void setConnExecutor() {
@@ -105,16 +97,7 @@ public class IMClient implements IConnectionHandler {
      * @param statusType
      */
     public void sendConnectionStatus(int statusType) {
-//        Bundle bundle = new Bundle();
-//        bundle.putString(KEY_CONN_IDENTITY, this.address.toOldSiteIdentity());
-//        bundle.putInt(KEY_CONN_STATUS, statusType);
-//        bundle.putInt(KEY_CONN_TYPE, CONN_IM);
-//        Intent intent = new Intent(IMConst.CONNECTION_ACTION);
-//        intent.putExtras(bundle);
-//        intent.setPackage(PackageSign.getPackage());
-//        ZalyApplication.getContext().sendBroadcast(intent);
 
-        // 注册监听，连接状态
     }
 
     /**
@@ -266,11 +249,6 @@ public class IMClient implements IConnectionHandler {
             this.setConnExecutor();
         }
         sendConnectionStatus(IMConnection.STATUS_CONN_DISCONN);
-    }
-
-    public void retryConnect() {
-        // 这个方法，外面的不应该调用
-        this.onConnectionDisconnected(new RuntimeException("from old code"));
     }
 
     public void closeSocketWithError(Exception e) {

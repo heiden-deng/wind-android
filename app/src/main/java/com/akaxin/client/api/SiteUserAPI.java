@@ -53,7 +53,7 @@ public class SiteUserAPI {
      */
     public UserProto.SimpleUserProfile getSimpleUserProfile(final Site site, final String siteUserId) throws Exception {
         //query from db
-        final SiteAddress address = ZalyApplication.getSiteAddressObj(site.getSiteAddress());
+        final SiteAddress address = site.getSiteAddress();
         UserProto.SimpleUserProfile simpleUserProfile = SiteUserProfileDao.getInstance(address).queryFriend(siteUserId);
         if (simpleUserProfile != null && StringUtils.isNotEmpty(simpleUserProfile.getSiteUserId())) {
             return simpleUserProfile;

@@ -60,7 +60,7 @@ public class GetMsgPluginListTask extends ZalyTaskExecutor.Task<Void, Void, ApiP
 
     protected void onCacheTask() {
         byte[] cache = CacheDiskUtils.getInstance().getBytes(site.getSiteIdentity() + SiteConfig.PLUGIN_MSG_LIST);
-        if (cache==null)
+        if (cache == null)
             return;
         try {
             ApiPluginListProto.ApiPluginListResponse apiPluginListResponse = ApiPluginListProto.ApiPluginListResponse.parseFrom(cache);
@@ -102,9 +102,9 @@ public class GetMsgPluginListTask extends ZalyTaskExecutor.Task<Void, Void, ApiP
     @Override
     protected ApiPluginListProto.ApiPluginListResponse executeTask(Void... voids) throws Exception {
         if (type.equals(GROUP_MSG_PLUGIN)) {
-            referer = SiteConfig.PLUGIN_GROUP_REFERER.replace("siteAddress", site.getSiteAddress());
+            referer = SiteConfig.PLUGIN_GROUP_REFERER.replace("siteAddress", site.getHostAndPort());
         } else {
-            referer = SiteConfig.PLUGIN_U2_REFERER.replace("siteAddress", site.getSiteAddress());
+            referer = SiteConfig.PLUGIN_U2_REFERER.replace("siteAddress", site.getHostAndPort());
         }
         referer = referer.replace("chatSessionId", chatSessionId);
         return ApiClient.getInstance(site).getPluginApi().getChatPluginList(referer);

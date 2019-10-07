@@ -68,7 +68,7 @@ public class SiteListAdapter extends ZalyListAdapter<Site, SiteListAdapter.ViewH
         boolean isConnected;
 
         try {
-            isConnected = IMClient.getInstance(site.toSiteAddress()).isConnected();
+            isConnected = IMClient.getInstance(site).isConnected();
         } catch (Exception e) {
             isConnected = false;
         }

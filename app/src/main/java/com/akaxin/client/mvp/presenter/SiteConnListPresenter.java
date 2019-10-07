@@ -20,7 +20,6 @@ import com.akaxin.client.util.SiteUtils;
 import com.akaxin.client.util.data.StringUtils;
 import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.client.util.task.ZalyTaskExecutor;
-import com.akaxin.proto.platform.ApiPhoneApplyTokenProto;
 import com.akaxin.proto.site.ApiSiteConfigProto;
 import com.akaxin.proto.site.ApiSiteLoginProto;
 import com.orhanobut.logger.Logger;
@@ -170,7 +169,7 @@ public class SiteConnListPresenter extends BasePresenterImpl<SiteConnListContrac
             @Override
             protected Long executeTask(Void... voids) throws Exception {
                 site.setGlobalUserId(ZalyApplication.getGlobalUserId());
-                Site siteInfo = SitePresenter.getInstance().getSiteUser(site.getSiteAddress());
+                Site siteInfo = SitePresenter.getInstance().getSiteUser(site.getHostAndPort());
                 if (siteInfo != null && StringUtils.isNotEmpty(siteInfo.getSiteUserId()) && siteInfo.getSiteUserId().length() > 0) {
                     return Long.valueOf(AkxCommonDao.getInstance().updateUserSiteSessionId(site.getSiteHost(), site.getSitePort(), site));
                 }
@@ -195,7 +194,7 @@ public class SiteConnListPresenter extends BasePresenterImpl<SiteConnListContrac
                     @Override
                     public void onPrepareSiteSuccess(Site currentSite) {
                         try {
-                            IMClient.makeSureClientAlived(currentSite.toSiteAddress());
+                            IMClient.makeSureClientAlived(currentSite);
                         } catch (Exception e) {
                             Logger.e(e);
                         }

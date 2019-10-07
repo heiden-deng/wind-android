@@ -36,7 +36,7 @@ public class GroupPresenter implements IGroupPresenter {
     }
 
     public SiteAddress getCurrentSite() {
-        return ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress());
+        return ZalyApplication.getSiteAddressObj(currentSite.getHostAndPort());
     }
 
 
@@ -49,7 +49,7 @@ public class GroupPresenter implements IGroupPresenter {
     @Override
     public UserGroupBean getGroupBeanByGroupId(String siteGroupId, Site site) {
         try {
-            SiteAddress siteAddressObj = ZalyApplication.getSiteAddressObj(site.getSiteAddress());
+            SiteAddress siteAddressObj = ZalyApplication.getSiteAddressObj(site.getHostAndPort());
 
             return SiteGroupAPI.getInstance(site).getGroupBeanProfile(siteAddressObj, siteGroupId);
         } catch (Exception e) {

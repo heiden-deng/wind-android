@@ -34,13 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
-/**
- * Created by yichao on 2017/10/10.
- */
-
 public class ZalyApplication extends Application {
     public static final String TAG = ZalyApplication.class.getSimpleName();
+    
     public static Map<String, Long> map;
     public static boolean active = false;
     private static Context mContext;
@@ -49,7 +45,6 @@ public class ZalyApplication extends Application {
     public volatile static List<Site> siteList;
     private static UserProto.UserProfile curProfile;
     public volatile static String gotoUrl;
-
 
 
     @Override
@@ -63,6 +58,7 @@ public class ZalyApplication extends Application {
         Bugly.init(getApplicationContext(), "cdd1cf248e", BuildConfig.DEBUG);
         //全局toast设置
         Toaster.doEnable(this);
+
         //Logger设置
         Logger.addLogAdapter(new WuerLogAdapter());
         Logger.addLogAdapter(new DiskLogAdapter());
@@ -70,14 +66,13 @@ public class ZalyApplication extends Application {
         if (StringUtils.isEmpty(ZalyApplication.getGlobalUserId())) {
             return;
         }
+
+        /**
+         * connect site address
+         */
         List<Site> sites = SitePresenter.getInstance().getAllSiteLists();
-        if (sites == null) {
-            return;
-        }
-        for (Site site : sites) {
-//            buildConnection(site);
-            IMClient.makeSureClientAlived(site.toSiteAddress());
-        }
+        IMClient.connect(sites);
+
         NotificationUtils.initChannels(getApplicationContext());
         getAndroiodScreenProperty();
     }
@@ -154,7 +149,7 @@ public class ZalyApplication extends Application {
 
         for (Site site : ZalyApplication.siteList) {
             try {
-                if (IMClient.getInstance(site.toSiteAddress()).isConnected() ||
+                if (IMClient.getInstance(site).isConnected() ||
                         site.getSiteIdentity().equals(currentSiteIndenty)) {
                     onLineSites.add(site);
                 }
