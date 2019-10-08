@@ -31,7 +31,6 @@ import com.akaxin.proto.core.CoreProto;
 import com.akaxin.proto.core.DeviceProto;
 import com.akaxin.proto.core.FileProto;
 import com.akaxin.proto.core.UserProto;
-import com.akaxin.proto.platform.ApiPlatformTopSecretProto;
 import com.akaxin.proto.site.ApiDeviceProfileProto;
 import com.akaxin.proto.site.ApiSecretChatApplyU2Proto;
 import com.windchat.im.IMClient;
@@ -161,7 +160,7 @@ public class MessagePresenter implements IMessagePresenter {
         Message message = new Message();
         message.setContent(content);
         message.setSiteUserId(currentSite.getSiteUserId());
-        message.setSiteFriendId(friendSiteUserId);
+        message.setGroupId(friendSiteUserId);
         message.setChatSessionId(chatSessionId);
         message.setMsgId(MsgUtils.getCurMsgId(MsgUtils.MSG_TYPE_U2, currentSite));
         long time = System.currentTimeMillis();
@@ -224,7 +223,7 @@ public class MessagePresenter implements IMessagePresenter {
     public void sendAudioMessage(final long audioTime, final String audioFilePath) {
         final Message message = new Message();
         message.setSiteUserId(currentSite.getSiteUserId());
-        message.setSiteFriendId(friendSiteUserId);
+        message.setGroupId(friendSiteUserId);
         message.setChatSessionId(chatSessionId);
         message.setMsgId(MsgUtils.getCurMsgId(MsgUtils.MSG_TYPE_U2, currentSite));
         message.setSecret(isSecretMode);
@@ -416,7 +415,7 @@ public class MessagePresenter implements IMessagePresenter {
         final Message message = new Message();
         message.setContent(ImageInfo.toJSON(imageInfo));
         message.setSiteUserId(currentSite.getSiteUserId());
-        message.setSiteFriendId(friendSiteUserId);
+        message.setGroupId(friendSiteUserId);
         message.setChatSessionId(chatSessionId);
         message.setMsgId(MsgUtils.getCurMsgId(MsgUtils.MSG_TYPE_U2, currentSite));
         long time = System.currentTimeMillis();

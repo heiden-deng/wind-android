@@ -383,7 +383,7 @@ public class LoginSitePresenter implements ILoginSitePresenter {
                     bundle.putParcelable(IntentKey.KEY_CURRENT_SITE, site);
                     EventBus.getDefault().post(new AppEvent(AppEvent.ACTION_SWITCH_SITE, bundle));
                     try {
-                        IMClient.makeSureClientAlived(site);
+                        IMClient.getInstance(site).checkConnection();
                     } catch (Exception e) {
                         ZalyLogUtils.getInstance().exceptionError(e);
                     }

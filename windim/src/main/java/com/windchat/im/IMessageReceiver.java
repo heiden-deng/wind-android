@@ -1,8 +1,8 @@
 package com.windchat.im;
 
-import com.windchat.im.bean.Message;
+import com.windchat.im.message.Message;
 import com.windchat.im.bean.Site;
-import com.windchat.im.socket.SiteAddress;
+import com.windchat.im.message.Notification;
 import com.windchat.proto.client.ImStcNoticeProto;
 
 import java.util.List;
@@ -25,6 +25,8 @@ public interface IMessageReceiver {
     void handleMessageStatus(Site site, String msgId, long msgTime, MsgStatus msgStatus) throws Exception;
 
     void handleNoticeMessage(Site site, ImStcNoticeProto.ImStcNoticeRequest request) throws Exception;
+
+    void handleNotification(Site site, List<Notification> notifications) throws Exception;
 
     void handleU2Message(Site site, List<Message> u2Messages) throws Exception;
 

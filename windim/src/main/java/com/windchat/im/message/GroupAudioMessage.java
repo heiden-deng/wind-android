@@ -1,15 +1,34 @@
-package com.windchat.im.bean;
+package com.windchat.im.message;
+
+import com.windchat.proto.core.CoreProto;
 
 import org.json.JSONObject;
 
-public class AudioInfo {
+public class GroupAudioMessage extends Message {
 
-    public static final int NONE_DOWNLOAD = -1;
-    public static final int DOWNLOAD_FAIL = -2;
+    private int msgType = CoreProto.MsgType.GROUP_VOICE_VALUE;
+
+    private String groupId;
 
     private String audioId;
     private long audioTime;
     private String audioFilePath;
+
+    public GroupAudioMessage() {
+        this.chatType = ChatType.MSG_GROUP;
+    }
+
+    public int getMsgType() {
+        return msgType;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
     public String getAudioId() {
         return audioId;
@@ -35,7 +54,7 @@ public class AudioInfo {
         this.audioFilePath = audioFilePath;
     }
 
-    public static String toJSON(AudioInfo info) {
+    public static String toJSON(GroupAudioMessage info) {
         String jsonStr = null;
         try {
             JSONObject jsonObject = new JSONObject();
@@ -49,14 +68,14 @@ public class AudioInfo {
         return jsonStr;
     }
 
-    public static AudioInfo parseJSON(String jsonStr) {
+    public static GroupAudioMessage parseJSON(String jsonStr) {
         try {
-            AudioInfo audioInfo = new AudioInfo();
+            GroupAudioMessage u2AudioMessage = new GroupAudioMessage();
             JSONObject jsonObject = new JSONObject(jsonStr);
-            audioInfo.setAudioId(jsonObject.optString("audioId"));
-            audioInfo.setAudioTime(jsonObject.optLong("audioTime"));
-            audioInfo.setAudioFilePath(jsonObject.optString("audioFilePath"));
-            return audioInfo;
+            u2AudioMessage.setAudioId(jsonObject.optString("audioId"));
+            u2AudioMessage.setAudioTime(jsonObject.optLong("audioTime"));
+            u2AudioMessage.setAudioFilePath(jsonObject.optString("audioFilePath"));
+            return u2AudioMessage;
         } catch (Exception e) {
             e.printStackTrace();
         }

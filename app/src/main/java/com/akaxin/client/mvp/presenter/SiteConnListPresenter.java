@@ -194,7 +194,7 @@ public class SiteConnListPresenter extends BasePresenterImpl<SiteConnListContrac
                     @Override
                     public void onPrepareSiteSuccess(Site currentSite) {
                         try {
-                            IMClient.makeSureClientAlived(currentSite);
+                            IMClient.getInstance(currentSite).checkConnection();
                         } catch (Exception e) {
                             Logger.e(e);
                         }

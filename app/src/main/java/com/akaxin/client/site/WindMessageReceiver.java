@@ -11,10 +11,9 @@ import com.akaxin.client.db.dao.SiteMessageDao;
 import com.windchat.im.IMConst;
 import com.windchat.im.IMessageReceiver;
 import com.windchat.im.MsgStatus;
-import com.windchat.im.bean.Message;
+import com.windchat.im.message.Message;
 import com.windchat.im.bean.Site;
-import com.windchat.im.socket.SiteAddress;
-import com.windchat.im.socket.TransportPackage;
+import com.windchat.im.message.Notification;
 import com.windchat.proto.client.ImStcNoticeProto;
 
 import java.util.List;
@@ -59,6 +58,11 @@ public class WindMessageReceiver implements IMessageReceiver {
         intent.putExtra(IMConst.KEY_NOTICE_SITE_IDENTITY, siteIdentity);
         intent.putExtra(IMConst.KEY_NOTICE_TYPE, request.getTypeValue());
         ZalyApplication.getContext().sendBroadcast(intent);
+    }
+
+    @Override
+    public void handleNotification(Site site, List<Notification> notifications) throws Exception {
+
     }
 
     @Override

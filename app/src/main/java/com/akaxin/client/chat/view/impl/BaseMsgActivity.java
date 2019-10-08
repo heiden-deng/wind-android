@@ -61,7 +61,6 @@ import com.blankj.utilcode.util.PermissionUtils;
 import com.orhanobut.logger.Logger;
 import com.windchat.im.IMClient;
 import com.windchat.im.socket.IMConnection;
-import com.windchat.im.socket.SiteAddress;
 
 import java.io.File;
 import java.io.IOException;
@@ -325,7 +324,7 @@ public abstract class BaseMsgActivity extends BaseActivity implements SensorEven
                     connStatusBar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            IMClient.makeSureClientAlived(currentSite);
+                            IMClient.getInstance(currentSite).checkConnection();
                         }
                     });
 
@@ -352,7 +351,7 @@ public abstract class BaseMsgActivity extends BaseActivity implements SensorEven
                 @Override
                 public void onClick(View v) {
                     connStatusBar.setText(R.string.error_conn_netretrying);
-                    IMClient.makeSureClientAlived(currentSite);
+                    IMClient.getInstance(currentSite).checkConnection();
                 }
 
             });

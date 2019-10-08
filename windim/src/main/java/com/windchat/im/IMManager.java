@@ -35,18 +35,18 @@ public class IMManager {
     /**
      * 删除某个Client
      *
-     * @param address
+     * @param site
      */
-    public static void remove(SiteAddress address) {
+    public static void remove(Site site) {
         synchronized (TAG) {
-            IMClient client;
-            if (connectionPool.containsKey(address.getFullUrl())) {
-                client = connectionPool.get(address.getFullUrl());
-            } else {
-                return;
+            IMClient client = null;
+            if (connectionPool.containsKey(site.getHostAndPort())) {
+                client = connectionPool.get(site.getHostAndPort());
             }
-            client.disconnect();
-            connectionPool.remove(address.getFullUrl());
+            if (client != null) {
+                client.disconnect();
+            }
+            connectionPool.remove(site.getHostAndPort());
         }
     }
 }

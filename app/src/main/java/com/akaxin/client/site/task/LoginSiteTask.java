@@ -244,7 +244,7 @@ class AddSiteAndChangeIdentityTask extends AddSiteTask {
                 bundle.putParcelable(IntentKey.KEY_CURRENT_SITE, currentSite);
                 EventBus.getDefault().post(new AppEvent(AppEvent.ACTION_SWITCH_SITE, bundle));
                 try {
-                    IMClient.makeSureClientAlived(currentSite);
+                    IMClient.getInstance(currentSite).checkConnection();
                 } catch (Exception e) {
                     ZalyLogUtils.getInstance().exceptionError(e);
                 }

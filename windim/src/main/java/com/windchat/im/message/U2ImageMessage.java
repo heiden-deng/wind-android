@@ -1,11 +1,17 @@
-package com.windchat.im.bean;
+package com.windchat.im.message;
 
+
+import com.windchat.proto.core.CoreProto;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 
-public class ImageInfo {
+public class U2ImageMessage extends Message {
+
+
+    private int msgType = CoreProto.MsgType.IMAGE_VALUE;
+    private String siteFriendId;
 
     public static final int STATUS_UPLOADING = 1;
     public static final int STATUS_SEND = 2;
@@ -18,6 +24,23 @@ public class ImageInfo {
     private long fileLength;//bytes num
     private String filePath;
     private int status;
+
+    public U2ImageMessage() {
+        this.chatType = ChatType.MSG_U2;
+    }
+
+    @Override
+    public int getMsgType() {
+        return msgType;
+    }
+
+    public String getSiteFriendId() {
+        return siteFriendId;
+    }
+
+    public void setSiteFriendId(String siteFriendId) {
+        this.siteFriendId = siteFriendId;
+    }
 
     public String getFileId() {
         return fileId;
@@ -51,7 +74,7 @@ public class ImageInfo {
         this.status = status;
     }
 
-    public static String toJSON(ImageInfo info) {
+    public static String toJSON(U2ImageMessage info) {
         if (info == null) {
             return null;
         }
@@ -68,18 +91,18 @@ public class ImageInfo {
         return null;
     }
 
-    public static ImageInfo parseJSON(String content) {
+    public static U2ImageMessage parseJSON(String content) {
         if (StringUtils.isEmpty(content)) {
             return null;
         }
         try {
             JSONObject jsonObject = new JSONObject(content);
-            ImageInfo imageInfo = new ImageInfo();
-            imageInfo.setFileId(jsonObject.optString("fileId"));
-            imageInfo.setFileLength(jsonObject.optLong("fileLength"));
-            imageInfo.setFilePath(jsonObject.optString("filePath"));
-            imageInfo.setStatus(jsonObject.optInt("status"));
-            return imageInfo;
+            U2ImageMessage u2ImageMessage = new U2ImageMessage();
+            u2ImageMessage.setFileId(jsonObject.optString("fileId"));
+            u2ImageMessage.setFileLength(jsonObject.optLong("fileLength"));
+            u2ImageMessage.setFilePath(jsonObject.optString("filePath"));
+            u2ImageMessage.setStatus(jsonObject.optInt("status"));
+            return u2ImageMessage;
         } catch (Exception e) {
             e.printStackTrace();
         }

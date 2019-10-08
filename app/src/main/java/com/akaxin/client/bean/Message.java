@@ -4,14 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.BaseColumns;
 
-import com.akaxin.client.util.GsonUtils;
 import com.akaxin.proto.core.CoreProto;
 
 /**
  * Created by yichao on 2017/10/10.
  */
 
-public class Message extends com.windchat.im.bean.Message implements Parcelable {
+public class Message extends com.windchat.im.message.Message implements Parcelable {
 
     public static long timeMsgInterval = 1000 * 60 * 3;
 
@@ -151,12 +150,12 @@ public class Message extends com.windchat.im.bean.Message implements Parcelable 
         this.siteUserId = siteUserId;
     }
 
-    public String getSiteFriendId() {
+    public String getGroupId() {
         return siteFriendId;
     }
 
-    public void setSiteFriendId(String siteFriendId) {
-        this.siteFriendId = siteFriendId;
+    public void setGroupId(String groupId) {
+        this.siteFriendId = groupId;
     }
 
     public long getSendMsgTime() {
@@ -326,7 +325,7 @@ public class Message extends com.windchat.im.bean.Message implements Parcelable 
         if (msg != null) {
             message.setMsgId(msg.getMsgId());
             message.setSiteUserId(msg.getSiteUserId());
-            message.setSiteFriendId(msg.getSiteFriendId());
+            this.setGroupId(this.getGroupId());
             message.setContent(msg.getContent());
             message.setMsgTime(msg.getMsgTime());
             message.setMsgType(msg.getMsgType());

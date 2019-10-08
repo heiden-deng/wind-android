@@ -244,7 +244,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
             message.setMsgStatus(Message.STATUS_SENDING);
         }
         message.setChatSessionId(chatSessionId);
-        message.setSiteFriendId(currentSite.getSiteUserId());
+        message.setGroupId(currentSite.getSiteUserId());
 
         ZalyTaskExecutor.executeUserTask(TAG, new UpdateImgMsgDBTask(UpdateImgMsgDBTask.INSERT_MODE, message));
 

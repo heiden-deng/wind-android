@@ -384,7 +384,7 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
         protected Boolean executeTask(Void... voids) throws Exception {
             SitePresenter.getInstance().updateSiteConnStatus(Site.AUTO_DISCONNECT_STATUS, site.getSiteHost(), site.getSitePort() + "");
             site.setConnStatus(Site.AUTO_DISCONNECT_STATUS);
-            IMClient.makeSureClientAlived(site);
+            IMClient.getInstance(site).checkConnection();
             iView.onConnectStart();
             Thread.sleep(2000);//有意sleep，等待IM断开
             return true;
@@ -426,7 +426,7 @@ public class SiteInfoPresenter implements ISiteInfoPresenter {
             SitePresenter.getInstance().updateSiteConnStatus(Site.MANUAL_CONTROL_DISCONNECT_STATUS, site.getSiteHost(), site.getSitePort() + "");
             IMClient.getInstance(site).disconnect();
             Thread.sleep(1000); // 有意sleep，等待IM断开
-            IMClient.removeClient(site.getSiteAddress());
+            IMClient.getInstance(site).removeClient();
             SitePresenter.getInstance().deleteSiteDB(ZalyApplication.getSiteAddressObj(site.toString()));
             SitePresenter.getInstance().delSiteInfo(site.getSiteHost(), site.getSitePort() + "");
             ZalyApplication.getCfgSP().put(site.getSiteIdentity() + KEY_NEW_APPLY_FRIEND, false);

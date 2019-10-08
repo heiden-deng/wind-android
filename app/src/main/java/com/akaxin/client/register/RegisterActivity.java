@@ -547,7 +547,7 @@ public class RegisterActivity extends BaseActivity implements ViewPager.OnPageCh
                 public void onPrepareSiteSuccess(Site currentSite) {
                     hideProgress();
                     try {
-                        IMClient.makeSureClientAlived(currentSite);
+                        IMClient.getInstance(currentSite).checkConnection();
                     } catch (Exception e) {
                         ZalyLogUtils.getInstance().info(TAG, e.getMessage());
                     }

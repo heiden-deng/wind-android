@@ -73,7 +73,6 @@ import com.tencent.bugly.beta.UpgradeInfo;
 import com.windchat.im.IMClient;
 import com.windchat.im.IMConst;
 import com.windchat.im.socket.IMConnection;
-import com.windchat.im.socket.SiteAddress;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -817,7 +816,7 @@ public class ZalyMainActivity extends BaseActivity
                 @Override
                 public void onClick(View v) {
                     connStatusBar.setText(R.string.error_conn_netretrying);
-                    IMClient.makeSureClientAlived(currentSite);
+                    IMClient.getInstance(currentSite).checkConnection();
 
                 }
             });
@@ -868,7 +867,7 @@ public class ZalyMainActivity extends BaseActivity
                     connStatusBar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            IMClient.makeSureClientAlived(currentSite);
+                            IMClient.getInstance(currentSite).checkConnection();
                         }
                     });
                     break;

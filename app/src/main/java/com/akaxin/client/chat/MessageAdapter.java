@@ -1423,7 +1423,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 //                            receiveImg.setFilePath(m.getImagePath());
 //                            receiveImg.setStatus(STATUS_RECEIVE_DOWNLOAD);
 //                            contentImg.setVisibility(View.VISIBLE);
-//                            finalMessage.setContent(ImageInfo.toJSON(receiveImg));
+//                            finalMessage.setContent(U2ImageMessage.toJSON(receiveImg));
 //                            SiteMessageDao.getInstance(ZalyApplication.getSiteAddressObj(currentSite.getSiteAddress())).updateU2MsgContent(finalMessage.get_id(), finalMessage.getContent(), finalMessage.getMsgTsk());
 //                        }
 //                        return false;

@@ -1,9 +1,9 @@
 package com.windchat.im;
 
 import com.google.protobuf.ByteString;
-import com.windchat.im.bean.AudioInfo;
-import com.windchat.im.bean.ImageInfo;
-import com.windchat.im.bean.Message;
+import com.windchat.im.message.U2AudioMessage;
+import com.windchat.im.message.U2ImageMessage;
+import com.windchat.im.message.Message;
 import com.windchat.proto.core.CoreProto;
 import com.windchat.proto.server.ImCtsMessageProto;
 
@@ -24,7 +24,7 @@ public class MessageBuilder {
                         CoreProto.MsgSecretText secretText = CoreProto.MsgSecretText.newBuilder()
                                 .setMsgId(message.getMsgId())
                                 .setSiteUserId(message.getSiteUserId())
-                                .setSiteFriendId(message.getSiteFriendId())
+                                .setSiteFriendId(message.getGroupId())
                                 .setText(ByteString.copyFrom(message.getSecretData()))
                                 .setTime(message.getMsgTime())
                                 .setBase64TsKey(message.getMsgTsk())
@@ -38,12 +38,12 @@ public class MessageBuilder {
                         break;
 
                     case CoreProto.MsgType.SECRET_VOICE_VALUE:
-                        AudioInfo audioInfo = AudioInfo.parseJSON(message.getContent());
+                        U2AudioMessage u2AudioMessage = U2AudioMessage.parseJSON(message.getContent());
                         CoreProto.MsgSecretVoice secretVoice = CoreProto.MsgSecretVoice.newBuilder()
                                 .setMsgId(message.getMsgId())
                                 .setSiteUserId(message.getSiteUserId())
-                                .setSiteFriendId(message.getSiteFriendId())
-                                .setVoiceId(audioInfo.getAudioId())
+                                .setSiteFriendId(message.getGroupId())
+                                .setVoiceId(u2AudioMessage.getAudioId())
                                 .setBase64TsKey(message.getMsgTsk())
                                 .setTime(message.getMsgTime())
                                 .setToDeviceId(message.getToDeviceId())
@@ -55,12 +55,12 @@ public class MessageBuilder {
                         break;
 
                     case CoreProto.MsgType.SECRET_IMAGE_VALUE:
-                        ImageInfo imageInfo = ImageInfo.parseJSON(message.getContent());
+                        U2ImageMessage u2ImageMessage = U2ImageMessage.parseJSON(message.getContent());
                         CoreProto.MsgSecretImage secretImage = CoreProto.MsgSecretImage.newBuilder()
                                 .setMsgId(message.getMsgId())
                                 .setSiteUserId(message.getSiteUserId())
-                                .setSiteFriendId(message.getSiteFriendId())
-                                .setImageId(imageInfo.getFileId())
+                                .setSiteFriendId(message.getGroupId())
+                                .setImageId(u2ImageMessage.getFileId())
                                 .setTime(message.getMsgTime())
                                 .setBase64TsKey(message.getMsgTsk())
                                 .setToDeviceId(message.getToDeviceId())
@@ -80,7 +80,7 @@ public class MessageBuilder {
                         CoreProto.MsgText msgText = CoreProto.MsgText.newBuilder()
                                 .setMsgId(message.getMsgId())
                                 .setSiteUserId(message.getSiteUserId())
-                                .setSiteFriendId(message.getSiteFriendId())
+                                .setSiteFriendId(message.getGroupId())
                                 .setText(ByteString.copyFrom(message.getContent().getBytes()))
                                 .setTime(message.getMsgTime())
                                 .build();
@@ -90,12 +90,12 @@ public class MessageBuilder {
                                 .build();
                         break;
                     case CoreProto.MsgType.VOICE_VALUE:
-                        AudioInfo audioInfo = AudioInfo.parseJSON(message.getContent());
+                        U2AudioMessage u2AudioMessage = U2AudioMessage.parseJSON(message.getContent());
                         CoreProto.MsgVoice msgVoice = CoreProto.MsgVoice.newBuilder()
                                 .setMsgId(message.getMsgId())
                                 .setSiteUserId(message.getSiteUserId())
-                                .setSiteFriendId(message.getSiteFriendId())
-                                .setVoiceId(audioInfo.getAudioId())
+                                .setSiteFriendId(message.getGroupId())
+                                .setVoiceId(u2AudioMessage.getAudioId())
                                 .setTime(message.getMsgTime())
                                 .build();
                         request = ImCtsMessageProto.ImCtsMessageRequest.newBuilder()
@@ -104,12 +104,12 @@ public class MessageBuilder {
                                 .build();
                         break;
                     case CoreProto.MsgType.IMAGE_VALUE:
-                        ImageInfo imageInfo = ImageInfo.parseJSON(message.getContent());
+                        U2ImageMessage u2ImageMessage = U2ImageMessage.parseJSON(message.getContent());
                         CoreProto.MsgImage msgImage = CoreProto.MsgImage.newBuilder()
                                 .setMsgId(message.getMsgId())
                                 .setSiteUserId(message.getSiteUserId())
-                                .setSiteFriendId(message.getSiteFriendId())
-                                .setImageId(imageInfo.getFileId())
+                                .setSiteFriendId(message.getGroupId())
+                                .setImageId(u2ImageMessage.getFileId())
                                 .setTime(message.getMsgTime())
                                 .build();
                         request = ImCtsMessageProto.ImCtsMessageRequest.newBuilder()
@@ -130,7 +130,7 @@ public class MessageBuilder {
                 CoreProto.MsgSecretText secretText = CoreProto.MsgSecretText.newBuilder()
                         .setMsgId(message.getMsgId())
                         .setSiteUserId(message.getSiteUserId())
-                        .setSiteFriendId(message.getSiteFriendId())
+                        .setSiteFriendId(message.getGroupId())
                         .setText(ByteString.copyFrom(message.getSecretData()))
                         .setTime(message.getMsgTime())
                         .setBase64TsKey(message.getMsgTsk())
@@ -157,12 +157,12 @@ public class MessageBuilder {
                                 .build();
                         break;
                     case CoreProto.MsgType.GROUP_VOICE_VALUE:
-                        AudioInfo audioInfo = AudioInfo.parseJSON(message.getContent());
+                        U2AudioMessage u2AudioMessage = U2AudioMessage.parseJSON(message.getContent());
                         CoreProto.GroupVoice groupVoice = CoreProto.GroupVoice.newBuilder()
                                 .setMsgId(message.getMsgId())
                                 .setSiteUserId(message.getSiteUserId())
                                 .setSiteGroupId(message.getGroupId())
-                                .setVoiceId(audioInfo.getAudioId())
+                                .setVoiceId(u2AudioMessage.getAudioId())
                                 .setTime(message.getMsgTime())
                                 .build();
                         request = ImCtsMessageProto.ImCtsMessageRequest.newBuilder()
@@ -171,12 +171,12 @@ public class MessageBuilder {
                                 .build();
                         break;
                     case CoreProto.MsgType.GROUP_IMAGE_VALUE:
-                        ImageInfo imageInfo = ImageInfo.parseJSON(message.getContent());
+                        U2ImageMessage u2ImageMessage = U2ImageMessage.parseJSON(message.getContent());
                         CoreProto.GroupImage groupImage = CoreProto.GroupImage.newBuilder()
                                 .setMsgId(message.getMsgId())
                                 .setSiteUserId(message.getSiteUserId())
                                 .setSiteGroupId(message.getGroupId())
-                                .setImageId(imageInfo.getFileId())
+                                .setImageId(u2ImageMessage.getFileId())
                                 .setTime(message.getMsgTime())
                                 .build();
                         request = ImCtsMessageProto.ImCtsMessageRequest.newBuilder()

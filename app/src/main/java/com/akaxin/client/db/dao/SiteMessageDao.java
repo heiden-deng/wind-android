@@ -139,7 +139,7 @@ public class SiteMessageDao {
      *
      * @param messages
      */
-    public synchronized void batchInsertU2Messages(List<? extends com.windchat.im.bean.Message> messages) {
+    public synchronized void batchInsertU2Messages(List<? extends com.windchat.im.message.Message> messages) {
         if (messages != null && messages.size() > 0) {
             //插入消息
             List<ChatSession> chatSessions = insertU2Messages(messages);
@@ -179,7 +179,7 @@ public class SiteMessageDao {
             SQLiteStatement statement = database.compileStatement(sql);
             statement.bindString(1, msg.getMsgId());
             statement.bindString(2, msg.getSiteUserId());
-            statement.bindString(3, msg.getSiteFriendId());
+            statement.bindString(3, msg.getGroupId());
             statement.bindString(4, msg.getChatSessionId());//消息帧，消息列表中某一个cells的标识
             statement.bindString(5, msg.getContent());
             statement.bindLong(6, msg.getMsgPointer());
@@ -204,7 +204,7 @@ public class SiteMessageDao {
 
     }
 
-    public synchronized List<ChatSession> insertU2Messages(List<? extends com.windchat.im.bean.Message> messages) {
+    public synchronized List<ChatSession> insertU2Messages(List<? extends com.windchat.im.message.Message> messages) {
         long startTime = System.currentTimeMillis();
         List<ChatSession> chatSessionList = new ArrayList<>();
         database.beginTransaction();
@@ -229,14 +229,14 @@ public class SiteMessageDao {
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         SQLiteStatement statement = database.compileStatement(sql);
-        for (com.windchat.im.bean.Message msg : messages) {
+        for (com.windchat.im.message.Message msg : messages) {
             try {
                 if (StringUtils.isEmpty(msg.getMsgId())) {
                     continue;
                 }
                 statement.bindString(1, msg.getMsgId());
                 statement.bindString(2, msg.getSiteUserId());
-                statement.bindString(3, msg.getSiteFriendId());
+                statement.bindString(3, msg.getGroupId());
                 statement.bindString(4, msg.getChatSessionId());//消息帧，消息列表中某一个cells的标识
                 statement.bindString(5, msg.getContent());
                 statement.bindLong(6, msg.isSecret() ? 1 : 0);
@@ -282,7 +282,7 @@ public class SiteMessageDao {
         return _id;
     }
 
-    public synchronized void batchInsertGroupMessages(List<? extends com.windchat.im.bean.Message> messages) {
+    public synchronized void batchInsertGroupMessages(List<? extends com.windchat.im.message.Message> messages) {
         //批量插入群消息
         List<ChatSession> chatSessionList = insertGroupMessages(messages);
         //批量插入会话
@@ -346,7 +346,7 @@ public class SiteMessageDao {
      *
      * @param messages
      */
-    public synchronized List<ChatSession> insertGroupMessages(List<? extends com.windchat.im.bean.Message> messages) {
+    public synchronized List<ChatSession> insertGroupMessages(List<? extends com.windchat.im.message.Message> messages) {
         long startTime = System.currentTimeMillis();
         List<ChatSession> chatSessionList = new ArrayList<>();
         String sql = "INSERT INTO " + SITE_GROUP_MSG_TABLE +
@@ -364,7 +364,7 @@ public class SiteMessageDao {
 
         database.beginTransaction();
         SQLiteStatement statement = database.compileStatement(sql);
-        for (com.windchat.im.bean.Message msg : messages) {
+        for (com.windchat.im.message.Message msg : messages) {
             if (StringUtils.isEmpty(msg.getMsgId())) {
                 continue;
             }
@@ -409,7 +409,7 @@ public class SiteMessageDao {
     }
 
 
-    private ChatSession buildChatSessionFromMessage(com.windchat.im.bean.Message message, String type) {
+    private ChatSession buildChatSessionFromMessage(com.windchat.im.message.Message message, String type) {
         ChatSession chatSession = new ChatSession();
         chatSession.setLastMsgId(message.getMsgId());
         chatSession.setChatSessionId(message.getChatSessionId());
@@ -435,7 +435,7 @@ public class SiteMessageDao {
      * @param message
      * @return
      */
-    public String getSessionDesc(com.windchat.im.bean.Message message) {
+    public String getSessionDesc(com.windchat.im.message.Message message) {
         long startTime = System.currentTimeMillis();
         String sessionDesc;
         switch (message.getMsgType()) {
@@ -664,7 +664,7 @@ public class SiteMessageDao {
                 message.setImg(cursor.getString(cursor.getColumnIndex("site_user_icon")));
                 message.setMsgTime(Long.parseLong(cursor.getString(cursor.getColumnIndex("server_msg_time"))));
                 message.setSiteUserId(cursor.getString(cursor.getColumnIndex("from_site_user_id")));
-                message.setSiteFriendId(cursor.getString(cursor.getColumnIndex("to_site_user_id")));
+                message.setGroupId(cursor.getString(cursor.getColumnIndex("to_site_user_id")));
                 message.setChatSessionId(cursor.getString(cursor.getColumnIndex("chat_session_id")));
                 message.setToDevicePubk(cursor.getString(cursor.getColumnIndex("to_base64_device_pubk")));
                 message.setMsgWidth(cursor.getInt(cursor.getColumnIndex("msg_width")));
@@ -710,7 +710,7 @@ public class SiteMessageDao {
             message.setImg(cursor.getString(cursor.getColumnIndex("site_user_icon")));
             message.setMsgTime(Long.parseLong(cursor.getString(cursor.getColumnIndex("server_msg_time"))));
             message.setSiteUserId(cursor.getString(cursor.getColumnIndex("from_site_user_id")));
-            message.setSiteFriendId(cursor.getString(cursor.getColumnIndex("to_site_user_id")));
+            message.setGroupId(cursor.getString(cursor.getColumnIndex("to_site_user_id")));
             message.setChatSessionId(cursor.getString(cursor.getColumnIndex("chat_session_id")));
             message.setToDevicePubk(cursor.getString(cursor.getColumnIndex("to_base64_device_pubk")));
             message.setHrefUrl(cursor.getString(cursor.getColumnIndex("href_url")));
@@ -759,7 +759,7 @@ public class SiteMessageDao {
                 message.setImg(cursor.getString(cursor.getColumnIndex("site_user_icon")));
                 message.setMsgTime(Long.parseLong(cursor.getString(cursor.getColumnIndex("server_msg_time"))));
                 message.setSiteUserId(cursor.getString(cursor.getColumnIndex("from_site_user_id")));
-                message.setSiteFriendId(cursor.getString(cursor.getColumnIndex("to_site_user_id")));
+                message.setGroupId(cursor.getString(cursor.getColumnIndex("to_site_user_id")));
                 message.setChatSessionId(cursor.getString(cursor.getColumnIndex("chat_session_id")));
                 message.setToDevicePubk(cursor.getString(cursor.getColumnIndex("to_base64_device_pubk")));
                 message.setHrefUrl(cursor.getString(cursor.getColumnIndex("href_url")));
@@ -869,7 +869,7 @@ public class SiteMessageDao {
                 message.setImg(cursor.getString(cursor.getColumnIndex("site_user_icon")));
                 message.setMsgTime(Long.parseLong(cursor.getString(cursor.getColumnIndex("server_msg_time"))));
                 message.setSiteUserId(cursor.getString(cursor.getColumnIndex("from_site_user_id")));
-                message.setSiteFriendId(cursor.getString(cursor.getColumnIndex("to_site_user_id")));
+                message.setGroupId(cursor.getString(cursor.getColumnIndex("to_site_user_id")));
                 message.setChatSessionId(cursor.getString(cursor.getColumnIndex("chat_session_id")));
                 message.setToDevicePubk(cursor.getString(cursor.getColumnIndex("to_base64_device_pubk")));
                 message.setMsgWidth(cursor.getInt(cursor.getColumnIndex("msg_width")));

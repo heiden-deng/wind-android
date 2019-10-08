@@ -2,12 +2,20 @@ package com.windchat.im;
 
 import android.util.Base64;
 
-import com.windchat.im.bean.AudioInfo;
-import com.windchat.im.bean.ImageInfo;
-import com.windchat.im.bean.Message;
+import com.windchat.im.message.GroupAudioMessage;
+import com.windchat.im.message.GroupCustomMessage;
+import com.windchat.im.message.GroupImageMessage;
+import com.windchat.im.message.GroupNoticeMessage;
+import com.windchat.im.message.GroupTextMessage;
+import com.windchat.im.message.Notification;
+import com.windchat.im.message.U2AudioMessage;
+import com.windchat.im.message.U2CustomMessage;
+import com.windchat.im.message.U2ImageMessage;
+import com.windchat.im.message.Message;
 import com.windchat.im.bean.Site;
+import com.windchat.im.message.U2NoticeMessage;
+import com.windchat.im.message.U2TextMessage;
 import com.windchat.im.socket.IMessageHandler;
-import com.windchat.im.socket.SiteAddress;
 import com.windchat.im.socket.TransportPackage;
 import com.windchat.logger.WindLogger;
 import com.windchat.proto.client.ImStcMessageProto;
@@ -120,8 +128,9 @@ public class IMMessageReceiveHandler implements IMessageHandler {
             //消息指针 服务端需要
             for (ImStcMessageProto.MsgWithPointer withPointer : msgWithPointers) {
                 WindLogger.getInstance().info(TAG, withPointer.toString());
-                try {
 
+                Message message = null;
+                try {
                     // 在最后更新this.pointer
                     switch (withPointer.getType().getNumber()) {
                         case CoreProto.MsgType.MSG_STATUS_VALUE:    //消息状态
@@ -138,333 +147,230 @@ public class IMMessageReceiveHandler implements IMessageHandler {
                             MsgStatus msgStatus = MsgStatus.parseFrom(messageStatus);
                             messageReceiver.handleMessageStatus(this.site, msgId, serverMsgTime, msgStatus);
                             return;
-                        case CoreProto.MsgType.TEXT_VALUE:
-                            //二人文本
-                            CoreProto.MsgText msgText = withPointer.getText();
-                            Message message = new Message();
-                            message.setMsgId(msgText.getMsgId());
-                            message.setContent(msgText.getText().toStringUtf8());
-                            message.setMsgTime(msgText.getTime()); //消息到达服务器的时间
-                            message.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-                            ////chat_session_id 是对方的id,或者群组id
-                            message.setChatSessionId(msgText.getSiteFriendId());
 
-                            if (msgText.getSiteFriendId().equals(curSiteUserId)) {
-                                message.setChatSessionId(msgText.getSiteUserId());
-                            }
-                            message.setSiteUserId(msgText.getSiteUserId());
-                            message.setSiteFriendId(msgText.getSiteFriendId());
-                            message.setMsgType(CoreProto.MsgType.TEXT_VALUE);
-                            messages.add(message);
-
+                        case CoreProto.MsgType.NOTICE_VALUE:
+                            Notification notification = new Notification();
+                            // TODO
                             break;
-                        case CoreProto.MsgType.SECRET_TEXT_VALUE:
-                            //二人绝密文本
-                            CoreProto.MsgSecretText secretText = withPointer.getSecretText();
-                            Message secretMsg = new Message();
-                            secretMsg.setMsgId(secretText.getMsgId());
-                            String content = Base64.encodeToString(secretText.getText().toByteArray(), Base64.NO_WRAP);
-                            secretMsg.setContent(content);
-
-                            secretMsg.setMsgTime(secretText.getTime());
-                            secretMsg.setMsgTsk(secretText.getBase64TsKey());
-                            secretMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-
-                            secretMsg.setSecret(true);
-                            secretMsg.setChatSessionId(secretText.getSiteFriendId());
-                            secretMsg.setToDeviceId(secretText.getToDeviceId());
-                            if (secretText.getSiteFriendId().equals(curSiteUserId)) {
-                                secretMsg.setChatSessionId(secretText.getSiteUserId());
-                            }
-                            secretMsg.setSiteUserId(secretText.getSiteUserId());
-                            secretMsg.setSiteFriendId(secretText.getSiteFriendId());
-                            secretMsg.setMsgType(CoreProto.MsgType.SECRET_TEXT_VALUE);
-                            messages.add(secretMsg);
-
-                            break;
-                        case CoreProto.MsgType.VOICE_VALUE:
-                            CoreProto.MsgVoice voice = withPointer.getVoice();
-                            AudioInfo audioInfo = new AudioInfo();
-                            audioInfo.setAudioId(voice.getVoiceId());
-                            audioInfo.setAudioTime(AudioInfo.NONE_DOWNLOAD);
-                            audioInfo.setAudioFilePath("");
-                            Message voiceMsg = new Message();
-                            voiceMsg.setMsgId(voice.getMsgId());
-                            voiceMsg.setContent(AudioInfo.toJSON(audioInfo));
-                            voiceMsg.setMsgTime(voice.getTime());
-                            voiceMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-
-                            ////chat_session_id 是对方的id,或者群组id
-                            voiceMsg.setChatSessionId(voice.getSiteFriendId());
-                            if (voice.getSiteFriendId().equals(curSiteUserId)) {
-                                voiceMsg.setChatSessionId(voice.getSiteUserId());
-                            }
-                            voiceMsg.setSiteUserId(voice.getSiteUserId());
-                            voiceMsg.setSiteFriendId(voice.getSiteFriendId());
-                            voiceMsg.setMsgType(CoreProto.MsgType.VOICE_VALUE);
-                            messages.add(voiceMsg);
-                            break;
-                        case CoreProto.MsgType.IMAGE_VALUE:
-                            CoreProto.MsgImage image = withPointer.getImage();
-                            ImageInfo imageInfo = new ImageInfo();
-                            imageInfo.setFileId(image.getImageId());
-                            imageInfo.setFileLength(-1);
-                            imageInfo.setFilePath("");
-                            imageInfo.setStatus(ImageInfo.STATUS_RECEIVE_NO_DOWNLOAD);
-                            Message imgMsg = new Message();
-                            imgMsg.setMsgId(image.getMsgId());
-                            imgMsg.setContent(ImageInfo.toJSON(imageInfo));
-                            imgMsg.setMsgTime(image.getTime());
-                            imgMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-
-                            ////chat_session_id 是对方的id,或者群组id
-                            imgMsg.setChatSessionId(image.getSiteFriendId());
-
-                            if (image.getSiteFriendId().equals(curSiteUserId)) {
-                                imgMsg.setChatSessionId(image.getSiteUserId());
-                            }
-                            imgMsg.setSiteUserId(image.getSiteUserId());
-                            imgMsg.setSiteFriendId(image.getSiteFriendId());
-                            imgMsg.setMsgType(CoreProto.MsgType.IMAGE_VALUE);
-                            messages.add(imgMsg);
-                            break;
-                        case CoreProto.MsgType.SECRET_IMAGE_VALUE:
-                            CoreProto.MsgSecretImage secretImage = withPointer.getSecretImage();
-                            ImageInfo secretImageInfo = new ImageInfo();
-                            secretImageInfo.setFileId(secretImage.getImageId());
-                            secretImageInfo.setFileLength(-1);
-                            secretImageInfo.setFilePath("");
-                            secretImageInfo.setStatus(ImageInfo.STATUS_RECEIVE_NO_DOWNLOAD);
-                            Message secretImgMsg = new Message();
-                            secretImgMsg.setMsgId(secretImage.getMsgId());
-                            secretImgMsg.setContent(ImageInfo.toJSON(secretImageInfo));
-                            secretImgMsg.setMsgTime(secretImage.getTime());
-                            secretImgMsg.setMsgTsk(secretImage.getBase64TsKey());
-                            secretImgMsg.setSecret(true);
-                            secretImgMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-
-                            ////chat_session_id 是对方的id,或者群组id
-                            secretImgMsg.setChatSessionId(secretImage.getSiteFriendId());
-                            secretImgMsg.setToDeviceId(secretImage.getToDeviceId());
-                            if (secretImage.getSiteFriendId().equals(curSiteUserId)) {
-                                secretImgMsg.setChatSessionId(secretImage.getSiteUserId());
-
-                            }
-                            secretImgMsg.setSiteUserId(secretImage.getSiteUserId());
-                            secretImgMsg.setSiteFriendId(secretImage.getSiteFriendId());
-                            secretImgMsg.setMsgType(CoreProto.MsgType.SECRET_IMAGE_VALUE);
-                            messages.add(secretImgMsg);
-                            break;
-
-                        case CoreProto.MsgType.SECRET_VOICE_VALUE:
-                            CoreProto.MsgSecretVoice secretVoice = withPointer.getSecretVoice();
-                            AudioInfo secretAudioInfo = new AudioInfo();
-                            secretAudioInfo.setAudioId(secretVoice.getVoiceId());
-                            secretAudioInfo.setAudioTime(AudioInfo.NONE_DOWNLOAD);
-                            secretAudioInfo.setAudioFilePath("");
-                            Message secretVoiceMsg = new Message();
-                            secretVoiceMsg.setMsgId(secretVoice.getMsgId());
-                            secretVoiceMsg.setContent(AudioInfo.toJSON(secretAudioInfo));
-                            secretVoiceMsg.setMsgTime(secretVoice.getTime());
-                            secretVoiceMsg.setMsgTsk(secretVoice.getBase64TsKey());
-                            secretVoiceMsg.setSecret(true);
-                            secretVoiceMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-
-                            ////chat_session_id 是对方的id,或者群组id
-                            secretVoiceMsg.setChatSessionId(secretVoice.getSiteFriendId());
-                            secretVoiceMsg.setToDeviceId(secretVoice.getToDeviceId());
-
-                            if (secretVoice.getSiteFriendId().equals(curSiteUserId)) {
-                                secretVoiceMsg.setChatSessionId(secretVoice.getSiteUserId());
-                            }
-                            secretVoiceMsg.setSiteUserId(secretVoice.getSiteUserId());
-                            secretVoiceMsg.setSiteFriendId(secretVoice.getSiteFriendId());
-                            secretVoiceMsg.setMsgType(CoreProto.MsgType.SECRET_VOICE_VALUE);
-                            messages.add(secretVoiceMsg);
-                            break;
-
-                        case CoreProto.MsgType.GROUP_TEXT_VALUE:
-                            CoreProto.GroupText groupText = withPointer.getGroupText();
-                            Message groupMsg = new Message();
-                            groupMsg.setMsgId(groupText.getMsgId());
-                            groupMsg.setSiteUserId(groupText.getSiteUserId());
-                            groupMsg.setChatSessionId(groupText.getSiteGroupId());
-                            groupMsg.setGroupId(groupText.getSiteGroupId());
-                            groupMsg.setContent(groupText.getText().toStringUtf8());
-                            groupMsg.setMsgTime(groupText.getTime());
-                            groupMsg.setMsgStatus(Message.STATUS_RECEIVE_NONE);
-                            groupMsg.setMsgType(CoreProto.MsgType.GROUP_TEXT_VALUE);
-                            groupMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-                            messages.add(groupMsg);
-                            break;
-
-                        case CoreProto.MsgType.GROUP_VOICE_VALUE:
-                            CoreProto.GroupVoice groupVoice = withPointer.getGroupVoice();
-                            AudioInfo groupAudioInfo = new AudioInfo();
-                            groupAudioInfo.setAudioId(groupVoice.getVoiceId());
-                            groupAudioInfo.setAudioTime(AudioInfo.NONE_DOWNLOAD);
-                            groupAudioInfo.setAudioFilePath("");
-                            Message groupVoiceMsg = new Message();
-                            groupVoiceMsg.setMsgId(groupVoice.getMsgId());
-                            groupVoiceMsg.setSiteUserId(groupVoice.getSiteUserId());
-                            groupVoiceMsg.setGroupId(groupVoice.getSiteGroupId());
-                            groupVoiceMsg.setChatSessionId(groupVoice.getSiteGroupId());
-                            groupVoiceMsg.setContent(AudioInfo.toJSON(groupAudioInfo));
-                            groupVoiceMsg.setMsgTime(groupVoice.getTime());
-                            groupVoiceMsg.setMsgStatus(Message.STATUS_RECEIVE_NONE);
-                            groupVoiceMsg.setMsgType(CoreProto.MsgType.GROUP_VOICE_VALUE);
-                            groupVoiceMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-                            messages.add(groupVoiceMsg);
-                            break;
-
-                        case CoreProto.MsgType.GROUP_IMAGE_VALUE:
-                            CoreProto.GroupImage groupImage = withPointer.getGroupImage();
-                            ImageInfo groupImageInfo = new ImageInfo();
-                            groupImageInfo.setFileId(groupImage.getImageId());
-                            groupImageInfo.setFileLength(-1);
-                            groupImageInfo.setFilePath("");
-                            groupImageInfo.setStatus(ImageInfo.STATUS_RECEIVE_NO_DOWNLOAD);
-                            Message groupImgMsg = new Message();
-                            groupImgMsg.setMsgId(groupImage.getMsgId());
-                            groupImgMsg.setSiteUserId(groupImage.getSiteUserId());
-                            groupImgMsg.setGroupId(groupImage.getSiteGroupId());
-                            groupImgMsg.setChatSessionId(groupImage.getSiteGroupId());
-                            groupImgMsg.setContent(ImageInfo.toJSON(groupImageInfo));
-                            groupImgMsg.setMsgTime(groupImage.getTime());
-                            groupImgMsg.setMsgStatus(Message.STATUS_RECEIVE_NONE);
-                            groupImgMsg.setMsgType(CoreProto.MsgType.GROUP_IMAGE_VALUE);
-                            groupImgMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-                            messages.add(groupImgMsg);
-                            break;
-
-                        case CoreProto.MsgType.GROUP_NOTICE_VALUE:
-                            CoreProto.GroupMsgNotice groupMsgNotice = withPointer.getGroupMsgNotice();
-                            Message groupNotice = new Message();
-                            groupNotice.setChatSessionId(groupMsgNotice.getSiteGroupId());
-                            groupNotice.setMsgId(groupMsgNotice.getMsgId());
-                            groupNotice.setSiteUserId(groupMsgNotice.getSiteUserId());
-                            groupNotice.setGroupId(groupMsgNotice.getSiteGroupId());
-                            groupNotice.setContent(groupMsgNotice.getText().toStringUtf8());
-                            groupNotice.setMsgTime(groupMsgNotice.getTime());
-                            groupNotice.setMsgType(CoreProto.MsgType.GROUP_NOTICE_VALUE);
-                            groupNotice.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-                            messages.add(groupNotice);
-                            break;
-
                         case CoreProto.MsgType.U2_NOTICE_VALUE:
                             CoreProto.U2MsgNotice u2MsgNotice = withPointer.getU2MsgNotice();
-                            Message u2Notice = new Message();
+
+                            U2NoticeMessage u2Notice = new U2NoticeMessage();
                             u2Notice.setMsgId(u2MsgNotice.getMsgId());
-                            u2Notice.setMsgTime(u2MsgNotice.getTime());
                             u2Notice.setSiteUserId(u2MsgNotice.getSiteUserId());
                             u2Notice.setSiteFriendId(u2MsgNotice.getSiteFriendId());
-                            // 说明：ChatSessionId = 发送者的siteUserId
-                            // 当发送者为当前用户自身，则ChatSessionId=接受者
                             u2Notice.setChatSessionId(u2MsgNotice.getSiteUserId());
                             u2Notice.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
                             if (u2MsgNotice.getSiteUserId().equals(curSiteUserId)) {
                                 u2Notice.setChatSessionId(u2MsgNotice.getSiteFriendId());
                             }
                             u2Notice.setContent(u2MsgNotice.getText().toStringUtf8());
-                            u2Notice.setMsgType(CoreProto.MsgType.U2_NOTICE_VALUE);
+                            u2Notice.setMsgTime(u2MsgNotice.getTime());
+
+                            message = u2Notice;
                             messages.add(u2Notice);
+                            break;
+                        case CoreProto.MsgType.TEXT_VALUE:
+                            //二人文本
+                            CoreProto.MsgText msgText = withPointer.getText();
+
+                            U2TextMessage u2TextMessage = new U2TextMessage();
+                            u2TextMessage.setMsgId(msgText.getMsgId());
+                            u2TextMessage.setContent(msgText.getText().toStringUtf8());
+                            u2TextMessage.setMsgTime(msgText.getTime()); //消息到达服务器的时间
+                            u2TextMessage.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
+                            ////chat_session_id 是对方的id,或者群组id
+                            u2TextMessage.setChatSessionId(msgText.getSiteFriendId());
+
+                            if (msgText.getSiteFriendId().equals(curSiteUserId)) {
+                                u2TextMessage.setChatSessionId(msgText.getSiteUserId());
+                            }
+                            u2TextMessage.setSiteUserId(msgText.getSiteUserId());
+                            u2TextMessage.setGroupId(msgText.getSiteFriendId());
+                            message = u2TextMessage;
+                            messages.add(u2TextMessage);
+                            break;
+                        case CoreProto.MsgType.VOICE_VALUE:
+                            CoreProto.MsgVoice voice = withPointer.getVoice();
+                            U2AudioMessage u2AudioMessage = new U2AudioMessage();
+                            u2AudioMessage.setAudioId(voice.getVoiceId());
+                            u2AudioMessage.setAudioTime(U2AudioMessage.NONE_DOWNLOAD);
+                            u2AudioMessage.setAudioFilePath("");
+
+                            U2AudioMessage u2VoiceMsg = new U2AudioMessage();
+                            u2VoiceMsg.setMsgId(voice.getMsgId());
+                            u2VoiceMsg.setContent(U2AudioMessage.toJSON(u2AudioMessage));
+                            u2VoiceMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
+
+                            ////chat_session_id 是对方的id,或者群组id
+                            u2VoiceMsg.setChatSessionId(voice.getSiteFriendId());
+                            if (voice.getSiteFriendId().equals(curSiteUserId)) {
+                                u2VoiceMsg.setChatSessionId(voice.getSiteUserId());
+                            }
+                            u2VoiceMsg.setSiteUserId(voice.getSiteUserId());
+                            u2VoiceMsg.setSiteFriendId(voice.getSiteFriendId());
+                            u2VoiceMsg.setMsgTime(voice.getTime());
+
+                            message = u2VoiceMsg;
+                            messages.add(u2VoiceMsg);
+                            break;
+                        case CoreProto.MsgType.IMAGE_VALUE:
+                            CoreProto.MsgImage image = withPointer.getImage();
+                            U2ImageMessage u2ImageMessage = new U2ImageMessage();
+                            u2ImageMessage.setFileId(image.getImageId());
+                            u2ImageMessage.setFileLength(-1);
+                            u2ImageMessage.setFilePath("");
+                            u2ImageMessage.setStatus(U2ImageMessage.STATUS_RECEIVE_NO_DOWNLOAD);
+
+                            U2ImageMessage u2ImgMsg = new U2ImageMessage();
+                            u2ImgMsg.setMsgId(image.getMsgId());
+                            u2ImgMsg.setContent(U2ImageMessage.toJSON(u2ImageMessage));
+                            u2ImgMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
+
+                            ////chat_session_id 是对方的id,或者群组id
+                            u2ImgMsg.setChatSessionId(image.getSiteFriendId());
+
+                            if (image.getSiteFriendId().equals(curSiteUserId)) {
+                                u2ImgMsg.setChatSessionId(image.getSiteUserId());
+                            }
+                            u2ImgMsg.setSiteUserId(image.getSiteUserId());
+                            u2ImgMsg.setSiteFriendId(image.getSiteFriendId());
+                            u2ImgMsg.setMsgTime(image.getTime());
+
+                            message = u2ImgMsg;
+                            messages.add(u2ImgMsg);
+                            break;
+                        case CoreProto.MsgType.SECRET_TEXT_VALUE:
+                        case CoreProto.MsgType.SECRET_IMAGE_VALUE:
+                        case CoreProto.MsgType.SECRET_VOICE_VALUE:
+                            break;
+                        case CoreProto.MsgType.U2_WEB_NOTICE_VALUE:
+                            break;
+                        case CoreProto.MsgType.U2_WEB_VALUE:
+                            CoreProto.U2Web u2Web = withPointer.getU2Web();
+                            U2CustomMessage u2CustomMsg = new U2CustomMessage();
+                            u2CustomMsg.setMsgId(u2Web.getMsgId());
+                            u2CustomMsg.setChatSessionId(u2Web.getSiteFriendId());
+                            u2CustomMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
+
+                            if (u2Web.getSiteFriendId().equals(curSiteUserId)) {
+                                u2CustomMsg.setChatSessionId(u2Web.getSiteUserId());
+                                u2CustomMsg.setMsgStatus(Message.STATUS_SEND_SUCCESS);
+                            }
+                            u2CustomMsg.setSiteUserId(u2Web.getSiteUserId());
+                            u2CustomMsg.setSiteFriendId(u2Web.getSiteFriendId());
+                            u2CustomMsg.setContent(u2Web.getWebCode());
+                            u2CustomMsg.setMsgTime(u2Web.getTime());
+
+                            message = u2CustomMsg;
+                            messages.add(u2CustomMsg);
+                            break;
+
+                        case CoreProto.MsgType.GROUP_NOTICE_VALUE:
+                            CoreProto.GroupMsgNotice groupMsgNotice = withPointer.getGroupMsgNotice();
+
+                            GroupNoticeMessage groupNotice = new GroupNoticeMessage();
+                            groupNotice.setMsgId(groupMsgNotice.getMsgId());
+                            groupNotice.setChatSessionId(groupMsgNotice.getSiteGroupId());
+                            groupNotice.setSiteUserId(groupMsgNotice.getSiteUserId());
+                            groupNotice.setGroupId(groupMsgNotice.getSiteGroupId());
+                            groupNotice.setContent(groupMsgNotice.getText().toStringUtf8());
+                            groupNotice.setMsgTime(groupMsgNotice.getTime());
+                            groupNotice.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
+
+                            message = groupNotice;
+                            messages.add(groupNotice);
+                            break;
+                        case CoreProto.MsgType.GROUP_TEXT_VALUE:
+                            CoreProto.GroupText groupText = withPointer.getGroupText();
+
+                            GroupTextMessage groupTextMsg = new GroupTextMessage();
+                            groupTextMsg.setMsgId(groupText.getMsgId());
+                            groupTextMsg.setSiteUserId(groupText.getSiteUserId());
+                            groupTextMsg.setChatSessionId(groupText.getSiteGroupId());
+                            groupTextMsg.setGroupId(groupText.getSiteGroupId());
+                            groupTextMsg.setContent(groupText.getText().toStringUtf8());
+                            groupTextMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
+                            groupTextMsg.setMsgTime(groupText.getTime());
+
+                            message = groupTextMsg;
+                            messages.add(groupTextMsg);
+                            break;
+                        case CoreProto.MsgType.GROUP_VOICE_VALUE:
+                            CoreProto.GroupVoice groupVoice = withPointer.getGroupVoice();
+                            U2AudioMessage groupU2AudioMessage = new U2AudioMessage();
+                            groupU2AudioMessage.setAudioId(groupVoice.getVoiceId());
+                            groupU2AudioMessage.setAudioTime(U2AudioMessage.NONE_DOWNLOAD);
+                            groupU2AudioMessage.setAudioFilePath("");
+
+                            GroupAudioMessage groupVoiceMsg = new GroupAudioMessage();
+                            groupVoiceMsg.setMsgId(groupVoice.getMsgId());
+                            groupVoiceMsg.setSiteUserId(groupVoice.getSiteUserId());
+                            groupVoiceMsg.setGroupId(groupVoice.getSiteGroupId());
+                            groupVoiceMsg.setChatSessionId(groupVoice.getSiteGroupId());
+                            groupVoiceMsg.setContent(U2AudioMessage.toJSON(groupU2AudioMessage));
+                            groupVoiceMsg.setMsgTime(groupVoice.getTime());
+                            groupVoiceMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
+
+                            message = groupVoiceMsg;
+                            messages.add(groupVoiceMsg);
+                            break;
+                        case CoreProto.MsgType.GROUP_IMAGE_VALUE:
+                            CoreProto.GroupImage groupImage = withPointer.getGroupImage();
+                            U2ImageMessage groupU2ImageMessage = new U2ImageMessage();
+                            groupU2ImageMessage.setFileId(groupImage.getImageId());
+                            groupU2ImageMessage.setFileLength(-1);
+                            groupU2ImageMessage.setFilePath("");
+                            groupU2ImageMessage.setStatus(U2ImageMessage.STATUS_RECEIVE_NO_DOWNLOAD);
+
+                            GroupImageMessage groupImgMsg = new GroupImageMessage();
+                            groupImgMsg.setMsgId(groupImage.getMsgId());
+                            groupImgMsg.setSiteUserId(groupImage.getSiteUserId());
+                            groupImgMsg.setGroupId(groupImage.getSiteGroupId());
+                            groupImgMsg.setChatSessionId(groupImage.getSiteGroupId());
+                            groupImgMsg.setContent(U2ImageMessage.toJSON(groupU2ImageMessage));
+                            groupImgMsg.setMsgTime(groupImage.getTime());
+                            groupImgMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
+
+                            message = groupImgMsg;
+                            messages.add(groupImgMsg);
+                            break;
+                        case CoreProto.MsgType.GROUP_WEB_NOTICE_VALUE:
                             break;
                         case CoreProto.MsgType.GROUP_WEB_VALUE:
                             CoreProto.GroupWeb groupWeb = withPointer.getGroupWeb();
-                            Message groupWebMsg = new Message();
+                            GroupCustomMessage groupWebMsg = new GroupCustomMessage();
                             groupWebMsg.setMsgId(groupWeb.getMsgId());
                             groupWebMsg.setSiteUserId(groupWeb.getSiteUserId());
                             groupWebMsg.setGroupId(groupWeb.getSiteGroupId());
                             groupWebMsg.setChatSessionId(groupWeb.getSiteGroupId());
                             groupWebMsg.setContent(groupWeb.getWebCode());
                             groupWebMsg.setMsgTime(groupWeb.getTime());
-                            groupWebMsg.setMsgType(CoreProto.MsgType.GROUP_WEB_VALUE);
                             if (groupWeb.getSiteUserId().equals(curSiteUserId)) {
                                 groupWebMsg.setMsgStatus(Message.STATUS_SEND_SUCCESS);
                             } else {
                                 groupWebMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
                             }
-                            groupWebMsg.setMsgHeight(groupWeb.getHeight());
-                            groupWebMsg.setMsgWidth(groupWeb.getWidth());
-                            groupWebMsg.setHrefUrl(groupWeb.getHrefUrl());
+//                            groupWebMsg.setMsgHeight(groupWeb.getHeight());
+//                            groupWebMsg.setMsgWidth(groupWeb.getWidth());
+//                            groupWebMsg.setHrefUrl(groupWeb.getHrefUrl());
+
+                            message = groupWebMsg;
                             messages.add(groupWebMsg);
                             break;
 
-                        case CoreProto.MsgType.GROUP_WEB_NOTICE_VALUE:
-                            CoreProto.GroupWebNotice groupWebNotice = withPointer.getGroupWebNotice();
-                            Message groupWebMsgNotice = new Message();
-                            groupWebMsgNotice.setMsgId(groupWebNotice.getMsgId());
-                            groupWebMsgNotice.setSiteUserId(groupWebNotice.getSiteUserId());
-                            groupWebMsgNotice.setGroupId(groupWebNotice.getSiteGroupId());
-                            groupWebMsgNotice.setChatSessionId(groupWebNotice.getSiteGroupId());
-                            groupWebMsgNotice.setContent(groupWebNotice.getWebCode());
-                            groupWebMsgNotice.setMsgTime(groupWebNotice.getTime());
-                            groupWebMsgNotice.setMsgType(CoreProto.MsgType.GROUP_WEB_NOTICE_VALUE);
-                            groupWebMsgNotice.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-                            groupWebMsgNotice.setHrefUrl(groupWebNotice.getHrefUrl());
-                            groupWebMsgNotice.setMsgHeight(groupWebNotice.getHeight());
-                            if (groupWebNotice.getSiteUserId().equals(curSiteUserId)) {
-                                groupWebMsgNotice.setMsgStatus(Message.STATUS_SEND_SUCCESS);
-                            } else {
-                                groupWebMsgNotice.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-                            }
-                            messages.add(groupWebMsgNotice);
-                            break;
-
-                        case CoreProto.MsgType.U2_WEB_NOTICE_VALUE:
-                            CoreProto.U2WebNotice u2WebNotice = withPointer.getU2WebNotice();
-                            Message u2WebNoticeMsg = new Message();
-                            u2WebNoticeMsg.setMsgId(u2WebNotice.getMsgId());
-                            u2WebNoticeMsg.setChatSessionId(u2WebNotice.getSiteFriendId());
-                            u2WebNoticeMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-
-                            if (u2WebNotice.getSiteFriendId().equals(curSiteUserId)) {
-                                u2WebNoticeMsg.setChatSessionId(u2WebNotice.getSiteUserId());
-                                u2WebNoticeMsg.setMsgStatus(Message.STATUS_SEND_SUCCESS);
-                            }
-                            u2WebNoticeMsg.setSiteUserId(u2WebNotice.getSiteUserId());
-                            u2WebNoticeMsg.setSiteFriendId(u2WebNotice.getSiteFriendId());
-                            u2WebNoticeMsg.setContent(u2WebNotice.getWebCode());
-                            u2WebNoticeMsg.setMsgTime(u2WebNotice.getTime());
-                            u2WebNoticeMsg.setMsgType(CoreProto.MsgType.U2_WEB_NOTICE_VALUE);
-                            u2WebNoticeMsg.setHrefUrl(u2WebNotice.getHrefUrl());
-                            u2WebNoticeMsg.setMsgHeight(u2WebNotice.getHeight());
-                            messages.add(u2WebNoticeMsg);
-                            break;
-                        case CoreProto.MsgType.U2_WEB_VALUE:
-                            CoreProto.U2Web u2Web = withPointer.getU2Web();
-                            Message u2WebMsg = new Message();
-                            u2WebMsg.setMsgId(u2Web.getMsgId());
-                            u2WebMsg.setChatSessionId(u2Web.getSiteFriendId());
-                            u2WebMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
-
-                            if (u2Web.getSiteFriendId().equals(curSiteUserId)) {
-                                u2WebMsg.setChatSessionId(u2Web.getSiteUserId());
-                                u2WebMsg.setMsgStatus(Message.STATUS_SEND_SUCCESS);
-                            }
-                            u2WebMsg.setSiteUserId(u2Web.getSiteUserId());
-                            u2WebMsg.setSiteFriendId(u2Web.getSiteFriendId());
-                            u2WebMsg.setContent(u2Web.getWebCode());
-                            u2WebMsg.setMsgTime(u2Web.getTime());
-                            u2WebMsg.setMsgType(CoreProto.MsgType.U2_WEB_VALUE);
-
-                            u2WebMsg.setHrefUrl(u2Web.getHrefUrl());
-                            u2WebMsg.setMsgWidth(u2Web.getWidth());
-                            u2WebMsg.setMsgHeight(u2Web.getHeight());
-                            messages.add(u2WebMsg);
-                            break;
                     }
                 } catch (Exception e) {
                     messageReceiver.handleException(this.site, e);
                 }
 
-                for (Message message : messages) {
-                    String tmpGroupId = message.getGroupId();
-                    if (tmpGroupId == null || tmpGroupId.isEmpty()) {
-                        // get max pointerss
-                        this.pointer = withPointer.getPointer();
+                if (message != null) {
+                    Message.ChatType chatType = message.getChatType();
+                    if (Message.ChatType.MSG_GROUP == chatType) {
+                        this.groupPointers.put(message.getChatSessionId(), withPointer.getPointer());
                     } else {
-                        this.groupPointers.put(tmpGroupId, withPointer.getPointer());
+                        // get max pointers
+                        this.pointer = withPointer.getPointer();
                     }
                 }
             }
@@ -473,19 +379,40 @@ public class IMMessageReceiveHandler implements IMessageHandler {
 
                 WindLogger.getInstance().info(TAG, "batch inserting...");
 
-                ArrayList<Message> u2Messages = new ArrayList<>();
-                ArrayList<Message> groupMessages = new ArrayList<>();
+                List<Notification> notifications = null;
+                List<Message> u2Messages = null;
+                List<Message> groupMessages = null;
+
                 for (Message message : messages) {
-                    if (StringUtils.isEmpty(message.getGroupId()))
-                        u2Messages.add(message);
-                    else {
-                        groupMessages.add(message);
+                    switch (message.getChatType()) {
+                        // 系统通知
+                        case NOTIFICATION:
+                            if (notifications == null) {
+                                notifications = new ArrayList<>();
+                            }
+                            notifications.add((Notification) message);
+                            break;
+                        case MSG_U2:
+                            if (u2Messages == null) {
+                                u2Messages = new ArrayList<>();
+                            }
+                            u2Messages.add(message);
+                            break;
+                        case MSG_GROUP:
+                            if (groupMessages == null) {
+                                groupMessages = new ArrayList<>();
+                            }
+                            groupMessages.add(message);
+                            break;
                     }
                 }
-                if (u2Messages.size() > 0) {
+                if (notifications != null && notifications.size() > 0) {
+                    messageReceiver.handleNotification(this.site, notifications);
+                }
+                if (u2Messages != null && u2Messages.size() > 0) {
                     messageReceiver.handleU2Message(this.site, u2Messages);
                 }
-                if (groupMessages.size() > 0) {
+                if (groupMessages != null && groupMessages.size() > 0) {
                     messageReceiver.handleGroupMessage(this.site, groupMessages);
                 }
             }

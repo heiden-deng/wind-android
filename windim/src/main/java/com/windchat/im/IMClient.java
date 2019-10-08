@@ -2,7 +2,7 @@ package com.windchat.im;
 
 import android.os.RemoteException;
 
-import com.windchat.im.bean.Message;
+import com.windchat.im.message.Message;
 import com.windchat.im.bean.Site;
 import com.windchat.im.socket.ConnectionConfig;
 import com.windchat.im.socket.IMConnection;
@@ -28,65 +28,52 @@ public class IMClient implements IConnectionHandler {
     private static IMessageReceiver messageReceiver;
     private static IConnectionHandler connectionHandler;
 
-    // 获取IMClient实例
-    public static IMClient getInstance(Site site) {
-        return IMManager.get(site);
+    private ExecutorService connExecutor;
+    private String logTag = TAG;
+    private SiteAddress address;
+    public IMConnection imConnection;
+    public IMClientHeartWorker keepAlivedWorker;
 
-    }
+    private IMessageReceiver _messageReceiver;
+    private IConnectionHandler _connectionHandler;
+
+    private Site site;
+
+    // 这两个属性，送给makeSureSocketAlived使用
+    protected boolean isDoingConnectAndAuth = false;
+    protected boolean authSuccessed = false;
+    protected long lastTimeDoConnectAndAuth = 0;
+
 
     public static void setConnectionHandler(IConnectionHandler handler, IMessageReceiver receiver) {
         messageReceiver = receiver;
         connectionHandler = handler;
     }
 
-    public static void connect(Site site) {
-        IMClient.getInstance(site).checkSocketAlive();
+    // 获取IMClient实例
+    public static IMClient getInstance(Site site) {
+        return IMManager.get(site);
     }
 
-    /**
-     * 支持同时连接多个站点
-     *
-     * @param sites
-     */
-    public static void connect(List<? extends Site> sites) {
-        if (sites != null && !sites.isEmpty()) {
-            for (Site site : sites) {
-                connect(site);
-            }
-        }
+    public void connect() {
+        this.checkSocketAlive();
     }
 
     /**
      * 确保某个站点的连接是OK的
      * <p>
      * 此方法是非阻塞方法，可以在主线程调用
-     *
-     * @param site
      */
-    public static void makeSureClientAlived(Site site) {
-        IMClient.getInstance(site).checkSocketAlive();
+    public void checkConnection() {
+        this.checkSocketAlive();
     }
 
     /**
      * 删除某个Client
-     *
-     * @param address
      */
-    public static void removeClient(SiteAddress address) {
-        IMManager.remove(address);
+    public void removeClient() {
+        IMManager.remove(this.site);
     }
-
-
-    public String logTag = TAG;
-    public SiteAddress address;
-    public IMConnection imConnection;
-    public IMClientHeartWorker keepAlivedWorker;
-    private ExecutorService connExecutor;
-
-    private IMessageReceiver _messageReceiver;
-    private IConnectionHandler _connectionHandler;
-
-    private Site site;
 
     protected IMClient(Site site) {
         this.site = site;
@@ -282,12 +269,6 @@ public class IMClient implements IConnectionHandler {
             WindLogger.getInstance().error(this.logTag, ex, "");
         }
     }
-
-
-    // 这两个属性，送给makeSureSocketAlived使用
-    protected boolean isDoingConnectAndAuth = false;
-    protected boolean authSuccessed = false;
-    protected long lastTimeDoConnectAndAuth = 0;
 
     /**
      * 确保IM连接是正常的，如果不正常，则立即重建；如果正常，则什么都不做。

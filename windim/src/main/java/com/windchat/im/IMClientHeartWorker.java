@@ -47,7 +47,7 @@ public class IMClientHeartWorker {
                 "%s heartThread_is_null:%d connection:%s",
                 log,
                 null == this.heartThread ? -1 : this.heartThread.hashCode(),
-                this.client.address.getFullUrl()
+                this.client.getSite().getHostAndPort()
         );
     }
 

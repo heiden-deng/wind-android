@@ -30,18 +30,14 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
 
     public IMClientConnectAndAuth(IMClient client) {
         this.client = client;
-        this.site = new Site(client.address.getHost(), client.address.getPort());
-        site.setSiteSessionId(client.address.toConnectionConfig().getSessionId());
-        site.setSiteUserId(client.address.toConnectionConfig().getSiteUserId());
+        this.site = client.getSite();
+        site.setSiteSessionId(client.getSite().getSiteSessionId());
+        site.setSiteUserId(client.getSite().getSiteUserId());
     }
 
     // 打日志
     private String logMessage(String log) {
-        return String.format(
-                "%s site:%s",
-                log,
-                this.client.address.getFullUrl()
-        );
+        return String.format("%s site:%s", log, this.client.getSite().getHostAndPort());
     }
 
     /**
@@ -79,12 +75,7 @@ public class IMClientConnectAndAuth implements Callable<Boolean> {
                 throw new Exception("IMConst.userSessionId is empty!");
             }
 
-            WindLogger.getInstance().debug(
-                    this.logTag,
-                    " siteAddress is " + this.client.address.getFullUrl()
-                            + " userId is " + site.getSiteUserId()
-                            + " session id Is " + sessionId
-            );
+            WindLogger.getInstance().debug(this.logTag, " siteAddress is " + this.client.getSite().getHostAndPort() + " userId is " + site.getSiteUserId() + " session id Is " + sessionId);
 
             ImSiteAuthProto.ImSiteAuthRequest request = ImSiteAuthProto.ImSiteAuthRequest.newBuilder()
                     .setSiteSessionId(sessionId)

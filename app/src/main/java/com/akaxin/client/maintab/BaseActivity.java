@@ -31,7 +31,6 @@ import com.umeng.message.PushAgent;
 import com.windchat.im.IMClient;
 import com.windchat.im.IMConst;
 import com.windchat.im.socket.IMConnection;
-import com.windchat.im.socket.SiteAddress;
 
 import java.util.Stack;
 
@@ -347,7 +346,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             getContext().sendBroadcast(intent);
         }
         if (!isConnected && site.getConnStatus() != Site.MANUAL_CONTROL_DISCONNECT_STATUS) {
-            IMClient.makeSureClientAlived(site);
+            IMClient.getInstance(site).checkConnection();
         }
 
         return isConnected;
