@@ -28,6 +28,7 @@ public class Message {
     protected String msgId;
     protected long msgPointer;
     protected String siteUserId = "";
+    protected String siteToId;
 
     protected String chatSessionId = "";
     protected ChatType chatType;
@@ -179,6 +180,14 @@ public class Message {
 
     public ChatType getChatType() {
         return chatType;
+    }
+
+    public String getSiteToId() {
+        return siteToId;
+    }
+
+    public void setSiteToId(String siteToId) {
+        this.siteToId = siteToId;
     }
 
     @Override

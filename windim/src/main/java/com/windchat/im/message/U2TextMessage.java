@@ -8,22 +8,12 @@ public class U2TextMessage extends Message {
 
     private int msgType = CoreProto.MsgType.TEXT_VALUE;
 
-    protected String siteFriendId;
-
     public U2TextMessage() {
         this.chatType = ChatType.MSG_U2;
     }
 
     public int getMsgType() {
         return msgType;
-    }
-
-    public String getGroupId() {
-        return siteFriendId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.siteFriendId = groupId;
     }
 
     @Override
@@ -33,7 +23,6 @@ public class U2TextMessage extends Message {
                 ", msgId='" + msgId + '\'' +
                 ", msgPointer=" + msgPointer +
                 ", siteUserId='" + siteUserId + '\'' +
-                ", groupId='" + siteFriendId + '\'' +
                 ", chatSessionId='" + chatSessionId + '\'' +
                 ", content='" + content + '\'' +
                 ", msgType=" + msgType +

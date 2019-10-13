@@ -12,8 +12,6 @@ public class U2AudioMessage extends Message {
     public static final int NONE_DOWNLOAD = -1;
     public static final int DOWNLOAD_FAIL = -2;
 
-    private String siteFriendId;
-
     private String audioId;
     private long audioTime;
     private String audioFilePath;
@@ -25,14 +23,6 @@ public class U2AudioMessage extends Message {
     @Override
     public int getMsgType() {
         return msgType;
-    }
-
-    public String getSiteFriendId() {
-        return siteFriendId;
-    }
-
-    public void setSiteFriendId(String siteFriendId) {
-        this.siteFriendId = siteFriendId;
     }
 
     public String getAudioId() {

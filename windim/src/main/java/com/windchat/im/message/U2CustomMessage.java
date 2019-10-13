@@ -11,8 +11,6 @@ public class U2CustomMessage extends Message {
 
     private int msgType = CoreProto.MsgType.U2_WEB_VALUE;
 
-    private String siteFriendId = "";
-
     public U2CustomMessage() {
         this.chatType = ChatType.MSG_U2;
     }
@@ -22,12 +20,5 @@ public class U2CustomMessage extends Message {
         return msgType;
     }
 
-    public String getSiteFriendId() {
-        return siteFriendId;
-    }
-
-    public void setSiteFriendId(String siteFriendId) {
-        this.siteFriendId = siteFriendId;
-    }
 }
 

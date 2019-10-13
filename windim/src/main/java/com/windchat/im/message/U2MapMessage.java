@@ -7,7 +7,6 @@ import com.windchat.proto.core.CoreProto;
 public class U2MapMessage extends Message {
 
     private int msgType = CoreProto.MsgType.U2_MAP_VALUE;
-    private String siteFriendId;
 
     public U2MapMessage() {
         this.chatType = ChatType.MSG_U2;
@@ -16,14 +15,6 @@ public class U2MapMessage extends Message {
     @Override
     public int getMsgType() {
         return msgType;
-    }
-
-    public String getSiteFriendId() {
-        return siteFriendId;
-    }
-
-    public void setSiteFriendId(String siteFriendId) {
-        this.siteFriendId = siteFriendId;
     }
 
     public static U2MapMessage copyMessage(U2MapMessage msg) {

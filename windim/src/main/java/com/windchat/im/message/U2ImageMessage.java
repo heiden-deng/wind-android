@@ -11,7 +11,6 @@ public class U2ImageMessage extends Message {
 
 
     private int msgType = CoreProto.MsgType.IMAGE_VALUE;
-    private String siteFriendId;
 
     public static final int STATUS_UPLOADING = 1;
     public static final int STATUS_SEND = 2;
@@ -32,14 +31,6 @@ public class U2ImageMessage extends Message {
     @Override
     public int getMsgType() {
         return msgType;
-    }
-
-    public String getSiteFriendId() {
-        return siteFriendId;
-    }
-
-    public void setSiteFriendId(String siteFriendId) {
-        this.siteFriendId = siteFriendId;
     }
 
     public String getFileId() {

@@ -8,22 +8,12 @@ public class Notification extends Message {
 
     private int msgType = CoreProto.MsgType.NOTICE_VALUE;
 
-    protected String siteFriendId;
-
     public Notification() {
         this.chatType = ChatType.NOTIFICATION;
     }
 
     public int getMsgType() {
         return msgType;
-    }
-
-    public String getGroupId() {
-        return siteFriendId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.siteFriendId = groupId;
     }
 
     @Override
@@ -33,7 +23,7 @@ public class Notification extends Message {
                 ", msgId='" + msgId + '\'' +
                 ", msgPointer=" + msgPointer +
                 ", siteUserId='" + siteUserId + '\'' +
-                ", groupId='" + siteFriendId + '\'' +
+                ", groupId='" + siteToId + '\'' +
                 ", chatSessionId='" + chatSessionId + '\'' +
                 ", content='" + content + '\'' +
                 ", msgType=" + msgType +
