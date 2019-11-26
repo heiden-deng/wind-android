@@ -12,8 +12,6 @@ import com.akaxin.proto.core.CoreProto;
 
 public class Message extends com.windchat.im.message.Message implements Parcelable {
 
-    public static long timeMsgInterval = 1000 * 60 * 3;
-
     public static final int MESSAGE_SEND = 100;                     // 发送的消息
     public static final int MESSAGE_RECEIVE = 200;                  // 接收的消息
 
@@ -27,9 +25,7 @@ public class Message extends com.windchat.im.message.Message implements Parcelab
     public static final int STATUS_RECEIVE_READ = 6;                // 收到的消息已读
 
     public static final long SYNC_MSG_STATUS_EXPIRE_TIME = 24 * 60 * 60 * 1000; ////有效期24小时
-
-    public static final String MSG_PROCESSS_RATE = "msg_process_rate";
-
+    
     private long _id;
     private String msgId;
     private long msgPointer;
@@ -214,14 +210,6 @@ public class Message extends com.windchat.im.message.Message implements Parcelab
         this.secretData = secretData;
     }
 
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
-
     public void setMsgWidth(int width) {
         this.msgWidth = width;
     }
@@ -325,7 +313,7 @@ public class Message extends com.windchat.im.message.Message implements Parcelab
         if (msg != null) {
             message.setMsgId(msg.getMsgId());
             message.setSiteUserId(msg.getSiteUserId());
-            this.setGroupId(this.getGroupId());
+            message.setGroupId(msg.getGroupId());
             message.setContent(msg.getContent());
             message.setMsgTime(msg.getMsgTime());
             message.setMsgType(msg.getMsgType());

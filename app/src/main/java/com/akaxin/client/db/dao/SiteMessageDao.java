@@ -223,10 +223,8 @@ public class SiteMessageDao {
                 "send_msg_time, " +
                 "server_msg_time, " +
                 "receive_msg_time, " +
-                "msg_width," +
-                " msg_height, " +
-                " href_url) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "msg_ext) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         SQLiteStatement statement = database.compileStatement(sql);
         for (com.windchat.im.message.Message msg : messages) {
@@ -236,7 +234,7 @@ public class SiteMessageDao {
                 }
                 statement.bindString(1, msg.getMsgId());
                 statement.bindString(2, msg.getSiteUserId());
-                statement.bindString(3, msg.getGroupId());
+                statement.bindString(3, msg.getSiteToId());
                 statement.bindString(4, msg.getChatSessionId());//消息帧，消息列表中某一个cells的标识
                 statement.bindString(5, msg.getContent());
                 statement.bindLong(6, msg.isSecret() ? 1 : 0);
@@ -248,9 +246,7 @@ public class SiteMessageDao {
                 statement.bindLong(12, msg.getSendMsgTime());//消息从客户端发送的时间
                 statement.bindLong(13, msg.getMsgTime());//消息到服务端时间
                 statement.bindLong(14, System.currentTimeMillis());//消息到达本地时间
-                statement.bindLong(15, msg.getMsgWidth());
-                statement.bindLong(16, msg.getMsgHeight());
-                statement.bindString(17, msg.getHrefUrl());
+                statement.bindString(15, "");
 
                 long result = statement.executeInsert();
 
@@ -358,9 +354,7 @@ public class SiteMessageDao {
                 " msg_status," +
                 " msg_type," +
                 " site_group_id, " +
-                " msg_width, " +
-                " msg_height, " +
-                " href_url)" + " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                " msg_ext)" + " values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         database.beginTransaction();
         SQLiteStatement statement = database.compileStatement(sql);
@@ -376,10 +370,8 @@ public class SiteMessageDao {
                 statement.bindString(5, msg.getChatSessionId());
                 statement.bindLong(6, msg.getMsgStatus());
                 statement.bindLong(7, msg.getMsgType());
-                statement.bindString(8, msg.getGroupId());
-                statement.bindLong(9, msg.getMsgWidth());
-                statement.bindLong(10, msg.getMsgHeight());
-                statement.bindString(11, msg.getHrefUrl());
+                statement.bindString(8, msg.getSiteToId());
+                statement.bindString(9, "");
 
                 long result = statement.executeInsert();
                 if (result > 0) {

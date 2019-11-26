@@ -158,7 +158,7 @@ public class IMMessageReceiveHandler implements IMessageHandler {
                             U2NoticeMessage u2Notice = new U2NoticeMessage();
                             u2Notice.setMsgId(u2MsgNotice.getMsgId());
                             u2Notice.setSiteUserId(u2MsgNotice.getSiteUserId());
-                            u2Notice.setSiteFriendId(u2MsgNotice.getSiteFriendId());
+                            u2Notice.setSiteToId(u2MsgNotice.getSiteFriendId());
                             u2Notice.setChatSessionId(u2MsgNotice.getSiteUserId());
                             u2Notice.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
                             if (u2MsgNotice.getSiteUserId().equals(curSiteUserId)) {
@@ -186,7 +186,7 @@ public class IMMessageReceiveHandler implements IMessageHandler {
                                 u2TextMessage.setChatSessionId(msgText.getSiteUserId());
                             }
                             u2TextMessage.setSiteUserId(msgText.getSiteUserId());
-                            u2TextMessage.setGroupId(msgText.getSiteFriendId());
+                            u2TextMessage.setSiteToId(msgText.getSiteFriendId());
                             message = u2TextMessage;
                             messages.add(u2TextMessage);
                             break;
@@ -208,7 +208,7 @@ public class IMMessageReceiveHandler implements IMessageHandler {
                                 u2VoiceMsg.setChatSessionId(voice.getSiteUserId());
                             }
                             u2VoiceMsg.setSiteUserId(voice.getSiteUserId());
-                            u2VoiceMsg.setSiteFriendId(voice.getSiteFriendId());
+                            u2VoiceMsg.setSiteToId(voice.getSiteFriendId());
                             u2VoiceMsg.setMsgTime(voice.getTime());
 
                             message = u2VoiceMsg;
@@ -234,7 +234,7 @@ public class IMMessageReceiveHandler implements IMessageHandler {
                                 u2ImgMsg.setChatSessionId(image.getSiteUserId());
                             }
                             u2ImgMsg.setSiteUserId(image.getSiteUserId());
-                            u2ImgMsg.setSiteFriendId(image.getSiteFriendId());
+                            u2ImgMsg.setSiteToId(image.getSiteFriendId());
                             u2ImgMsg.setMsgTime(image.getTime());
 
                             message = u2ImgMsg;
@@ -258,7 +258,7 @@ public class IMMessageReceiveHandler implements IMessageHandler {
                                 u2CustomMsg.setMsgStatus(Message.STATUS_SEND_SUCCESS);
                             }
                             u2CustomMsg.setSiteUserId(u2Web.getSiteUserId());
-                            u2CustomMsg.setSiteFriendId(u2Web.getSiteFriendId());
+                            u2CustomMsg.setSiteToId(u2Web.getSiteFriendId());
                             u2CustomMsg.setContent(u2Web.getWebCode());
                             u2CustomMsg.setMsgTime(u2Web.getTime());
 

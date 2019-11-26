@@ -95,15 +95,13 @@ public interface DBSQL {
                     "msg_base64_tsk TEXT," +
                     "to_device_id VARCHAR(100)," +
                     "msg_status INTEGER, " +
-                    " msg_width INTEGER, " +
-                    " msg_height INTEGER, " +
-                    " href_url VARCHAR(100), " +
+                    "msg_ext TEXT, " +
                     "send_msg_time   LONG, " +
                     "server_msg_time  LONG," +
                     "receive_msg_time LONG," +
                     "read_msg_time    LONG, " +
                     "send_msg_error_code VARCHAR(50), " +
-                    " to_base64_device_pubk TEXT" +
+                    "to_base64_device_pubk TEXT" +
                     ");";
 
     String SQL_CREATE_SITE_U2_MSG_INDEX = "CREATE INDEX IF NOT EXISTS index_u2_chat_session_id ON " + SITE_U2_MSG_TABLE + "(from_site_user_id, to_site_user_id);";
@@ -168,32 +166,32 @@ public interface DBSQL {
 
     String SQL_CREATE_SITE_GROUP_PROFILE_INDEX = "CREATE INDEX IF NOT EXISTS index_site_group_id ON " + SITE_GROUP_PROFILE_TABLE + "(site_group_id);";
 
-    String SQL_DROP_AKX_SITE_TABLE           = " DROP TABLE IF EXISTS " + AKX_USER_IDENTITY_TABLE;
-    String SQL_DROP_SITE_U2_MSG_TABLE        = " DROP TABLE IF EXISTS " + SITE_U2_MSG_TABLE;
-    String SQL_DROP_SITE_CHAT_SESSION_TABLE  = " DROP TABLE IF EXISTS " + SITE_CHAT_SESSION_TABLE;
-    String SQL_DROP_SITE_GROUP_MSG_TABLE     = " DROP TABLE IF EXISTS " + SITE_GROUP_MSG_TABLE;
-    String SQL_DROP_SITE_USER_PROFILE_TABLE  = " DROP TABLE IF EXISTS " + SITE_USER_PROFILE_TABLE;
+    String SQL_DROP_AKX_SITE_TABLE = " DROP TABLE IF EXISTS " + AKX_USER_IDENTITY_TABLE;
+    String SQL_DROP_SITE_U2_MSG_TABLE = " DROP TABLE IF EXISTS " + SITE_U2_MSG_TABLE;
+    String SQL_DROP_SITE_CHAT_SESSION_TABLE = " DROP TABLE IF EXISTS " + SITE_CHAT_SESSION_TABLE;
+    String SQL_DROP_SITE_GROUP_MSG_TABLE = " DROP TABLE IF EXISTS " + SITE_GROUP_MSG_TABLE;
+    String SQL_DROP_SITE_USER_PROFILE_TABLE = " DROP TABLE IF EXISTS " + SITE_USER_PROFILE_TABLE;
     String SQL_DROP_SITE_GROUP_PROFILE_TABLE = " DROP TABLE IF EXISTS " + SITE_GROUP_PROFILE_TABLE;
-    String SQL_DROP_AKX_USER_IDENTITY_TABLE  = " DROP TABLE IF EXISTS " + AKX_SITE_TABLE;
+    String SQL_DROP_AKX_USER_IDENTITY_TABLE = " DROP TABLE IF EXISTS " + AKX_SITE_TABLE;
 
 
-    String SQL_U2_MSG_ADD_DEVICE_PUBK_6                  =  " ALTER  TABLE " + SITE_U2_MSG_TABLE + " ADD  to_base64_device_pubk TEXT ;";
-    String SQL_AKX_SITE_ADD_IS_INVITE_CODE_6             =  " ALTER  TABLE " + AKX_SITE_TABLE + " ADD  is_invite_code INTEGER ;";
-    String SQL_AKX_SITE_CHANGE_REGISTERWAY_TO_REALNAME_6 =  " ALTER  TABLE " + AKX_SITE_TABLE + " ADD real_name_config INTEGER; ";
+    String SQL_U2_MSG_ADD_DEVICE_PUBK_6 = " ALTER  TABLE " + SITE_U2_MSG_TABLE + " ADD  to_base64_device_pubk TEXT ;";
+    String SQL_AKX_SITE_ADD_IS_INVITE_CODE_6 = " ALTER  TABLE " + AKX_SITE_TABLE + " ADD  is_invite_code INTEGER ;";
+    String SQL_AKX_SITE_CHANGE_REGISTERWAY_TO_REALNAME_6 = " ALTER  TABLE " + AKX_SITE_TABLE + " ADD real_name_config INTEGER; ";
 
 
-    String SQL_SITE_GROUP_PROFILE_ADD_COUNT_MEMBER_7    = " ALTER  TABLE " + SITE_GROUP_PROFILE_TABLE + " ADD count_member INTEGER;";
+    String SQL_SITE_GROUP_PROFILE_ADD_COUNT_MEMBER_7 = " ALTER  TABLE " + SITE_GROUP_PROFILE_TABLE + " ADD count_member INTEGER;";
     String SQL_SITE_GROUP_PROFILE_ADD_IS_CLOSE_INVITE_7 = " ALTER  TABLE " + SITE_GROUP_PROFILE_TABLE + " ADD is_close_invite BOOLEAN;";
 
-    String SQL_U2_MSG_ADD_MSG_WIDTH_8     = " ALTER  TABLE " + SITE_U2_MSG_TABLE + " ADD msg_width INTEGER;";
-    String SQL_U2_MSG_ADD_MSG_HEIGHT_8    = " ALTER  TABLE " + SITE_U2_MSG_TABLE + " ADD msg_height INTEGER ;";
-    String SQL_U2_MSG_ADD_HREF_URL_8      =  " ALTER  TABLE " + SITE_U2_MSG_TABLE + " ADD href_url VARCHAR(100); ";
-    String SQL_GROUP_MSG_ADD_MSG_WIDTH_8  = " ALTER  TABLE " + SITE_GROUP_MSG_TABLE + " ADD msg_width INTEGER;";
+    String SQL_U2_MSG_ADD_MSG_WIDTH_8 = " ALTER  TABLE " + SITE_U2_MSG_TABLE + " ADD msg_width INTEGER;";
+    String SQL_U2_MSG_ADD_MSG_HEIGHT_8 = " ALTER  TABLE " + SITE_U2_MSG_TABLE + " ADD msg_height INTEGER ;";
+    String SQL_U2_MSG_ADD_HREF_URL_8 = " ALTER  TABLE " + SITE_U2_MSG_TABLE + " ADD href_url VARCHAR(100); ";
+    String SQL_GROUP_MSG_ADD_MSG_WIDTH_8 = " ALTER  TABLE " + SITE_GROUP_MSG_TABLE + " ADD msg_width INTEGER;";
     String SQL_GROUP_MSG_ADD_MSG_HEIGHT_8 = " ALTER  TABLE " + SITE_GROUP_MSG_TABLE + " ADD msg_height INTEGER ;";
-    String SQL_GROUP_MSG_ADD_HREF_URL_8   =  " ALTER  TABLE " + SITE_GROUP_MSG_TABLE + " ADD href_url VARCHAR(100); ";
+    String SQL_GROUP_MSG_ADD_HREF_URL_8 = " ALTER  TABLE " + SITE_GROUP_MSG_TABLE + " ADD href_url VARCHAR(100); ";
 
-    String SQL_AKX_SITE_ADD_SITE_LOGIN_ID_8      = " ALTER TABLE " + AKX_SITE_TABLE + " ADD site_login_id VARCHAR(50);";
+    String SQL_AKX_SITE_ADD_SITE_LOGIN_ID_8 = " ALTER TABLE " + AKX_SITE_TABLE + " ADD site_login_id VARCHAR(50);";
     String SQL_SITE_USER_PROFILE_ADD_NICK_NAME_8 = " ALTER TABLE " + SITE_USER_PROFILE_TABLE + " add site_nick_name VARCHAR(50);";
-    String SQL_SITE_USER_PROFILE_ADD_SITE_LOGIN_ID_8      = " ALTER TABLE " + SITE_USER_PROFILE_TABLE + " ADD site_login_id VARCHAR(50);";
+    String SQL_SITE_USER_PROFILE_ADD_SITE_LOGIN_ID_8 = " ALTER TABLE " + SITE_USER_PROFILE_TABLE + " ADD site_login_id VARCHAR(50);";
 
 }
