@@ -10,7 +10,7 @@ import com.akaxin.client.R;
 import com.akaxin.client.api.ApiClient;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.chat.view.impl.GroupMsgActivity;
+import com.akaxin.client.chat.view.impl.GroupMessageActivity;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.constant.SiteConfig;
 import com.akaxin.client.db.bean.UserGroupBean;
@@ -241,10 +241,10 @@ public class GroupCreateActivity extends BaseActivity implements ChooseFriendLis
 
             GroupPresenter.getInstance(currentSite).createGroupSimpleProfile(userGroupBean);
 
-            Intent intent = new Intent(getContext(), GroupMsgActivity.class);
-            intent.putExtra(GroupMsgActivity.KEY_GROUP_ID, simpleGroupProfile.getGroupId());
-            intent.putExtra(GroupMsgActivity.KEY_GROUP_NAME, groupName);
-            intent.putExtra(GroupMsgActivity.KEY_GROUP_PROFILE, simpleGroupProfile.toByteArray());
+            Intent intent = new Intent(getContext(), GroupMessageActivity.class);
+            intent.putExtra(GroupMessageActivity.KEY_GROUP_ID, simpleGroupProfile.getGroupId());
+            intent.putExtra(GroupMessageActivity.KEY_GROUP_NAME, groupName);
+            intent.putExtra(GroupMessageActivity.KEY_GROUP_PROFILE, simpleGroupProfile.toByteArray());
             intent.putExtra(IntentKey.KEY_CURRENT_SITE, currentSite);
             startActivity(intent);
             finish();

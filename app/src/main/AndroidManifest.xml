@@ -42,12 +42,12 @@
         android:theme="@style/ZalyAppTheme">
 
         <activity
-            android:name=".chat.view.impl.MessageActivity"
+            android:name=".chat.view.impl.U2MessageActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".chat.view.impl.GroupMsgActivity"
+            android:name=".chat.view.impl.GroupMessageActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />

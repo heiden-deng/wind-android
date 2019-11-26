@@ -8,7 +8,7 @@ import com.akaxin.client.R;
 import com.akaxin.client.api.ApiClient;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.chat.view.impl.GroupMsgActivity;
+import com.akaxin.client.chat.view.impl.GroupMessageActivity;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.constant.SiteConfig;
 import com.akaxin.client.group.adapter.GroupListAdapter;
@@ -61,10 +61,10 @@ public class GroupContactsActivity extends BaseActivity {
                     Toaster.showInvalidate("请稍候再试");
                     return;
                 }
-                Intent intent = new Intent(GroupContactsActivity.this, GroupMsgActivity.class);
-                intent.putExtra(GroupMsgActivity.KEY_GROUP_ID, profile.getGroupId());
-                intent.putExtra(GroupMsgActivity.KEY_GROUP_NAME, profile.getGroupName());
-                intent.putExtra(GroupMsgActivity.KEY_GROUP_PROFILE, profile.toByteArray());
+                Intent intent = new Intent(GroupContactsActivity.this, GroupMessageActivity.class);
+                intent.putExtra(GroupMessageActivity.KEY_GROUP_ID, profile.getGroupId());
+                intent.putExtra(GroupMessageActivity.KEY_GROUP_NAME, profile.getGroupName());
+                intent.putExtra(GroupMessageActivity.KEY_GROUP_PROFILE, profile.toByteArray());
                 intent.putExtra(IntentKey.KEY_CURRENT_SITE, currentSite);
                 startActivity(intent);
             }

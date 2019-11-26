@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.akaxin.client.bean.Site;
-import com.akaxin.client.chat.view.impl.GroupMsgActivity;
-import com.akaxin.client.chat.view.impl.MessageActivity;
+import com.akaxin.client.chat.view.impl.GroupMessageActivity;
+import com.akaxin.client.chat.view.impl.U2MessageActivity;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.db.bean.UserGroupBean;
 import com.akaxin.client.friend.ApplyAddFriendActivity;
@@ -202,7 +202,7 @@ public abstract class UrlUtils {
             Intent intent = goToFriendProfile(context, siteUserId);
             return intent;
         } else {
-            Intent intent = new Intent(context, MessageActivity.class);
+            Intent intent = new Intent(context, U2MessageActivity.class);
             intent.putExtra(IntentKey.KEY_FRIEND_SITE_USER_ID, siteUserId);
             intent.putExtra(IntentKey.KEY_FRIEND_USER_NAME, profile.getUserName());
             intent.putExtra(IntentKey.KEY_FRIEND_PROFILE, profile.toByteArray());
@@ -227,10 +227,10 @@ public abstract class UrlUtils {
             return goToGroupProfile(context, siteGroupId, false);
         } else {
             ZalyLogUtils.getInstance().info(TAG, "groupId is " + siteGroupId);
-            Intent intent = new Intent(context, GroupMsgActivity.class);
-            intent.putExtra(GroupMsgActivity.KEY_GROUP_ID, siteGroupId);
-            intent.putExtra(GroupMsgActivity.KEY_GROUP_NAME, profile.getGroupName());
-            intent.putExtra(GroupMsgActivity.KEY_GROUP_PROFILE, profile.toString());
+            Intent intent = new Intent(context, GroupMessageActivity.class);
+            intent.putExtra(GroupMessageActivity.KEY_GROUP_ID, siteGroupId);
+            intent.putExtra(GroupMessageActivity.KEY_GROUP_NAME, profile.getGroupName());
+            intent.putExtra(GroupMessageActivity.KEY_GROUP_PROFILE, profile.toString());
             return intent;
         }
     }

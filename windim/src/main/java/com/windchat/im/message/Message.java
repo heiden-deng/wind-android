@@ -178,6 +178,10 @@ public class Message {
         this.msgType = msgType;
     }
 
+    public void setChatType(ChatType chatType) {
+        this.chatType = chatType;
+    }
+
     public ChatType getChatType() {
         return chatType;
     }

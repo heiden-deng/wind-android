@@ -1,12 +1,10 @@
 package com.akaxin.client.chat.view.impl;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
@@ -17,8 +15,6 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.akaxin.client.Configs;
 import com.akaxin.client.R;
 import com.akaxin.client.bean.AudioInfo;
@@ -32,7 +28,7 @@ import com.akaxin.client.chat.MessageRecyclerOnScrollListener;
 import com.akaxin.client.chat.MessageViewHolder;
 import com.akaxin.client.chat.MsgContentActivity;
 import com.akaxin.client.chat.presenter.IMessagePresenter;
-import com.akaxin.client.chat.presenter.impl.MessagePresenter;
+import com.akaxin.client.chat.presenter.impl.U2MessagePresenter;
 import com.akaxin.client.chat.view.IMessageView;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.db.ZalyDbContentHelper;
@@ -46,7 +42,6 @@ import com.akaxin.client.util.toast.Toaster;
 import com.akaxin.proto.core.DeviceProto;
 import com.akaxin.proto.core.PluginProto;
 import com.akaxin.proto.core.UserProto;
-import com.blankj.utilcode.util.PermissionUtils;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.orhanobut.logger.Logger;
 
@@ -69,9 +64,9 @@ import static com.akaxin.client.chat.MsgContentActivity.KEY_NOT_VIEWABLE;
  * Created by yichao on 2017/10/10.
  */
 
-public class MessageActivity extends BaseMsgActivity implements IMessageView {
+public class U2MessageActivity extends BaseMsgActivity implements IMessageView {
 
-    public static final String TAG = MessageActivity.class.getSimpleName();
+    public static final String TAG = U2MessageActivity.class.getSimpleName();
 
 
     public static final int MSG_PREVIEW_IMG = 1;
@@ -132,7 +127,7 @@ public class MessageActivity extends BaseMsgActivity implements IMessageView {
         msgRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                WebView webView = new WebView(MessageActivity.this);
+                WebView webView = new WebView(U2MessageActivity.this);
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     /**
                      * 恢复所有WebView的所有布局，解析和JavaScript计时器，将恢复调度所有计时器.
@@ -212,7 +207,7 @@ public class MessageActivity extends BaseMsgActivity implements IMessageView {
 
     @Override
     public void initPresenter() {
-        iPresenter = new MessagePresenter();
+        iPresenter = new U2MessagePresenter();
         iPresenter.bindView(this);
     }
 
@@ -434,7 +429,7 @@ public class MessageActivity extends BaseMsgActivity implements IMessageView {
                 Pair<View, String> appBarPair = Pair.create(appBar, "app_bar");
                 Pair<View, String> titleLayoutPair = Pair.create(titleLayout, "title_layout");
                 ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(MessageActivity.this, appBarPair, titleLayoutPair);
+                        makeSceneTransitionAnimation(U2MessageActivity.this, appBarPair, titleLayoutPair);
                 Intent intent = new Intent(this, FriendProfileActivity.class);
                 intent.putExtra(IntentKey.KEY_PROFILE_MODE, FriendProfileActivity.MODE_FRIEND_SITE_ID);
                 intent.putExtra(IntentKey.KEY_FRIEND_SITE_ID, friendSiteUserId);

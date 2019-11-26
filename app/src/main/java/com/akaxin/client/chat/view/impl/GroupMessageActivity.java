@@ -1,11 +1,9 @@
 package com.akaxin.client.chat.view.impl;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.view.MotionEvent;
@@ -13,8 +11,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.akaxin.client.Configs;
 import com.akaxin.client.R;
 import com.akaxin.client.bean.AudioInfo;
@@ -27,7 +23,7 @@ import com.akaxin.client.chat.MessageAdapterListener;
 import com.akaxin.client.chat.MessageRecyclerOnScrollListener;
 import com.akaxin.client.chat.MessageViewHolder;
 import com.akaxin.client.chat.presenter.IGroupMsgPresenter;
-import com.akaxin.client.chat.presenter.impl.GroupMsgPresenter;
+import com.akaxin.client.chat.presenter.impl.GroupMessagePresenter;
 import com.akaxin.client.chat.view.IGroupMsgView;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.db.ZalyDbContentHelper;
@@ -39,7 +35,6 @@ import com.akaxin.client.util.log.ZalyLogUtils;
 import com.akaxin.client.util.toast.Toaster;
 import com.akaxin.proto.core.GroupProto;
 import com.akaxin.proto.core.PluginProto;
-import com.blankj.utilcode.util.PermissionUtils;
 import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -58,9 +53,9 @@ import me.iwf.photopicker.PhotoPicker;
  * Created by yichao on 2017/10/10.
  */
 
-public class GroupMsgActivity extends BaseMsgActivity implements IGroupMsgView, View.OnClickListener {
+public class GroupMessageActivity extends BaseMsgActivity implements IGroupMsgView, View.OnClickListener {
 
-    private static final String TAG = GroupMsgActivity.class.getSimpleName();
+    private static final String TAG = GroupMessageActivity.class.getSimpleName();
 
     public static final String KEY_GROUP_ID = "key_group_id";
     public static final String KEY_GROUP_NAME = "key_group_name";
@@ -212,7 +207,7 @@ public class GroupMsgActivity extends BaseMsgActivity implements IGroupMsgView, 
 
     @Override
     public void initPresenter() {
-        iPresenter = new GroupMsgPresenter();
+        iPresenter = new GroupMessagePresenter();
         iPresenter.bindView(this);
     }
 
@@ -325,7 +320,7 @@ public class GroupMsgActivity extends BaseMsgActivity implements IGroupMsgView, 
                 Pair<View, String> appBarPair = Pair.create(appBar, "app_bar");
                 Pair<View, String> titleLayoutPair = Pair.create(titleLayout, "title_layout");
                 ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(GroupMsgActivity.this, appBarPair, titleLayoutPair);
+                        makeSceneTransitionAnimation(GroupMessageActivity.this, appBarPair, titleLayoutPair);
                 Intent intent = new Intent(this, GroupProfileActivity.class);
                 intent.putExtra(IntentKey.KEY_GROUP_ID, iPresenter.getGroupId());
                 intent.putExtra(IntentKey.KEY_IS_GROUP_MEMBER, true);

@@ -34,6 +34,7 @@ import com.akaxin.proto.core.UserProto;
 import com.akaxin.proto.site.ApiDeviceProfileProto;
 import com.akaxin.proto.site.ApiSecretChatApplyU2Proto;
 import com.windchat.im.IMClient;
+import com.windchat.im.message.U2TextMessage;
 import com.windchat.im.socket.SiteAddress;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -48,9 +49,9 @@ import java.util.List;
  * Created by yichao on 2017/10/20.
  */
 
-public class MessagePresenter implements IMessagePresenter {
+public class U2MessagePresenter implements IMessagePresenter {
 
-    private static final String TAG = "MessagePresenter";
+    private static final String TAG = "U2MessagePresenter";
     private IMessageView iView;
 
     // 是否为绝密模式
@@ -157,34 +158,34 @@ public class MessagePresenter implements IMessagePresenter {
 
     @Override
     public void sendTextMessage(String content) {
-        Message message = new Message();
-        message.setContent(content);
-        message.setSiteUserId(currentSite.getSiteUserId());
-        message.setGroupId(friendSiteUserId);
-        message.setChatSessionId(chatSessionId);
-        message.setMsgId(MsgUtils.getCurMsgId(MsgUtils.MSG_TYPE_U2, currentSite));
+        Message u2Message = new Message();
+        u2Message.setContent(content);
+        u2Message.setSiteUserId(currentSite.getSiteUserId());
+        u2Message.setSiteToId(friendSiteUserId);
+        u2Message.setChatSessionId(chatSessionId);
+        u2Message.setMsgId(MsgUtils.getCurMsgId(MsgUtils.MSG_TYPE_U2, currentSite));
         long time = System.currentTimeMillis();
-        message.setMsgTime(time);
-        message.setSendMsgTime(time);
-        message.setSecret(isSecretMode);
+        u2Message.setMsgTime(time);
+        u2Message.setSendMsgTime(time);
+        u2Message.setSecret(isSecretMode);
         boolean isNet = NetUtils.getNetInfo();
         if (!isNet) {
-            message.setMsgStatus(Message.STATUS_SEND_FAILED);
+            u2Message.setMsgStatus(Message.STATUS_SEND_FAILED);
         } else {
-            message.setMsgStatus(Message.STATUS_SENDING);
+            u2Message.setMsgStatus(Message.STATUS_SENDING);
         }
 
         if (isSecretMode) {
-            message.setMsgType(CoreProto.MsgType.SECRET_TEXT_VALUE);
-            message.setToDeviceId(friendDeviceInfo.getDeviceId());
+            u2Message.setMsgType(CoreProto.MsgType.SECRET_TEXT_VALUE);
+            u2Message.setToDeviceId(friendDeviceInfo.getDeviceId());
             String toDevicePubk64 = Base64.encodeToString(friendDeviceInfo.getUserDevicePubk().getBytes(), Base64.NO_WRAP);
-            message.setToDevicePubk(toDevicePubk64);
-            ZalyTaskExecutor.executeUserTask(TAG, new SendSecretTask(SendSecretTask.INSERT_MODE, message, friendDeviceInfo.getUserDevicePubk()));
+            u2Message.setToDevicePubk(toDevicePubk64);
+            ZalyTaskExecutor.executeUserTask(TAG, new SendSecretTask(SendSecretTask.INSERT_MODE, u2Message, friendDeviceInfo.getUserDevicePubk()));
         } else {
-            message.setMsgType(CoreProto.MsgType.TEXT_VALUE);
-            ZalyTaskExecutor.executeUserTask(TAG, new SendMessageTask(SendMessageTask.INSERT_MODE, message));
+            u2Message.setMsgType(CoreProto.MsgType.TEXT_VALUE);
+            ZalyTaskExecutor.executeUserTask(TAG, new SendMessageTask(SendMessageTask.INSERT_MODE, u2Message));
         }
-        iView.onStartSendingMessage(message);
+        iView.onStartSendingMessage(u2Message);
     }
 
     @Override
@@ -727,6 +728,7 @@ public class MessagePresenter implements IMessagePresenter {
         public SendMessageTask(int mode, Message message) {
             this.mode = mode;
             this.message = message;
+            this.message.setChatType(com.windchat.im.message.Message.ChatType.MSG_U2);
         }
 
         @Override

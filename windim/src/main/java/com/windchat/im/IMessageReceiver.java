@@ -28,9 +28,9 @@ public interface IMessageReceiver {
 
     void handleNotification(Site site, List<Notification> notifications) throws Exception;
 
-    void handleU2Message(Site site, List<Message> u2Messages) throws Exception;
+    void handleU2Message(Site site, List<? extends Message> u2Messages) throws Exception;
 
-    void handleGroupMessage(Site site, List<Message> groupMessages) throws Exception;
+    void handleGroupMessage(Site site, List<? extends Message> groupMessages) throws Exception;
 
     void handleException(Site site, Throwable t);
 }

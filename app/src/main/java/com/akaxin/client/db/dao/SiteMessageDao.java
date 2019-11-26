@@ -864,9 +864,6 @@ public class SiteMessageDao {
                 message.setGroupId(cursor.getString(cursor.getColumnIndex("to_site_user_id")));
                 message.setChatSessionId(cursor.getString(cursor.getColumnIndex("chat_session_id")));
                 message.setToDevicePubk(cursor.getString(cursor.getColumnIndex("to_base64_device_pubk")));
-                message.setMsgWidth(cursor.getInt(cursor.getColumnIndex("msg_width")));
-                message.setMsgHeight(cursor.getInt(cursor.getColumnIndex("msg_height")));
-                message.setHrefUrl(cursor.getString(cursor.getColumnIndex("href_url")));
 
                 messages.add(message);
             } while (cursor.moveToNext());

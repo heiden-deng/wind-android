@@ -4,7 +4,7 @@ import android.util.Base64;
 
 import com.orhanobut.logger.Logger;
 import com.akaxin.client.bean.Message;
-import com.akaxin.client.chat.presenter.impl.GroupMsgPresenter;
+import com.akaxin.client.chat.presenter.impl.GroupMessagePresenter;
 import com.akaxin.client.util.data.StringUtils;
 
 import org.bouncycastle.jce.provider.JCERSAPublicKey;
@@ -190,7 +190,7 @@ public class RSAUtils {
     }
 
     /**
-     * 加密消息 仅适用于单人聊天，群组见{@link GroupMsgPresenter}
+     * 加密消息 仅适用于单人聊天，群组见{@link GroupMessagePresenter}
      *
      * @param message     要加密的消息
      * @param pubKey64Str 64编码的公钥字符串

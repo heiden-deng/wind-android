@@ -18,8 +18,8 @@ import com.akaxin.client.bean.ChatSession;
 import com.akaxin.client.bean.Session;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.bean.event.AppEvent;
-import com.akaxin.client.chat.view.impl.GroupMsgActivity;
-import com.akaxin.client.chat.view.impl.MessageActivity;
+import com.akaxin.client.chat.view.impl.GroupMessageActivity;
+import com.akaxin.client.chat.view.impl.U2MessageActivity;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.dialog.SessionMenuItem;
 import com.akaxin.client.maintab.BubbleUpdateListener;
@@ -91,16 +91,16 @@ public class SessionFragment extends MVPBaseFragment<SessionContract.View, Sessi
             @Override
             public void onSessionClick(ChatSession chatSession) {
                 if (chatSession.getType() == Session.TYPE_FRIEND_SESSION) {
-                    Intent intent = new Intent(getActivity(), MessageActivity.class);
+                    Intent intent = new Intent(getActivity(), U2MessageActivity.class);
                     intent.putExtra(IntentKey.KEY_FRIEND_SITE_USER_ID, chatSession.getChatSessionId());
                     intent.putExtra(IntentKey.KEY_FRIEND_USER_NAME, chatSession.getTitle());
                     intent.putExtra(IntentKey.KEY_MSG_UNREAD_NUM, chatSession.getUnreadNum());
                     intent.putExtra(IntentKey.KEY_CURRENT_SITE, currentSite);
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(getActivity(), GroupMsgActivity.class);
-                    intent.putExtra(GroupMsgActivity.KEY_GROUP_ID, chatSession.getChatSessionId());
-                    intent.putExtra(GroupMsgActivity.KEY_GROUP_NAME, chatSession.getTitle());
+                    Intent intent = new Intent(getActivity(), GroupMessageActivity.class);
+                    intent.putExtra(GroupMessageActivity.KEY_GROUP_ID, chatSession.getChatSessionId());
+                    intent.putExtra(GroupMessageActivity.KEY_GROUP_NAME, chatSession.getTitle());
                     intent.putExtra(IntentKey.KEY_CURRENT_SITE, currentSite);
                     startActivity(intent);
                 }

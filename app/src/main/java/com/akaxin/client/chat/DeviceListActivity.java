@@ -6,14 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.akaxin.client.R;
-import com.akaxin.client.ZalyApplication;
 import com.akaxin.client.api.ApiClient;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.chat.view.impl.DeviceListAdapter;
-import com.akaxin.client.chat.view.impl.MessageActivity;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.maintab.BaseActivity;
-import com.akaxin.client.maintab.ZalyMainActivity;
 import com.akaxin.client.util.data.StringUtils;
 import com.akaxin.client.util.task.ZalyTaskExecutor;
 import com.akaxin.client.util.toast.Toaster;

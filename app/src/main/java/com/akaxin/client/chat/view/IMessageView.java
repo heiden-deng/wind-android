@@ -1,17 +1,15 @@
 package com.akaxin.client.chat.view;
 
 import android.content.Context;
-import android.content.Intent;
 
-import com.akaxin.proto.core.PluginProto;
-import com.akaxin.proto.site.ApiDeviceProfileProto;
 import com.akaxin.client.bean.Message;
 import com.akaxin.client.chat.MessageAdapter;
+import com.akaxin.proto.core.PluginProto;
 
 import java.util.List;
 
 /**
- * 这一接口用于 MessageActivity 的 View 层调用.
+ * 这一接口用于 U2MessageActivity 的 View 层调用.
  */
 
 public interface IMessageView extends IView {

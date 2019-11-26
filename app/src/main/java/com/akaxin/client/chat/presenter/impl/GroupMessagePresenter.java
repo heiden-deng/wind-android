@@ -42,9 +42,9 @@ import java.util.List;
  * Created by yichao on 2017/10/20.
  */
 
-public class GroupMsgPresenter implements IGroupMsgPresenter {
+public class GroupMessagePresenter implements IGroupMsgPresenter {
 
-    private static final String TAG = GroupMsgPresenter.class.getSimpleName();
+    private static final String TAG = GroupMessagePresenter.class.getSimpleName();
     private static final int GROUP_MSG_PAGE_SIZE = 20;
 
     private IGroupMsgView iView;
@@ -387,6 +387,7 @@ public class GroupMsgPresenter implements IGroupMsgPresenter {
         public SendMessageTask(int mode, Message message) {
             this.mode = mode;
             this.message = message;
+            this.message.setChatType(com.windchat.im.message.Message.ChatType.MSG_GROUP);
         }
 
         @Override

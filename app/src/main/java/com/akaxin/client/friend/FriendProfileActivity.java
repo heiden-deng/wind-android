@@ -22,7 +22,7 @@ import com.akaxin.client.api.ApiClient;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.bean.event.AppEvent;
-import com.akaxin.client.chat.view.impl.MessageActivity;
+import com.akaxin.client.chat.view.impl.U2MessageActivity;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.constant.SiteConfig;
 import com.akaxin.client.db.bean.UserFriendBean;
@@ -387,7 +387,7 @@ public class FriendProfileActivity extends BaseActivity implements CompoundButto
                         .show();
                 break;
             case R.id.item_send_message:
-                Intent intent = new Intent(this, MessageActivity.class);
+                Intent intent = new Intent(this, U2MessageActivity.class);
                 intent.putExtra(IntentKey.KEY_FRIEND_SITE_USER_ID, profile.getSiteUserId());
                 intent.putExtra(IntentKey.KEY_FRIEND_USER_NAME, profile.getUserName());
                 intent.putExtra(IntentKey.KEY_FRIEND_PROFILE, profile.toByteArray());

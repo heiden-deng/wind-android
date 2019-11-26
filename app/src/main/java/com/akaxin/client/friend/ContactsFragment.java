@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import com.akaxin.client.api.ApiClient;
 import com.akaxin.client.api.ZalyAPIException;
 import com.akaxin.client.bean.Site;
 import com.akaxin.client.bean.event.AppEvent;
-import com.akaxin.client.chat.view.impl.MessageActivity;
+import com.akaxin.client.chat.view.impl.U2MessageActivity;
 import com.akaxin.client.constant.IntentKey;
 import com.akaxin.client.constant.SiteConfig;
 import com.akaxin.client.friend.adapter.ContactsAdapter;
@@ -111,7 +110,7 @@ public class ContactsFragment extends BaseFragment {
                 new OnContactItemClickListener() {
                     @Override
                     public void onFriendClick(UserProto.SimpleUserProfile profile) {
-                        Intent intent = new Intent(getActivity(), MessageActivity.class);
+                        Intent intent = new Intent(getActivity(), U2MessageActivity.class);
                         intent.putExtra(IntentKey.KEY_FRIEND_SITE_USER_ID, profile.getSiteUserId());
                         intent.putExtra(IntentKey.KEY_FRIEND_USER_NAME, profile.getUserName());
                         intent.putExtra(IntentKey.KEY_FRIEND_PROFILE, profile.toByteArray());

@@ -25,7 +25,7 @@ public class Message extends com.windchat.im.message.Message implements Parcelab
     public static final int STATUS_RECEIVE_READ = 6;                // 收到的消息已读
 
     public static final long SYNC_MSG_STATUS_EXPIRE_TIME = 24 * 60 * 60 * 1000; ////有效期24小时
-    
+
     private long _id;
     private String msgId;
     private long msgPointer;
@@ -308,12 +308,12 @@ public class Message extends com.windchat.im.message.Message implements Parcelab
     public static final String KEY_DEVICE_ID = "key_device_id";
     public static final String KEY_SITE_USER_ID = "key_site_user_id";
 
-    public static Message copyMessage(Message msg) {
+    public static Message copyMessage(com.windchat.im.message.Message msg) {
+
         Message message = new Message();
         if (msg != null) {
             message.setMsgId(msg.getMsgId());
             message.setSiteUserId(msg.getSiteUserId());
-            message.setGroupId(msg.getGroupId());
             message.setContent(msg.getContent());
             message.setMsgTime(msg.getMsgTime());
             message.setMsgType(msg.getMsgType());
@@ -322,11 +322,8 @@ public class Message extends com.windchat.im.message.Message implements Parcelab
             message.setMsgTsk(msg.getMsgTsk());
             message.setChatSessionId(msg.getChatSessionId());
             message.setImg(msg.getImg());
-            message.setGroupId(msg.getGroupId());
             message.setToDeviceId(msg.getToDeviceId());
-            message.setMsgWidth(msg.getMsgWidth());
-            message.setMsgHeight(msg.getMsgHeight());
-            message.setHrefUrl(msg.getHrefUrl());
+            message.setSiteToId(msg.getSiteToId());
         }
         return message;
     }
