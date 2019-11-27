@@ -61,7 +61,7 @@
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);
 }
--keep class com.akaxin.client.push.receiver.MiPushMessageReceiver {*;}
+-keep class com.windchat.client.push.receiver.MiPushMessageReceiver {*;}
 
 -dontwarn com.taobao.**
 -dontwarn anet.channel.**
@@ -92,7 +92,7 @@
 -keepattributes SourceFile,LineNumberTable
 
 
--keep class com.akaxin.client.bean.AppVersion {*;}
+-keep class com.windchat.client.bean.AppVersion {*;}
 -keep class com.blankj.utilcode.** { *; }
 -keepclassmembers class com.blankj.utilcode.** { *; }
 -dontwarn com.blankj.utilcode.**

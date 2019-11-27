@@ -72,7 +72,7 @@
 
                     </android.support.design.widget.TextInputLayout>
 
-                    <com.akaxin.client.view.TimeButton
+                    <com.windchat.client.view.TimeButton
                         android:id="@+id/base_login_byphone_btn_getcode"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"

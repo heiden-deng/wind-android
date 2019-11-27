@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.akaxin.client">
+    package="com.windchat.client">
 
     <!-- 访问网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -320,7 +320,7 @@
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.akaxin.client.platform.push" />
+                <action android:name="com.windchat.client.platform.push" />
             </intent-filter>
         </receiver>
 

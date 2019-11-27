@@ -14,7 +14,7 @@
         style="@style/Style.MessageItem.Image"
         android:tint="@color/grayAlpha" />
 
-    <com.akaxin.client.view.CustomProgressBar
+    <com.windchat.client.view.CustomProgressBar
         android:id="@+id/imageCenterProgress"
         android:layout_width="32dp"
         android:layout_height="32dp"

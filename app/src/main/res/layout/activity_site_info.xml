@@ -31,7 +31,7 @@
                     android:background="@color/white"
                     android:padding="@dimen/space_mid">
 
-                    <com.akaxin.client.view.RoundImageView
+                    <com.windchat.client.view.RoundImageView
                         android:id="@+id/site_icon"
                         android:layout_width="@dimen/size_avatar_big"
                         android:layout_height="@dimen/size_avatar_big"

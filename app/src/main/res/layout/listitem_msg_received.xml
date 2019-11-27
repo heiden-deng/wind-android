@@ -53,14 +53,14 @@
                     android:layout_below="@+id/username_label"
                     android:orientation="horizontal">
 
-                    <com.akaxin.client.view.DoubleTapFrameLayout
+                    <com.windchat.client.view.DoubleTapFrameLayout
                         android:id="@+id/message_parent"
                         style="@style/Style.MessageItem.MessageParent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="end">
 
-                    </com.akaxin.client.view.DoubleTapFrameLayout>
+                    </com.windchat.client.view.DoubleTapFrameLayout>
 
                     <FrameLayout
                         android:id="@+id/message_status"

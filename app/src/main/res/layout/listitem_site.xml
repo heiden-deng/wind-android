@@ -26,7 +26,7 @@
         android:layout_marginTop="@dimen/space_small"
         android:layout_centerVertical="true">
 
-        <com.akaxin.client.view.RoundImageView
+        <com.windchat.client.view.RoundImageView
             android:id="@+id/site_icon"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

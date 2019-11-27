@@ -6,7 +6,7 @@
     android:background="@color/bg"
     android:orientation="vertical">
 
-    <com.akaxin.client.view.IndexFastScrollRecyclerView
+    <com.windchat.client.view.IndexFastScrollRecyclerView
         android:id="@+id/member_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

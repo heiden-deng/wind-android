@@ -59,7 +59,7 @@
                         android:layout_height="16dp"
                         android:layout_marginTop="@dimen/space_small">
 
-                        <com.akaxin.client.view.CustomProgressBar
+                        <com.windchat.client.view.CustomProgressBar
                             android:id="@+id/circleProgressBar"
                             android:layout_width="16dp"
                             android:layout_height="16dp"

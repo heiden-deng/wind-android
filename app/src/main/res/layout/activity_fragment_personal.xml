@@ -151,7 +151,7 @@
                         style="@style/MenuItemText"
                         android:text="站点管理" />
 
-                    <com.akaxin.client.view.RoundImageView
+                    <com.windchat.client.view.RoundImageView
                         android:id="@+id/siteIcon3"
                         android:layout_width="@dimen/size_avatar_small"
                         android:layout_height="@dimen/size_avatar_small"
@@ -161,7 +161,7 @@
                         app:type="round"
                         tools:src="@color/placeholder" />
 
-                    <com.akaxin.client.view.RoundImageView
+                    <com.windchat.client.view.RoundImageView
                         android:id="@+id/siteIcon2"
                         android:layout_width="@dimen/size_avatar_small"
                         android:layout_height="@dimen/size_avatar_small"
@@ -172,7 +172,7 @@
                         tools:src="@color/placeholder" />
 
 
-                    <com.akaxin.client.view.RoundImageView
+                    <com.windchat.client.view.RoundImageView
                         android:id="@+id/siteIcon1"
                         android:layout_width="@dimen/size_avatar_small"
                         android:layout_height="@dimen/size_avatar_small"

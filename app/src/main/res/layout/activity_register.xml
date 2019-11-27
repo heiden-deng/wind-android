@@ -8,7 +8,7 @@
     <include layout="@layout/view_toolbar" />
 
 
-    <!--<com.akaxin.client.view.StepsView-->
+    <!--<com.wind.chat.clientient.view.StepsView-->
     <!--android:id="@+id/stepsView"-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="wrap_content" />-->

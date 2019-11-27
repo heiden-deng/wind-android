@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp" />
 
-    <com.akaxin.client.view.StepsViewIndicator
+    <com.windchat.client.view.StepsViewIndicator
         android:id="@+id/steps_indicator_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

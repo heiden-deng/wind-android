@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.akaxin.client.group.GroupContactsActivity">
+    tools:context="com.windchat.client.group.GroupContactsActivity">
 
     <include layout="@layout/view_toolbar" />
 

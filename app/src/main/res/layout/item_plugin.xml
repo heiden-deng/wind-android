@@ -10,7 +10,7 @@
     android:orientation="vertical"
     android:padding="4dp">
 
-    <com.akaxin.client.view.RoundImageView
+    <com.windchat.client.view.RoundImageView
         android:id="@+id/plugin_icon"
         style="@style/Style.Plugin.Icon"
         app:radius="@dimen/corner_radius_site_icon"

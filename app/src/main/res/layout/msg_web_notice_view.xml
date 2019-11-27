@@ -5,13 +5,13 @@
     android:layout_height="wrap_content">
 
 
-    <com.akaxin.client.view.ZalyWebView
+    <com.windchat.client.view.ZalyWebView
         android:id="@+id/webview_notice"
         style="@style/MsgWebNoticeItemStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-    </com.akaxin.client.view.ZalyWebView>
+    </com.windchat.client.view.ZalyWebView>
 
 </FrameLayout>

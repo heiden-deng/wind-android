@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/msg_plugin_webview">
 
-    <com.akaxin.client.view.ZalyWebView
+    <com.windchat.client.view.ZalyWebView
         android:id="@+id/webview_resent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,6 +17,6 @@
             android:layout_marginStart="@dimen/space_tiny"
             android:layout_marginTop="@dimen/space_tiny"
             android:visibility="gone" />
-    </com.akaxin.client.view.ZalyWebView>
+    </com.windchat.client.view.ZalyWebView>
 
 </FrameLayout>

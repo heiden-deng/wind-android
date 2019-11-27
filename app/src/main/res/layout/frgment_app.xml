@@ -46,7 +46,7 @@
             android:max="100"
             android:visibility="gone" />
 
-        <com.akaxin.client.view.HomeWebView
+        <com.windchat.client.view.HomeWebView
             android:id="@+id/fragment_app_web"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

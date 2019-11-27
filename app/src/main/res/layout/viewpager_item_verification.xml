@@ -88,7 +88,7 @@
                 </android.support.design.widget.TextInputLayout>
 
 
-                <com.akaxin.client.view.TimeButton
+                <com.windchat.client.view.TimeButton
                     android:id="@+id/vp_verification_btn_getcode"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
