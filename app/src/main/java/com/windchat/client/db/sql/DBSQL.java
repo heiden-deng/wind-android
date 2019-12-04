@@ -120,9 +120,7 @@ public interface DBSQL {
                     "msg_base64_tsk TEXT," +
                     "to_device_id VARCHAR(100)," +
                     "msg_status INTEGER," +
-                    " msg_width INTEGER, " +
-                    " msg_height INTEGER, " +
-                    " href_url VARCHAR(100), " +
+                    "msg_ext TEXT, " +
                     "send_msg_time   LONG, " +
                     "server_msg_time  LONG," +
                     "receive_msg_time LONG," +

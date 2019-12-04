@@ -85,6 +85,16 @@ public class WindMessageReceiver implements IMessageReceiver {
     @Override
     public void handleGroupMessage(Site site, List<? extends Message> groupMessages) throws Exception {
         SiteMessageDao.getInstance(site.getSiteAddress()).batchInsertGroupMessages(groupMessages);
+
+        ArrayList<com.windchat.client.bean.Message> gMsgList = (ArrayList<com.windchat.client.bean.Message>) groupMessages;
+        String siteIdentity = site.getSiteHost().replace('.', '_') + "_" + site.getSitePort();
+
+        // 通知UI进程
+        Bundle bundle = new Bundle();
+        bundle.putString(ZalyDbContentHelper.KEY_SITE_IDENTITY, siteIdentity);
+        bundle.putString(ZalyDbContentHelper.KEY_CUR_SITE_USER_ID, site.getSiteUserId());
+        bundle.putParcelableArrayList(ZalyDbContentHelper.KEY_MSG_RECEIVE_LIST, gMsgList);
+        ZalyDbContentHelper.executeAction(ZalyDbContentHelper.Action.MSG_RECEIVE, bundle);
     }
 
     @Override
