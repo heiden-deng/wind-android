@@ -29,8 +29,7 @@ public class Message extends com.windchat.im.message.Message implements Parcelab
     private long _id;
     private String msgId;
     private long msgPointer;
-    private String siteUserId = "";
-    private String siteFriendId = "";
+
     private String chatSessionId = "";
     private String content = "";
     private int msgType = CoreProto.MsgType.UNRECOGNIZED.getNumber();//消息类型，保持proto中一致
@@ -147,11 +146,13 @@ public class Message extends com.windchat.im.message.Message implements Parcelab
     }
 
     public String getGroupId() {
-        return siteFriendId;
+        return ChatType.MSG_GROUP == chatType ? siteToId : null;
     }
 
     public void setGroupId(String groupId) {
-        this.siteFriendId = groupId;
+        if (ChatType.MSG_GROUP == chatType) {
+            this.siteToId = groupId;
+        }
     }
 
     public long getSendMsgTime() {
@@ -246,7 +247,7 @@ public class Message extends com.windchat.im.message.Message implements Parcelab
     protected Message(Parcel in) {
         msgId = in.readString();
         siteUserId = in.readString();
-        siteFriendId = in.readString();
+        siteToId = in.readString();
         content = in.readString();
         msgTime = in.readLong();
         msgType = in.readInt();
@@ -268,7 +269,7 @@ public class Message extends com.windchat.im.message.Message implements Parcelab
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(msgId);
         dest.writeString(siteUserId);
-        dest.writeString(siteFriendId);
+        dest.writeString(siteToId);
         dest.writeString(content);
         dest.writeLong(msgTime);
         dest.writeInt(msgType);

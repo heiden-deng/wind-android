@@ -173,17 +173,8 @@ public class U2MessagePresenter implements IMessagePresenter {
         } else {
             u2Message.setMsgStatus(Message.STATUS_SENDING);
         }
-
-        if (isSecretMode) {
-            u2Message.setMsgType(CoreProto.MsgType.SECRET_TEXT_VALUE);
-            u2Message.setToDeviceId(friendDeviceInfo.getDeviceId());
-            String toDevicePubk64 = Base64.encodeToString(friendDeviceInfo.getUserDevicePubk().getBytes(), Base64.NO_WRAP);
-            u2Message.setToDevicePubk(toDevicePubk64);
-            ZalyTaskExecutor.executeUserTask(TAG, new SendSecretTask(SendSecretTask.INSERT_MODE, u2Message, friendDeviceInfo.getUserDevicePubk()));
-        } else {
-            u2Message.setMsgType(CoreProto.MsgType.TEXT_VALUE);
-            ZalyTaskExecutor.executeUserTask(TAG, new SendMessageTask(SendMessageTask.INSERT_MODE, u2Message));
-        }
+        u2Message.setMsgType(CoreProto.MsgType.TEXT_VALUE);
+        ZalyTaskExecutor.executeUserTask(TAG, new SendMessageTask(SendMessageTask.INSERT_MODE, u2Message));
         iView.onStartSendingMessage(u2Message);
     }
 

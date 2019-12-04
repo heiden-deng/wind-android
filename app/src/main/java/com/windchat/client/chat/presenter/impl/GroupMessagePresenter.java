@@ -108,13 +108,13 @@ public class GroupMessagePresenter implements IGroupMsgPresenter {
 
     @Override
     public void sendTextMessage(Message message) {
+        message.setChatType(com.windchat.im.message.Message.ChatType.MSG_GROUP);
         //发送者
         message.setSiteUserId(currentSite.getSiteUserId());
         //群ID，这里为接受者
         message.setGroupId(groupId);
         message.setMsgId(MsgUtils.getCurMsgId(MsgUtils.MSG_TYPE_GROUP, currentSite));
         message.setMsgTime(System.currentTimeMillis());
-        message.setSecret(isSecretMode);
         message.setMsgType(CoreProto.MsgType.GROUP_TEXT_VALUE);
         boolean isNet = NetUtils.getNetInfo();
         if (!isNet) {
