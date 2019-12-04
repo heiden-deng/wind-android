@@ -179,7 +179,7 @@ public class SiteMessageDao {
             SQLiteStatement statement = database.compileStatement(sql);
             statement.bindString(1, msg.getMsgId());
             statement.bindString(2, msg.getSiteUserId());
-            statement.bindString(3, msg.getGroupId());
+            statement.bindString(3, msg.getSiteToId());
             statement.bindString(4, msg.getChatSessionId());//消息帧，消息列表中某一个cells的标识
             statement.bindString(5, msg.getContent());
             statement.bindLong(6, msg.getMsgPointer());
@@ -1016,9 +1016,6 @@ public class SiteMessageDao {
                     message.setContent(content);
                     message.setMsgPointer(cursor.getInt(cursor.getColumnIndex("msg_pointer")));
                     message.setChatSessionId(cursor.getString(cursor.getColumnIndex("chat_session_id")));
-                    message.setMsgWidth(cursor.getInt(cursor.getColumnIndex("msg_width")));
-                    message.setMsgHeight(cursor.getInt(cursor.getColumnIndex("msg_height")));
-                    message.setHrefUrl(cursor.getString(cursor.getColumnIndex("href_url")));
                     messages.add(message);
                 } while (cursor.moveToNext());
             } catch (Exception e) {
