@@ -308,9 +308,7 @@ public class SiteMessageDao {
                     " msg_status," +
                     " send_msg_time," +
                     " server_msg_time, " +
-                    " msg_width," +
-                    " msg_height, " +
-                    " href_url)" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    " msg_ext)" + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             SQLiteStatement statement = database.compileStatement(sql);
             statement.bindString(1, msg.getMsgId());
             statement.bindString(2, msg.getSiteUserId());
@@ -324,9 +322,7 @@ public class SiteMessageDao {
             statement.bindLong(10, msg.getMsgStatus());
             statement.bindLong(11, msg.getSendMsgTime());
             statement.bindLong(12, msg.getMsgTime());
-            statement.bindLong(13, msg.getMsgWidth());
-            statement.bindLong(14, msg.getMsgHeight());
-            statement.bindString(15, msg.getHrefUrl());
+            statement.bindString(13, "");
 
             _id = statement.executeInsert();
             ZalyLogUtils.getInstance().dbLog(TAG, startTime, sql);
