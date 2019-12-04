@@ -27,6 +27,7 @@ public class Message {
 
     protected String msgId;
     protected long msgPointer;
+
     protected String siteUserId = "";
     protected String siteToId;
 

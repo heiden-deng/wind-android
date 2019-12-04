@@ -27,21 +27,6 @@ public class Message extends com.windchat.im.message.Message implements Parcelab
     public static final long SYNC_MSG_STATUS_EXPIRE_TIME = 24 * 60 * 60 * 1000; ////有效期24小时
 
     private long _id;
-    private String msgId;
-    private long msgPointer;
-
-    private String chatSessionId = "";
-    private String content = "";
-    private int msgType = CoreProto.MsgType.UNRECOGNIZED.getNumber();//消息类型，保持proto中一致
-    private String toDeviceId = "";
-    private long sendMsgTime;//消息到达服务端时间
-    private long msgTime;//消息到达服务端时间
-    private int msgStatus;
-    private boolean isSecret = false;
-    private String msgTsk = "";
-    private String img;
-    private String userName = "";
-    private String toDevicePubk = "";
 
     private int msgWidth = 0;
     private int msgHeight = 0;
