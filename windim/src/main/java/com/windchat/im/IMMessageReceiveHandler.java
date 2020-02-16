@@ -289,6 +289,7 @@ public class IMMessageReceiveHandler implements IMessageHandler {
                             groupTextMsg.setSiteUserId(groupText.getSiteUserId());
                             groupTextMsg.setChatSessionId(groupText.getSiteGroupId());
                             groupTextMsg.setGroupId(groupText.getSiteGroupId());
+                            groupTextMsg.setSiteToId(groupText.getSiteGroupId());
                             groupTextMsg.setContent(groupText.getText().toStringUtf8());
                             groupTextMsg.setMsgStatus(Message.STATUS_RECEIVE_UNREAD);
                             groupTextMsg.setMsgTime(groupText.getTime());
@@ -307,6 +308,7 @@ public class IMMessageReceiveHandler implements IMessageHandler {
                             groupVoiceMsg.setMsgId(groupVoice.getMsgId());
                             groupVoiceMsg.setSiteUserId(groupVoice.getSiteUserId());
                             groupVoiceMsg.setGroupId(groupVoice.getSiteGroupId());
+                            groupVoiceMsg.setSiteToId(groupVoice.getSiteGroupId());
                             groupVoiceMsg.setChatSessionId(groupVoice.getSiteGroupId());
                             groupVoiceMsg.setContent(U2AudioMessage.toJSON(groupU2AudioMessage));
                             groupVoiceMsg.setMsgTime(groupVoice.getTime());
@@ -327,6 +329,7 @@ public class IMMessageReceiveHandler implements IMessageHandler {
                             groupImgMsg.setMsgId(groupImage.getMsgId());
                             groupImgMsg.setSiteUserId(groupImage.getSiteUserId());
                             groupImgMsg.setGroupId(groupImage.getSiteGroupId());
+                            groupImgMsg.setSiteToId(groupImage.getSiteGroupId());
                             groupImgMsg.setChatSessionId(groupImage.getSiteGroupId());
                             groupImgMsg.setContent(U2ImageMessage.toJSON(groupU2ImageMessage));
                             groupImgMsg.setMsgTime(groupImage.getTime());
@@ -343,6 +346,7 @@ public class IMMessageReceiveHandler implements IMessageHandler {
                             groupWebMsg.setMsgId(groupWeb.getMsgId());
                             groupWebMsg.setSiteUserId(groupWeb.getSiteUserId());
                             groupWebMsg.setGroupId(groupWeb.getSiteGroupId());
+                            groupWebMsg.setSiteToId(groupWeb.getSiteGroupId());
                             groupWebMsg.setChatSessionId(groupWeb.getSiteGroupId());
                             groupWebMsg.setContent(groupWeb.getWebCode());
                             groupWebMsg.setMsgTime(groupWeb.getTime());
