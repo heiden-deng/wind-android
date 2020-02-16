@@ -69,7 +69,7 @@ public class PacketReader {
     static final byte N = '\n';
 
     /**
-     * 该解码方式的实现，是阿卡信IM通讯即时性的一大步！
+     * 该解码方式的实现，是风信IM通讯即时性的一大步！
      *
      * @author yichao
      * @date 12/20/2018

@@ -6,8 +6,8 @@ package com.windchat.client.constant;
  */
 
 public interface ServerConfig {
-    String PLATFORM_ADDRESS = "platform.akaxin.com";//阿卡信平台地址
-    int PLATFORM_PROT = 8000;//阿卡信平台端口
+    String PLATFORM_ADDRESS = "platform.akaxin.com";//风信平台地址
+    int PLATFORM_PROT = 8000;//风信平台端口
 
     String PLATFORM_INDENTIY = "platform_akaxin_com_8000";
 

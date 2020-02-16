@@ -81,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="18dp"
                         android:layout_marginTop="23dp"
-                        android:text="使用阿卡信、微信、浏览器扫一扫" />
+                        android:text="使用风信、微信、浏览器扫一扫" />
                 </LinearLayout>
 
 

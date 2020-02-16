@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_tiny"
-                tools:text="开源阿卡信 | im.akaxin.com" />
+                tools:text="开源风信 | im.akaxin.com" />
 
         </LinearLayout>
 

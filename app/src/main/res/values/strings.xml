@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">阿卡信</string>
+    <string name="app_name">风信</string>
     <string name="user_agreement_md"><a href="https://github.com/akaxincom/faq/blob/master/user_agreement.md">知晓并同意使用协议</a></string>
     <string name="user_id_md"><a href="https://github.com/akaxincom/faq/blob/master/user_id.md">什么是身份?</a></string>
     <string name="why_qrcode_auth_safe_md"><a href="https://github.com/akaxincom/faq/blob/master/why_qrcode_auth_safe.md">授权登陆为什么是安全的？</a></string>
@@ -216,7 +216,7 @@
     <string name="base_login_register_new_id">注册新账号</string>
     <string name="base_login_read_deal">继续使用即代表阅读并同意</string>
 
-    <string name="base_login_read_deal_url"><a href='https://raw.githubusercontent.com/akaxincom/faq/master/docs/agreement.md'>阿卡信使用协议</a></string>
+    <string name="base_login_read_deal_url"><a href='https://raw.githubusercontent.com/akaxincom/faq/master/docs/agreement.md'>风信使用协议</a></string>
     <string name="md_url">https://raw.githubusercontent.com/akaxincom/faq/master/docs/agreement.md</string>
     <string name="base_login_register_byphone">注册手机号</string>
     <string name="base_login_register_by_another">其他方式注册</string>

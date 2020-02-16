@@ -37,7 +37,7 @@
                 android:id="@+id/plugin_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="阿卡信日报"
+                tools:text="风信日报"
                 android:textColor="@color/textBlack"
                 android:textSize="@dimen/text_normal" />
 
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/textAlphaGray"
                 android:textSize="@dimen/text_small"
-                tools:text="一览阿卡信的每日动态"/>
+                tools:text="一览风信的每日动态"/>
 
         </LinearLayout>
     </RelativeLayout>

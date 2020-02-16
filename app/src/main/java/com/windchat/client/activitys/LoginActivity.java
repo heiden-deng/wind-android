@@ -127,7 +127,7 @@ public class LoginActivity extends BaseActivity implements PermissionUtils.OnRat
     @Override
     public void rationale(final ShouldRequest shouldRequest) {
         new MaterialDialog.Builder(LoginActivity.this)
-                .content("使用阿卡信必须拥有文件读写的权限,请赋予我权限")
+                .content("使用风信必须拥有文件读写的权限,请赋予我权限")
                 .positiveText("好的")
                 .negativeText("取消")
                 .onAny(new MaterialDialog.SingleButtonCallback() {

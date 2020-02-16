@@ -5,7 +5,7 @@ package com.windchat.client.constant;
  */
 
 public interface SiteConfig {
-    String  SITE_PROT = "2021";//阿卡信站点默认端口
+    String  SITE_PROT = "2021";//风信站点默认端口
 
     String PLUGIN_HOME_LIST = "_plugin_home_list";
     String PLUGIN_PAGE_LIST = "_plugin_page_list";

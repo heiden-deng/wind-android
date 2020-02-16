@@ -98,7 +98,7 @@
                 android:maxLines="1"
                 android:textColor="@color/textBlack"
                 android:textSize="@dimen/text_normal"
-                tools:text="开源阿卡信" />
+                tools:text="开源风信" />
 
             <android.support.v4.widget.Space
                 android:layout_width="0dp"
