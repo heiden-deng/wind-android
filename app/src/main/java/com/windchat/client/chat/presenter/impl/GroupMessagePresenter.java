@@ -136,6 +136,7 @@ public class GroupMessagePresenter implements IGroupMsgPresenter {
     @Override
     public void sendAudioMessage(final long audioTime, final String audioFilePath) {
         final Message message = new Message();
+        message.setChatType(com.windchat.im.message.Message.ChatType.MSG_GROUP);
         message.setSiteUserId(currentSite.getSiteUserId());
         message.setGroupId(groupId);
         message.setChatSessionId(chatSessionId);
@@ -229,7 +230,7 @@ public class GroupMessagePresenter implements IGroupMsgPresenter {
         imageInfo.setStatus(ImageInfo.STATUS_UPLOADING);
 
         final Message message = new Message();
-
+        message.setChatType(com.windchat.im.message.Message.ChatType.MSG_GROUP);
         message.setContent(ImageInfo.toJSON(imageInfo));
         message.setSiteUserId(currentSite.getSiteUserId());
         message.setGroupId(groupId);
@@ -244,7 +245,6 @@ public class GroupMessagePresenter implements IGroupMsgPresenter {
             message.setMsgStatus(Message.STATUS_SENDING);
         }
         message.setChatSessionId(chatSessionId);
-        message.setGroupId(currentSite.getSiteUserId());
 
         ZalyTaskExecutor.executeUserTask(TAG, new UpdateImgMsgDBTask(UpdateImgMsgDBTask.INSERT_MODE, message));
 

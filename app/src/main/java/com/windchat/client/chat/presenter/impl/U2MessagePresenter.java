@@ -213,8 +213,9 @@ public class U2MessagePresenter implements IMessagePresenter {
     @Override
     public void sendAudioMessage(final long audioTime, final String audioFilePath) {
         final Message message = new Message();
+        message.setChatType(com.windchat.im.message.Message.ChatType.MSG_U2);
         message.setSiteUserId(currentSite.getSiteUserId());
-        message.setGroupId(friendSiteUserId);
+        message.setSiteToId(friendSiteUserId);
         message.setChatSessionId(chatSessionId);
         message.setMsgId(MsgUtils.getCurMsgId(MsgUtils.MSG_TYPE_U2, currentSite));
         message.setSecret(isSecretMode);
@@ -379,8 +380,6 @@ public class U2MessagePresenter implements IMessagePresenter {
 
     @Override
     public void sendImgMessage(final String imgPath) {
-
-
         ZalyLogUtils.getInstance().info(TAG, "doRotateImageAndSave === start");
 
         ImageRoateUtil.doRotateImageAndSave(imgPath);
@@ -404,9 +403,10 @@ public class U2MessagePresenter implements IMessagePresenter {
         imageInfo.setStatus(ImageInfo.STATUS_UPLOADING);
 
         final Message message = new Message();
+        message.setChatType(com.windchat.im.message.Message.ChatType.MSG_U2);
         message.setContent(ImageInfo.toJSON(imageInfo));
         message.setSiteUserId(currentSite.getSiteUserId());
-        message.setGroupId(friendSiteUserId);
+        message.setSiteToId(friendSiteUserId);
         message.setChatSessionId(chatSessionId);
         message.setMsgId(MsgUtils.getCurMsgId(MsgUtils.MSG_TYPE_U2, currentSite));
         long time = System.currentTimeMillis();

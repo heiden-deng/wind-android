@@ -1,4 +1,4 @@
 //gradle的模块方式，使用配置文件，include不同的mudule
 //app -> 安卓客户端的主要入口
 //logger -> 日志模块
-include ':app', ':logger', ':xrecyclerview', ':zbar', ':core', ':PhotoPicker', ':ucrop', ':windim', ':proto'
+include ':app', ':logger', ':xrecyclerview', ':zbar', ':core', ':PhotoPicker', ':ucrop', ':windim'
