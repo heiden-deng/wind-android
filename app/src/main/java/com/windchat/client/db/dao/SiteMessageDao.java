@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteStatement;
 import com.windchat.client.bean.ChatSession;
 import com.windchat.client.bean.Message;
 import com.windchat.client.db.sql.DBSQL;
+import com.windchat.client.util.GsonUtils;
 import com.windchat.client.util.data.StringUtils;
 import com.windchat.client.util.log.ZalyLogUtils;
 import com.akaxin.proto.core.CoreProto;
@@ -16,6 +17,7 @@ import com.windchat.im.socket.SiteAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -655,9 +657,20 @@ public class SiteMessageDao {
                 message.setGroupId(cursor.getString(cursor.getColumnIndex("to_site_user_id")));
                 message.setChatSessionId(cursor.getString(cursor.getColumnIndex("chat_session_id")));
                 message.setToDevicePubk(cursor.getString(cursor.getColumnIndex("to_base64_device_pubk")));
-                message.setMsgWidth(cursor.getInt(cursor.getColumnIndex("msg_width")));
-                message.setMsgHeight(cursor.getInt(cursor.getColumnIndex("msg_height")));
-                message.setHrefUrl(cursor.getString(cursor.getColumnIndex("href_url")));
+
+                String msgExt = cursor.getString(cursor.getColumnIndex("msg_ext"));
+                if (StringUtils.isNotEmpty(msgExt)) {
+                    Map<String, Object> extMap = GsonUtils.fromJson(msgExt, Map.class);
+                    if (extMap.get("href_url") != null) {
+                        message.setHrefUrl(String.valueOf(extMap.get("href_url")));
+                    }
+                    if (extMap.get("msg_width") != null) {
+                        message.setMsgWidth(cursor.getInt(cursor.getColumnIndex("msg_width")));
+                    }
+                    if (extMap.get("msg_height") != null) {
+                        message.setMsgHeight(cursor.getInt(cursor.getColumnIndex("msg_height")));
+                    }
+                }
 
                 messages.add(message);
             } while (cursor.moveToNext());
@@ -701,7 +714,13 @@ public class SiteMessageDao {
             message.setGroupId(cursor.getString(cursor.getColumnIndex("to_site_user_id")));
             message.setChatSessionId(cursor.getString(cursor.getColumnIndex("chat_session_id")));
             message.setToDevicePubk(cursor.getString(cursor.getColumnIndex("to_base64_device_pubk")));
-            message.setHrefUrl(cursor.getString(cursor.getColumnIndex("href_url")));
+            String msgExt = cursor.getString(cursor.getColumnIndex("msg_ext"));
+            if (StringUtils.isNotEmpty(msgExt)) {
+                Map<String, Object> extMap = GsonUtils.fromJson(msgExt, Map.class);
+                if (extMap.get("href_url") != null) {
+                    message.setHrefUrl(String.valueOf(extMap.get("href_url")));
+                }
+            }
 
         }
         ZalyLogUtils.getInstance().dbLog(TAG, startTime, sql + " queryU2HistoryMsg ");
@@ -750,8 +769,14 @@ public class SiteMessageDao {
                 message.setGroupId(cursor.getString(cursor.getColumnIndex("to_site_user_id")));
                 message.setChatSessionId(cursor.getString(cursor.getColumnIndex("chat_session_id")));
                 message.setToDevicePubk(cursor.getString(cursor.getColumnIndex("to_base64_device_pubk")));
-                message.setHrefUrl(cursor.getString(cursor.getColumnIndex("href_url")));
 
+                String msgExt = cursor.getString(cursor.getColumnIndex("msg_ext"));
+                if (StringUtils.isNotEmpty(msgExt)) {
+                    Map<String, Object> extMap = GsonUtils.fromJson(msgExt, Map.class);
+                    if (extMap.get("href_url") != null) {
+                        message.setHrefUrl(String.valueOf(extMap.get("href_url")));
+                    }
+                }
                 messages.add(message);
             } while (cursor.moveToNext());
         }
@@ -795,7 +820,13 @@ public class SiteMessageDao {
                 message.setContent(content);
                 message.setMsgPointer(cursor.getInt(cursor.getColumnIndex("msg_pointer")));
                 message.setChatSessionId(cursor.getString(cursor.getColumnIndex("chat_session_id")));
-                message.setHrefUrl(cursor.getString(cursor.getColumnIndex("href_url")));
+                String msgExt = cursor.getString(cursor.getColumnIndex("msg_ext"));
+                if (StringUtils.isNotEmpty(msgExt)) {
+                    Map<String, Object> extMap = GsonUtils.fromJson(msgExt, Map.class);
+                    if (extMap.get("href_url") != null) {
+                        message.setHrefUrl(String.valueOf(extMap.get("href_url")));
+                    }
+                }
 
                 messages.add(message);
             } while (cursor.moveToNext());
@@ -905,7 +936,13 @@ public class SiteMessageDao {
                 message.setMsgPointer(cursor.getInt(cursor.getColumnIndex("msg_pointer")));
                 message.setMsgWidth(cursor.getInt(cursor.getColumnIndex("msg_width")));
                 message.setMsgHeight(cursor.getInt(cursor.getColumnIndex("msg_height")));
-                message.setHrefUrl(cursor.getString(cursor.getColumnIndex("href_url")));
+                String msgExt = cursor.getString(cursor.getColumnIndex("msg_ext"));
+                if (StringUtils.isNotEmpty(msgExt)) {
+                    Map<String, Object> extMap = GsonUtils.fromJson(msgExt, Map.class);
+                    if (extMap.get("href_url") != null) {
+                        message.setHrefUrl(String.valueOf(extMap.get("href_url")));
+                    }
+                }
 
                 messages.add(message);
             } while (cursor.moveToNext());

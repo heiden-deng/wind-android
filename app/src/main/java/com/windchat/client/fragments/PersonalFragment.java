@@ -432,7 +432,9 @@ public class PersonalFragment extends MVPBaseFragment<PersonalContract.View, Per
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        unbinder.unbind();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 
     private void startPhotoPicker() {
