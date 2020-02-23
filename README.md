@@ -33,11 +33,16 @@ WindChat 是一款开源免费私有IM聊天软件，原身是Akaxin即时通讯
 </p>
 
 
-**二、客户端**
+二、客户端
+----
 
-> * [Android 等待开源]()
-> * [iOS 等待开源]()
+** 1.Android **
+    > * [GitHub](https://github.com/WindChat/wind-android.git)
+    > * [Gitee](https://gitee.com/wind-chat/wind-android.git)
 
+** 2.iOS **
+
+    > 等待开放
 
 三、服务端
 ----
@@ -80,7 +85,7 @@ WindChat 具有灵活、强大的扩展机制 `(“管理平台” 就是一个�
 五、技术贡献者
 ----
 
-> 以加入时间排序
+**贡献者名单**
 
 * sisishiliu（Akaxin/DuckChat创始人）
 * SAM2O2O
@@ -89,6 +94,6 @@ WindChat 具有灵活、强大的扩展机制 `(“管理平台” 就是一个�
 
 **向我们提问**
 
-> 官方微信：<img src="https://images.gitee.com/uploads/images/2020/0215/213526_62461f9d_1566564.png" width=100>
+> 官方微信：<img src="https://images.gitee.com/uploads/images/2020/0215/213526_62461f9d_1566564.png" width=150>
 
 > 联系邮件：an.guoyue254@gmail.com
