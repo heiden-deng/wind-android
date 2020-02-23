@@ -14,7 +14,7 @@
 
 
 
-简介
+一、简介
 ----
 
 WindChat 是一款开源免费私有IM聊天软件，原身是Akaxin即时通讯开源软件，由原开发者SAM2O2O个人维护，主要面向企业定制IM,全端开源，免费。
@@ -33,62 +33,22 @@ WindChat 是一款开源免费私有IM聊天软件，原身是Akaxin即时通讯
 </p>
 
 
-一、快速体验
-----
-
-**1. 启动服务器**
-
-    * git clone https://gitee.com/wind-chat/wind-im.git
-    
-    
-WindChat 开始支持personal（个人版）与team版，默认状态下使用personal
-
-支持的启动参数：`java -jar windchat-server.jar -h`
-
-WindChat Personal版本 命令：
-
-    * 版本升级：`java -jar windchat-server.jar -upgrade` ，此命令在服务与sqlite数据库版本不一致时执行，正常情况无需执行
-
-    * 启动命令：`java -jar windchat-server.jar`
-    
-WindChat Team版本 命令：
-    
-    * 生成Team版本所需配置模版：`java -jar windchat-server.jar -team`
-    
-    * 修改配置文件: 上一步会生成 windchat-server.config 使用mysql数据库需在[windchat-server.config]配置文件中配置mysql参数：
-                主库（数据库编码需要设置utf8mb4）：
-                    windchat.mysql.host=localhost //数据库的地址
-                    windchat.mysql.port=3306        //数据库端口
-                    windchat.mysql.database=openzaly    //数据库名称
-                    windchat.mysql.username=root        //mysql数据库访问用户
-                    windchat.mysql.password=1234567890  //mysql数据库密码
-                
-                从库（如果需要使用主从模式，配置这里，不需要从库则不需要配置）数据库编码需要设置utf8mb4：
-                    windchat.mysql.slave.host=localhost
-                    windchat.mysql.slave.port=3306
-                    windchat.mysql.slave.database=openzaly
-                    windchat.mysql.slave.username=root
-                    windchat.mysql.slave.password=1234567890
-                
-                其他mysql参数为使用mysql连接池的配置参数，如若涉及性能优化可开启配置项。
-                
-     * 迁移数据库命令：WindChat支持使用者把Personal版本的sqlite中的数据迁移到Team版本的mysql数据库
-                     如果执行这一步需要在windchat-server.config配置文件中配置：
-                        `windchat.sqlite.url=openzalyDB.sqlite3` 这里指定sqlite数据库文件的位置
-                     
-                     继续执行迁移命令：
-                        `java -jar windchat-server.jar -migrate`
-        
-     * 启动命令：`java -jar windchat-server.jar`      
-        
-
-**2. 下载客户端**
+**二、客户端**
 
 > * [Android 等待开源]()
 > * [iOS 等待开源]()
 
 
-**3. 访问站点**
+三、服务端
+----
+
+**1. 服务端源码**
+
+    > * **GitHub地址**: https://github.com/WindChat/wind-im.git
+    > * **Gitee地址**: https://gitee.com/wind-chat/wind-im.git
+
+
+**2. 访问站点**
 
 > * 生成账号（手机账号与匿名均可）
 > * 输入站点服务器
@@ -100,15 +60,8 @@ WindChat Team版本 命令：
 > **站点注册方式默认为匿名，进入站点后，请根据情况第一时间修改为 实名 或者 开启邀请码，防止恶意用户进入**
 
 
-二、源码编译安装
-----
 
-- 本地安装Java1.8+
-- 需要本地有mvn，直接使用mvn编译即可。
-
-
-
-三、扩展开发
+四、扩展开发
 ----
 
 WindChat 具有灵活、强大的扩展机制 `(“管理平台” 就是一个扩展)`。通过嵌入WEB页面，与后端的扩展API进行交互， 可以很轻松的构建丰富的业务功能，如：
@@ -124,7 +77,7 @@ WindChat 具有灵活、强大的扩展机制 `(“管理平台” 就是一个�
 
 
 
-四、技术贡献者
+五、技术贡献者
 ----
 
 > 以加入时间排序
