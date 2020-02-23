@@ -36,11 +36,11 @@ WindChat 是一款开源免费私有IM聊天软件，原身是Akaxin即时通讯
 二、客户端
 ----
 
-** 1.Android **
-    > * [GitHub](https://github.com/WindChat/wind-android.git)
-    > * [Gitee](https://gitee.com/wind-chat/wind-android.git)
+**1.Android**
+    > * [GitHub:https://github.com/WindChat/wind-android.git](https://github.com/WindChat/wind-android.git)
+    > * [Gitee:https://gitee.com/wind-chat/wind-android.git](https://gitee.com/wind-chat/wind-android.git)
 
-** 2.iOS **
+**2.iOS**
 
     > 等待开放
 
