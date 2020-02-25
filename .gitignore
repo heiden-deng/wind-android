@@ -67,3 +67,5 @@ freeline_project_description.json
 
 # Android Studio captures folder
 captures/
+
+gradle/wrapper/*
