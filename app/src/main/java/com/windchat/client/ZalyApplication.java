@@ -74,8 +74,10 @@ public class ZalyApplication extends Application {
          */
         List<Site> sites = SitePresenter.getInstance().getAllSiteLists();
 
-        IMClient.setConnectionHandler(new WindConnectionHandler(), new WindMessageReceiver());
-        IMClient.getInstance(sites.get(0)).connect();
+        if (sites != null && !sites.isEmpty()) {
+            IMClient.setConnectionHandler(new WindConnectionHandler(), new WindMessageReceiver());
+            IMClient.getInstance(sites.get(0)).connect();
+        }
 
         NotificationUtils.initChannels(getApplicationContext());
         getAndroiodScreenProperty();

@@ -34,8 +34,7 @@ public class LoginActivity extends BaseActivity implements PermissionUtils.OnRat
 
     public static final int KILL_ACTIVITY = 1;
     public static LoginActivity loginActivity;
-    @BindView(R.id.base_login_btn_login)
-    Button baseLoginBtnLogin;
+
     @BindView(R.id.base_login_btn_regist)
     Button baseLoginBtnRegist;
     @BindView(R.id.tv_url)
@@ -103,12 +102,9 @@ public class LoginActivity extends BaseActivity implements PermissionUtils.OnRat
         }
     }
 
-    @OnClick({R.id.base_login_btn_login, R.id.base_login_btn_regist, R.id.tv_url})
+    @OnClick({R.id.base_login_btn_regist, R.id.tv_url})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.base_login_btn_login:
-                startActivity(new Intent(LoginActivity.this, LoginByQRActivity.class));
-                break;
             case R.id.base_login_btn_regist:
                 Intent intent = new Intent(LoginActivity.this, LoginByPhoneActivity.class);
                 intent.putExtra(IntentKey.VC_TYPE, PhoneProto.VCType.PHONE_REGISTER_VALUE);

@@ -214,17 +214,21 @@
     <string name="base_login_center_text">你自己的 聊天软件</string>
     <string name="login">登录</string>
     <string name="base_login_register_new_id">注册新账号</string>
-    <string name="base_login_read_deal">继续使用即代表阅读并同意</string>
+    <string name="base_login_register_local">生成本地账号</string>
 
-    <string name="base_login_read_deal_url"><a href='https://raw.githubusercontent.com/akaxincom/faq/master/docs/agreement.md'>风信使用协议</a></string>
+    <string name="base_login_read_deal">继续使用即代表阅读并同意</string>
+    <string name="base_login_read_deal_url">风信使用协议</string>
     <string name="md_url">https://raw.githubusercontent.com/akaxincom/faq/master/docs/agreement.md</string>
-    <string name="base_login_register_byphone">注册手机号</string>
-    <string name="base_login_register_by_another">其他方式注册</string>
-    <string name="base_login_register_local">生成本地匿名账号</string>
+
+    <string name="base_login_click">点击进入</string>
+
+
     <string name="base_login_input_phone">请在此输入你的手机号</string>
     <string name="base_login_input_code">请在此输入验证码</string>
-    <string name="base_login_qr_register_by_another">其他方式登录</string>
-    <string name="base_login_qr_login_by_phone">手机号登录</string>
+
+    <string name="base_login_qr_login_by_phone">手机号仅保存本地</string>
+    <string name="base_login_qr_register_by_another">其他方式注册</string>
+
     <string name="try_out_to_demo_site">连接体验服务器</string>
     <string name="conn">连接</string>
 

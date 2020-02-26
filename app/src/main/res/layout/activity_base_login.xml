@@ -9,24 +9,17 @@
         android:text="@string/base_login_center_text" />
 
     <Button
-        android:id="@+id/base_login_btn_login"
-        style="@style/BaseLoginButton"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="27dp"
-        android:text="@string/login" />
-
-    <Button
         android:id="@+id/base_login_btn_regist"
         style="@style/BaseLoginButton"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="27dp"
-        android:text="@string/base_login_register_new_id" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="58dp"
+        android:text="@string/base_login_click" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="27dp"
         android:gravity="center"
         android:orientation="horizontal">
@@ -42,9 +35,9 @@
             android:id="@+id/tv_url"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:autoLink="web"
             android:gravity="center"
             android:text="@string/base_login_read_deal_url"
-            android:autoLink="web"
             android:textSize="12sp" />
     </LinearLayout>
 

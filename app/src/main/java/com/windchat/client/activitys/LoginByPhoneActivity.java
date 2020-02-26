@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -45,12 +46,6 @@ import butterknife.OnClick;
 public class LoginByPhoneActivity extends BaseMVPActivity<LoginByPhoneContract.View, LoginByPhonePresenter> implements LoginByPhoneContract.View {
     @BindView(R.id.base_login_byphone_et_phone)
     TextInputLayout baseLoginByphoneEtPhone;
-    @BindView(R.id.base_login_byphone_et_code)
-    TextInputLayout baseLoginByphoneEtCode;
-    @BindView(R.id.base_login_byphone_btn_getcode)
-    TimeButton baseLoginByphoneBtnGetcode;
-    @BindView(R.id.base_login_byphone_btn_commit)
-    Button baseLoginByphoneBtnCommit;
     @BindView(R.id.base_login_byphone_btn_anonymous)
     Button baseLoginByphoneBtnAnonymous;
     @BindView(R.id.base_desc)
@@ -64,9 +59,8 @@ public class LoginByPhoneActivity extends BaseMVPActivity<LoginByPhoneContract.V
     private String verifyCode;
 
 
-
-
     protected int type;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,8 +75,6 @@ public class LoginByPhoneActivity extends BaseMVPActivity<LoginByPhoneContract.V
             baseDescLeft.setVisibility(View.GONE);
             baseDescRight.setVisibility(View.GONE);
         }
-        baseLoginByphoneBtnCommit.setText(type == PhoneProto.VCType.PHONE_REGISTER_VALUE ? "注册手机号" : "登录");
-        baseLoginByphoneBtnGetcode.setTextBefore("获取验证码").setTextAfter("秒后重新获取").setLenght(60 * 1000).onCreate();
     }
 
 
@@ -111,31 +103,6 @@ public class LoginByPhoneActivity extends BaseMVPActivity<LoginByPhoneContract.V
         mPresenter.getVerifyCode(phoneNum, type);
     }
 
-    private void submitInfo() {
-        phoneNum = baseLoginByphoneEtPhone.getEditText().getText().toString().trim();
-        if (StringUtils.isEmpty(phoneNum)) {
-            Toaster.showInvalidate(R.string.error_empty_phone_input);
-            return;
-        }
-        if (!StringUtils.isPhone(phoneNum)) {
-            Toaster.showInvalidate("请输入正确的手机号");
-            return;
-        }
-        verifyCode = baseLoginByphoneEtCode.getEditText().getText().toString().trim();
-        if (StringUtils.isEmpty(verifyCode)) {
-            Toaster.showInvalidate(R.string.error_empty_validation_code);
-            return;
-        }
-        if (type == PhoneProto.VCType.PHONE_LOGIN_VALUE) {
-            ////手机号登录
-            mPresenter.loginPlatformByPhone(phoneNum, verifyCode);
-        } else {
-            ////手机号注册
-            mPresenter.registPlatformByPhone(phoneNum, verifyCode);
-
-        }
-    }
-
     public void gotoMainTabView() {
         Intent intent = new Intent(this, LoginSiteActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -144,16 +111,15 @@ public class LoginByPhoneActivity extends BaseMVPActivity<LoginByPhoneContract.V
     }
 
 
-    @OnClick({R.id.base_login_byphone_btn_getcode, R.id.base_login_byphone_btn_commit, R.id.base_login_byphone_btn_anonymous})
+    @OnClick({R.id.base_login_byphone_btn_anonymous})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.base_login_byphone_btn_getcode:
-                getVerifyCode();
-                break;
-            case R.id.base_login_byphone_btn_commit:
-                submitInfo();
-                break;
             case R.id.base_login_byphone_btn_anonymous:
+
+                if (!submitPhoneId()) {
+                    return;
+                }
+
                 if (type == PhoneProto.VCType.PHONE_REGISTER_VALUE) {
                     mPresenter.generateLocalIdentity();
                 }
@@ -161,9 +127,29 @@ public class LoginByPhoneActivity extends BaseMVPActivity<LoginByPhoneContract.V
         }
     }
 
+    private boolean submitPhoneId() {
+        phoneNum = baseLoginByphoneEtPhone.getEditText().getText().toString().trim();
+        if (StringUtils.isEmpty(phoneNum)) {
+            Toaster.showInvalidate(R.string.error_empty_phone_input);
+            return false;
+        }
+        if (!StringUtils.isPhone(phoneNum)) {
+            Toaster.showInvalidate("请输入正确的手机号");
+            return false;
+        }
+
+
+        ZalyApplication.getCfgSP().putKey(Configs.PHONE_ID, phoneNum);
+
+        ZalyLogUtils.getInstance().info(TAG, "-----PhoneId:" + phoneNum);
+
+        ZalyLogUtils.getInstance().info(TAG, "-----PhoneId cache:" + ZalyApplication.getCfgSP().getKey(Configs.PHONE_ID));
+
+        return true;
+    }
+
     @Override
     public void onGetVerifyCodeSuccess() {
-        baseLoginByphoneBtnGetcode.onStart();
         Toaster.show("发送成功，请注意查收");
     }
 
@@ -256,7 +242,6 @@ public class LoginByPhoneActivity extends BaseMVPActivity<LoginByPhoneContract.V
                                 break;
                         }
                     }
-                })
-                .show();
+                }).show();
     }
 }
